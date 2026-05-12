@@ -354,6 +354,7 @@
           <span class="item"><span class="dot" style="background:#0f172a"></span> Média Atualizada</span>
         </div>
         <div class="right">
+          <button class="btn" data-action="import-csv-medias">Importar CSV</button>
           <button class="btn primary" data-action="new-media">+ Lançar Média</button>
         </div>
       </div>
@@ -391,6 +392,7 @@
           Lançar Consumo Diário
         </span>
         <div class="right">
+          <button class="btn" data-action="import-csv-consumo">Importar CSV</button>
           <button class="btn primary" data-action="new-lancamento">+ Lançar Consumo</button>
         </div>
       </div>
@@ -462,6 +464,20 @@
           </div>
         </div>
 
+        <div id="scortBox" style="margin-top:14px;padding:14px;border:1px dashed var(--border-strong);border-radius:12px;background:#fafbfc">
+          <label class="check" style="font-weight:600;color:#0b1220;font-size:13px;display:inline-flex;align-items:center;gap:8px">
+            <input type="checkbox" id="vgScortTug"/> Barco de Apoio (Scort Tug)
+          </label>
+          <div id="scortFields" style="display:none;margin-top:12px">
+            <div class="grid cols-3">
+              <div class="field"><label>Empurrador de Apoio</label><select id="vgScortEmp"></select></div>
+              <div class="field"><label>Trecho do Scort Tug</label><select id="vgScortRota"></select></div>
+              <div class="field"><label>Resumo</label><div id="vgScortResumo" class="kpi" style="padding:8px 12px"><div class="s" style="font-size:11px">Saída: <strong id="vgScortSaida">—</strong></div><div class="s" style="font-size:11px">Chegada: <strong id="vgScortChegada">—</strong></div></div></div>
+            </div>
+            <div class="help">Regra: se o trecho da viagem principal e do Scort Tug tiverem a mesma origem, a saída é a mesma; a chegada do Scort segue o tempo médio do trecho dele.</div>
+          </div>
+        </div>
+
         <div style="margin-top:18px">
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap">
             <strong>Seleção de Barcaças</strong>
@@ -508,6 +524,7 @@
       <div class="card-h">
         <span class="card-title" id="viagemTitulo">Detalhes da Viagem</span>
         <div class="right" id="viagemStatus"></div>
+        <div class="right" id="viagemActions" style="margin-left:0"></div>
       </div>
       <div class="card-b">
         <div class="grid cols-4" id="viagemKpis"></div>
@@ -524,6 +541,7 @@
           Registro de Preços
         </span>
         <div class="right">
+          <button class="btn" data-action="import-csv-precos">Importar CSV</button>
           <button class="btn primary" data-action="new-preco">+ Lançar Preço</button>
         </div>
       </div>
@@ -993,6 +1011,32 @@ function renderViagens(){
   };
   $('#vgCond').dispatchEvent(new Event('change'));
 
+  // Scort Tug
+  $('#vgScortEmp').innerHTML = emps.map(e => `<option value="${e.id}">${escHtml(e.nome)}</option>`).join('');
+  $('#vgScortRota').innerHTML = rotas.map(r => `<option value="${r.id}">${escHtml(r.nome)}</option>`).join('');
+  const updScortResumo = () => {
+    const mainRota = byId(rotas, $('#vgRota').value);
+    const scortRota = byId(rotas, $('#vgScortRota').value);
+    const empScort = byId(emps, $('#vgScortEmp').value);
+    if(!mainRota || !scortRota || !empScort){
+      $('#vgScortSaida').textContent = '—'; $('#vgScortChegada').textContent = '—'; return;
+    }
+    const sameOrigin = mainRota.origem === scortRota.origem;
+    const saidaIso = $('#vgDtHora').value;
+    const sd = saidaIso ? new Date(saidaIso) : null;
+    const med = (STATE.db.premissas?.mediasConsumoTempo || []).find(m => m.rotaId === scortRota.id && m.empurradorId === empScort.id);
+    const tipo = byId(tipos, $('#vgTipo').value);
+    const tempoH = med ? med.tempoHoras * (1 + (tipo?.deltaTempo||0)) : null;
+    const ch = (sd && tempoH) ? new Date(sd.getTime() + tempoH*3600*1000) : null;
+    $('#vgScortSaida').textContent = sd ? fmtDateTime(sd.toISOString()) + (sameOrigin?'':' (origem diferente)') : '—';
+    $('#vgScortChegada').textContent = ch ? fmtDateTime(ch.toISOString()) : (med ? '—' : 'sem média p/ trecho');
+  };
+  $('#vgScortTug').onchange = () => {
+    $('#scortFields').style.display = $('#vgScortTug').checked ? '' : 'none';
+    updScortResumo();
+  };
+  ['vgScortEmp','vgScortRota','vgDtHora','vgRota','vgTipo'].forEach(id => $('#'+id).addEventListener('change', updScortResumo));
+
   // Viagens já programadas
   const viagens = (db.viagens || []).slice().sort((a,b)=>(b.dataHora||'').localeCompare(a.dataHora||''));
   $('#tbViagens').innerHTML = viagens.map(v => {
@@ -1018,7 +1062,8 @@ function renderViagens(){
   }).join('') || `<tr><td colspan="9" style="text-align:center;color:#94a3b8;padding:24px">Sem viagens programadas.</td></tr>`;
 
   drawComboPreview();
-  renderViagemDetalhes(viagens[0]);
+  const curr = STATE.currentViagem ? byId(viagens, STATE.currentViagem) : viagens[0];
+  renderViagemDetalhes(curr || viagens[0]);
 }
 
 function updateVgComboCount(){
@@ -1036,11 +1081,22 @@ function renderViagemDetalhes(v){
   const titulo = $('#viagemTitulo');
   const status = $('#viagemStatus');
   const kpis = $('#viagemKpis');
+  const actions = $('#viagemActions');
   if(!v){
     titulo.textContent = 'Detalhes da Viagem';
     status.innerHTML = '';
+    if(actions) actions.innerHTML = '';
     kpis.innerHTML = '<div class="hint">Selecione uma viagem na tabela acima ou crie uma nova abaixo.</div>';
     return;
+  }
+  if(actions){
+    const st = v.status || 'Programada';
+    const btns = [];
+    if(st === 'Programada') btns.push(`<button class="btn primary" data-action="iniciar-viagem" data-id="${v.id}">Iniciar Viagem</button>`);
+    if(st === 'Em Andamento') btns.push(`<button class="btn primary" data-action="finalizar-viagem" data-id="${v.id}">Finalizar Viagem</button>`);
+    if(st === 'Finalizada') btns.push(`<button class="btn" data-action="reabrir-viagem" data-id="${v.id}">Reabrir</button>`);
+    btns.push(`<button class="btn ghost danger" data-action="del-viagem" data-id="${v.id}">Excluir</button>`);
+    actions.innerHTML = btns.join('');
   }
   const db = STATE.db;
   const emps = db.cadastro?.empurradores || [];
@@ -1076,6 +1132,17 @@ function renderViagemDetalhes(v){
     <div class="kpi"><h4>HFO</h4><div class="v" style="font-size:16px">${hfo?fmtL(hfo):'—'}</div><div class="s">${hfo?fmtBRL.format(custoHfo):'Não utilizado'}</div></div>
     <div class="kpi"><h4>Custo Total</h4><div class="v" style="font-size:16px">${fmtBRL.format(custoTot)}</div><div class="s">Combustíveis</div></div>
   `;
+  if(v.scortTug){
+    const sEmp = byId(emps, v.scortTug.empurradorId)?.nome || '—';
+    const sRot = byId(rotas, v.scortTug.rotaId)?.nome || '—';
+    const tag = v.scortTug.mesmaOrigem ? '<span class="tag ok">mesma origem</span>' : '<span class="tag warn">origens diferentes</span>';
+    kpis.insertAdjacentHTML('beforeend',
+      `<div class="kpi" style="grid-column:span 4;border-left:3px solid var(--brand)">
+        <h4>Barco de Apoio (Scort Tug)</h4>
+        <div class="v" style="font-size:15px">${escHtml(sEmp)} · ${escHtml(sRot)} ${tag}</div>
+        <div class="s">Apoio à viagem principal · saída ${v.scortTug.mesmaOrigem ? 'idêntica' : 'conforme rota do Scort'}</div>
+      </div>`);
+  }
 }
 
 function ultimoPreco(db, tipo){
@@ -1926,13 +1993,27 @@ function salvarViagem(){
   let id = idBase, n = 1;
   while((db.viagens||[]).some(v => v.id === id)) id = idBase + '-' + (++n);
 
+  let scortTug = null;
+  if($('#vgScortTug').checked){
+    const sEmp = $('#vgScortEmp').value, sRota = $('#vgScortRota').value;
+    if(!sEmp || !sRota){ toast('Configure o empurrador e trecho do Scort Tug', false); return; }
+    if(sEmp === empId){ toast('Empurrador de Scort deve ser diferente do principal', false); return; }
+    const mainRota = byId(db.cadastro.rotas, rotaId);
+    const scortRota = byId(db.cadastro.rotas, sRota);
+    scortTug = {
+      empurradorId: sEmp,
+      rotaId: sRota,
+      mesmaOrigem: mainRota && scortRota ? mainRota.origem === scortRota.origem : false
+    };
+  }
+
   const viagem = {
     id,
     rotaId,
     empurradorId: empId,
     dataHora: dt.toISOString(),
     condicao: cond,
-    scortTug: null,
+    scortTug,
     tipoViagem: $('#vgTipo').value,
     produto: cond === 'Carregada' ? $('#vgProduto').value : null,
     barcacas: (cond === 'Carregada' || cond === 'Vazia') ? [...comboOrder] : [],
@@ -1947,8 +2028,21 @@ function salvarViagem(){
   STATE.selVgBarges = new Set();
   STATE.vgVolume = null;
   comboOrder = [];
+  STATE.currentViagem = id;
+  $('#vgScortTug').checked = false;
+  $('#scortFields').style.display = 'none';
   renderAll();
   toast('Viagem ' + id + ' programada');
+}
+
+function changeViagemStatus(id, newStatus){
+  const v = byId(STATE.db.viagens, id);
+  if(!v) return;
+  v.status = newStatus;
+  if(newStatus === 'Em Andamento') v.iniciadaEm = new Date().toISOString();
+  if(newStatus === 'Finalizada') v.finalizadaEm = new Date().toISOString();
+  persist(); renderAll();
+  toast(`Viagem ${id} → ${newStatus}`);
 }
 
 /* ============================================================
@@ -2057,11 +2151,18 @@ document.addEventListener('click', (e) => {
       break;
     }
     case 'view-viagem': {
+      STATE.currentViagem = id;
       const v = byId(db.viagens, id);
       renderViagemDetalhes(v);
       document.querySelector('#viagemTitulo')?.scrollIntoView({behavior:'smooth', block:'center'});
       break;
     }
+    case 'iniciar-viagem': changeViagemStatus(id, 'Em Andamento'); break;
+    case 'finalizar-viagem': changeViagemStatus(id, 'Finalizada'); break;
+    case 'reabrir-viagem': changeViagemStatus(id, 'Programada'); break;
+    case 'import-csv-medias': openCsvImport('medias'); break;
+    case 'import-csv-consumo': openCsvImport('consumo'); break;
+    case 'import-csv-precos': openCsvImport('precos'); break;
     case 'del-viagem':
       if(confirm('Excluir viagem ' + id + '?')){
         db.viagens = db.viagens.filter(x => x.id !== id);
@@ -2077,6 +2178,247 @@ $('#fileImporter').addEventListener('change', e => {
 });
 
 window.addEventListener('resize', () => { if(STATE.db) renderPrecos(); });
+
+/* ============================================================
+   CSV IMPORT
+   ============================================================ */
+function parseCsv(text){
+  // detectar delimitador
+  const firstLine = text.split(/\r?\n/, 1)[0] || '';
+  const delim = (firstLine.match(/;/g)||[]).length > (firstLine.match(/,/g)||[]).length ? ';' : ',';
+  const rows = [];
+  let cur = [], val = '', inQ = false;
+  for(let i = 0; i < text.length; i++){
+    const c = text[i];
+    if(inQ){
+      if(c === '"' && text[i+1] === '"'){ val += '"'; i++; }
+      else if(c === '"') inQ = false;
+      else val += c;
+    } else {
+      if(c === '"') inQ = true;
+      else if(c === delim){ cur.push(val); val = ''; }
+      else if(c === '\n' || c === '\r'){
+        if(c === '\r' && text[i+1] === '\n') i++;
+        cur.push(val); val = ''; rows.push(cur); cur = [];
+      } else val += c;
+    }
+  }
+  if(val !== '' || cur.length){ cur.push(val); rows.push(cur); }
+  // filtrar linhas totalmente vazias
+  return rows.filter(r => r.some(x => (x||'').trim() !== ''));
+}
+
+const CSV_CONFIGS = {
+  medias: {
+    title: 'Importar Médias de Consumo / Tempo',
+    fields: [
+      {key:'trecho',     label:'Trecho',           required:true},
+      {key:'empurrador', label:'Empurrador',       required:true},
+      {key:'condicao',   label:'Condição',         required:false},
+      {key:'produto',    label:'Produto',          required:false},
+      {key:'tempo',      label:'Tempo (horas)',    required:true,  num:true},
+      {key:'mgo',        label:'Consumo MGO (L)',  required:false, num:true},
+      {key:'hfo',        label:'Consumo HFO (L)',  required:false, num:true},
+    ],
+    apply: (rows) => {
+      const db = STATE.db;
+      let created = 0;
+      rows.forEach(r => {
+        // auto-create rota se faltar
+        let rota = db.cadastro.rotas.find(x => x.nome.toLowerCase() === (r.trecho||'').toLowerCase());
+        if(!rota){
+          rota = {id:uid('RT'), nome:r.trecho, origem:null, destino:null};
+          db.cadastro.rotas.push(rota);
+        }
+        // auto-create empurrador se faltar
+        let emp = db.cadastro.empurradores.find(x => x.nome.toLowerCase() === (r.empurrador||'').toLowerCase());
+        if(!emp){
+          emp = {id:uid('EMP'), nome:r.empurrador, potenciaHp:0, cor:COR_PALETA[0],
+            combustiveis:[{tipo:'MGO',consumoForaViagem:0,capacidadeBunker:0},{tipo:'HFO',consumoForaViagem:0,capacidadeBunker:0}],
+            comboioMax:16};
+          db.cadastro.empurradores.push(emp);
+        }
+        db.premissas.mediasConsumoTempo.push({
+          id: uid('MED'),
+          rotaId: rota.id, empurradorId: emp.id,
+          condicao: r.condicao || 'Carregada',
+          produto: r.produto || null,
+          tempoHoras: r.tempo || 0,
+          consumoMgoL: r.mgo || 0,
+          consumoHfoL: r.hfo || 0,
+          mediaAtualizada: r.mgo || 0
+        });
+        created++;
+      });
+      return `${created} médias importadas`;
+    }
+  },
+  consumo: {
+    title: 'Importar Consumo Diário',
+    fields: [
+      {key:'data',     label:'Dia Referência',  required:true,  date:true},
+      {key:'emp',      label:'ADM_Empurrador',  required:true},
+      {key:'mgo',      label:'Consumo MGO',     required:false, num:true},
+      {key:'hfo',      label:'Consumo HFO',     required:false, num:true},
+      {key:'agua',     label:'Consumo Água',    required:false, num:true},
+      {key:'estDiesel',label:'Estoque Diesel',  required:false, num:true},
+      {key:'estHfo',   label:'Estoque HFO',     required:false, num:true},
+      {key:'estAgua',  label:'Estoque Água',    required:false, num:true},
+      {key:'lat',      label:'Latitude',        required:false, num:true},
+      {key:'lng',      label:'Longitude',       required:false, num:true},
+    ],
+    apply: (rows) => {
+      const db = STATE.db;
+      let added = 0, updated = 0;
+      rows.forEach(r => {
+        let emp = db.cadastro.empurradores.find(x => x.nome.toLowerCase() === (r.emp||'').toLowerCase());
+        if(!emp){
+          emp = {id:uid('EMP'), nome:r.emp, potenciaHp:0, cor:COR_PALETA[0],
+            combustiveis:[{tipo:'MGO',consumoForaViagem:0,capacidadeBunker:0},{tipo:'HFO',consumoForaViagem:0,capacidadeBunker:0}],
+            comboioMax:16};
+          db.cadastro.empurradores.push(emp);
+        }
+        const list = db.consumoDiario.lancamentos;
+        const idx = list.findIndex(l => l.empurradorId === emp.id && l.data === r.data);
+        const payload = {
+          id: idx>=0 ? list[idx].id : uid('CD'),
+          data: r.data, empurradorId: emp.id,
+          mgoL:r.mgo||0, hfoL:r.hfo||0, aguaL:r.agua||0,
+          estoqueDiesel:r.estDiesel||0, estoqueHfo:r.estHfo||0, estoqueAgua:r.estAgua||0,
+          lat:r.lat||null, lng:r.lng||null
+        };
+        if(idx>=0){ list[idx] = payload; updated++; } else { list.push(payload); added++; }
+      });
+      return `${added} novos · ${updated} atualizados`;
+    }
+  },
+  precos: {
+    title: 'Importar Preços',
+    fields: [
+      {key:'data',  label:'Data',                 required:true, date:true},
+      {key:'tipo',  label:'Tipo de Combustível',  required:true},
+      {key:'preco', label:'Preço (R$/L)',         required:true, num:true},
+    ],
+    apply: (rows) => {
+      let added = 0;
+      rows.forEach(r => {
+        STATE.db.precos.registros.push({data:r.data, tipo:(r.tipo||'').toUpperCase(), preco:r.preco||0});
+        added++;
+      });
+      return `${added} preços importados`;
+    }
+  }
+};
+
+function normalizeCell(value, def){
+  const s = (value||'').toString().trim();
+  if(def.num){
+    if(!s) return 0;
+    // aceita 1.234,56 e 1,234.56 e 1234.56
+    let n = s.replace(/[R$\s]/g,'');
+    if(/,/.test(n) && /\./.test(n)){ // tem ambos: assume . milhar, , decimal
+      n = n.replace(/\./g,'').replace(',', '.');
+    } else if(/,/.test(n)){
+      n = n.replace(',', '.');
+    }
+    const v = parseFloat(n);
+    return isNaN(v) ? 0 : v;
+  }
+  if(def.date){
+    if(!s) return null;
+    // tenta DD/MM/AAAA ou AAAA-MM-DD
+    const m1 = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})$/);
+    if(m1){ const y = m1[3].length === 2 ? '20'+m1[3] : m1[3]; return `${y}-${m1[2].padStart(2,'0')}-${m1[1].padStart(2,'0')}`; }
+    const m2 = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if(m2) return s.slice(0,10);
+    return s;
+  }
+  return s;
+}
+
+function openCsvImport(moduleKey){
+  const cfg = CSV_CONFIGS[moduleKey];
+  if(!cfg) return;
+  openModal({
+    title: cfg.title,
+    large: true,
+    body: `
+      <div class="field" style="margin-bottom:14px">
+        <label>Arquivo CSV (separador , ou ; com cabeçalho)</label>
+        <input type="file" id="csvFile" accept=".csv,text/csv"/>
+      </div>
+      <div id="csvStep"></div>
+    `,
+    footer: `
+      <div class="help">Colunas esperadas: ${cfg.fields.map(f=>f.label+(f.required?' *':'')).join(', ')}</div>
+      <div class="right">
+        <button class="btn" data-modal-action="cancel">Cancelar</button>
+        <button class="btn primary" id="csvApplyBtn" disabled>Importar</button>
+      </div>`,
+    onSubmit: () => false // tratamos via botão custom
+  });
+  let parsedRows = null;
+  $('#csvFile').addEventListener('change', e => {
+    const f = e.target.files[0]; if(!f) return;
+    const r = new FileReader();
+    r.onload = () => {
+      const rows = parseCsv(r.result);
+      if(rows.length < 2){ $('#csvStep').innerHTML = '<div class="banner">CSV vazio ou sem dados.</div>'; return; }
+      const header = rows[0].map(h => (h||'').trim());
+      const data = rows.slice(1);
+      // mapeamento automático
+      const mapping = {};
+      cfg.fields.forEach(f => {
+        const idx = header.findIndex(h => h.toLowerCase() === f.label.toLowerCase());
+        mapping[f.key] = idx >= 0 ? idx : '';
+      });
+      const mappingHtml = `
+        <h4 style="margin:6px 0 8px;color:#475569;font-size:12px;letter-spacing:.04em;text-transform:uppercase">Mapeamento de colunas</h4>
+        <div class="grid cols-2">
+          ${cfg.fields.map(f => `
+            <div class="field"><label>${f.label}${f.required?' *':''}</label>
+              <select data-map="${f.key}">
+                <option value="">— ignorar —</option>
+                ${header.map((h,i)=>`<option value="${i}" ${mapping[f.key]===i?'selected':''}>${escHtml(h)}</option>`).join('')}
+              </select>
+            </div>`).join('')}
+        </div>
+        <h4 style="margin:16px 0 8px;color:#475569;font-size:12px;letter-spacing:.04em;text-transform:uppercase">Preview (${data.length} linhas)</h4>
+        <div style="max-height:240px;overflow:auto;border:1px solid var(--border);border-radius:10px">
+          <table class="tbl" id="csvPreview"></table>
+        </div>
+      `;
+      $('#csvStep').innerHTML = mappingHtml;
+      const refresh = () => {
+        const map = {};
+        $$('#csvStep [data-map]').forEach(s => map[s.dataset.map] = s.value === '' ? -1 : +s.value);
+        // valida obrigatórios
+        const missing = cfg.fields.filter(f => f.required && map[f.key] < 0);
+        $('#csvApplyBtn').disabled = missing.length > 0;
+        const head = `<thead><tr>${cfg.fields.map(f => `<th>${f.label}</th>`).join('')}</tr></thead>`;
+        const body = `<tbody>${data.slice(0, 10).map(row => `<tr>${cfg.fields.map(f => {
+          const v = map[f.key] >= 0 ? normalizeCell(row[map[f.key]], f) : '';
+          return `<td>${escHtml(v)}</td>`;
+        }).join('')}</tr>`).join('')}</tbody>`;
+        $('#csvPreview').innerHTML = head + body;
+        parsedRows = data.map(row => {
+          const obj = {};
+          cfg.fields.forEach(f => { if(map[f.key] >= 0) obj[f.key] = normalizeCell(row[map[f.key]], f); });
+          return obj;
+        }).filter(r => cfg.fields.every(f => !f.required || (r[f.key] !== '' && r[f.key] != null)));
+      };
+      $$('#csvStep [data-map]').forEach(s => s.addEventListener('change', refresh));
+      refresh();
+    };
+    r.readAsText(f, 'utf-8');
+  });
+  $('#csvApplyBtn').addEventListener('click', () => {
+    if(!parsedRows || !parsedRows.length){ toast('Nenhuma linha válida', false); return; }
+    const msg = cfg.apply(parsedRows);
+    persist(); renderAll(); closeModal();
+    toast(msg);
+  });
+}
 
 loadDb();
 </script>
