@@ -165,6 +165,73 @@
 
   .help{font-size:12px;color:var(--muted);margin-top:6px}
   .row-actions{display:flex;gap:6px}
+
+  /* ---------- Dark mode ---------- */
+  [data-theme="dark"]{
+    --bg:#0b1220;--card:#0f172a;--border:#1e293b;--border-strong:#334155;
+    --text:#e2e8f0;--muted:#94a3b8;--muted-2:#64748b;
+    --brand:#3b82f6;--brand-50:#1e293b;--brand-100:#1e3a8a;
+    --grid:#1e293b;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 1px 3px rgba(0,0,0,.5);
+    --shadow-lg:0 8px 24px rgba(0,0,0,.5), 0 2px 6px rgba(0,0,0,.4);
+  }
+  [data-theme="dark"] body{background:var(--bg);color:var(--text)}
+  [data-theme="dark"] .brand-text h1{color:#f1f5f9}
+  [data-theme="dark"] .btn{background:#1e293b;color:#e2e8f0;border-color:#334155}
+  [data-theme="dark"] .btn:hover{background:#334155}
+  [data-theme="dark"] .btn.ghost{background:transparent;color:#cbd5e1}
+  [data-theme="dark"] .btn.ghost:hover{background:#1e293b}
+  [data-theme="dark"] .btn.danger{background:transparent;color:#fca5a5;border-color:#7f1d1d}
+  [data-theme="dark"] .pill{background:#1e293b;color:#cbd5e1;border-color:#334155}
+  [data-theme="dark"] .tab{color:#94a3b8}
+  [data-theme="dark"] .tab:hover{color:#f1f5f9}
+  [data-theme="dark"] .tab.active{color:#60a5fa;border-bottom-color:#60a5fa}
+  [data-theme="dark"] .card-title{color:#f1f5f9}
+  [data-theme="dark"] table.tbl thead th{background:#1e293b;color:#cbd5e1;border-bottom-color:#334155}
+  [data-theme="dark"] table.tbl th,[data-theme="dark"] table.tbl td{border-bottom-color:#1e293b}
+  [data-theme="dark"] table.tbl tbody tr:hover{background:#1e293b}
+  [data-theme="dark"] .kpi{background:#0f172a;border-color:#1e293b}
+  [data-theme="dark"] .kpi .v{color:#f1f5f9}
+  [data-theme="dark"] .field input,[data-theme="dark"] .field select,[data-theme="dark"] .field textarea{background:#0b1220;color:#e2e8f0;border-color:#334155}
+  [data-theme="dark"] .modal{background:#0f172a;color:#e2e8f0}
+  [data-theme="dark"] .modal-h h3{color:#f1f5f9}
+  [data-theme="dark"] .modal-h,[data-theme="dark"] .modal-f{border-color:#1e293b}
+  [data-theme="dark"] .modal-f{background:#0b1220}
+  [data-theme="dark"] .modal-h .close:hover{background:#1e293b;color:#f1f5f9}
+  [data-theme="dark"] .combo-canvas{background:#0b1220;border-color:#334155}
+  [data-theme="dark"] .barge{background:#1e3a8a;border-color:#1e40af;color:#dbeafe}
+  [data-theme="dark"] .barge.occupied{background:#78350f;border-color:#92400e;color:#fef3c7}
+  [data-theme="dark"] .barge.maintenance{background:#334155;border-color:#475569;color:#64748b}
+  [data-theme="dark"] .barge.selected{background:#3b82f6;border-color:#60a5fa;color:#fff}
+  [data-theme="dark"] .mapa-wrap{border-color:#1e293b}
+  [data-theme="dark"] .mapa-wrap thead th{background:#1e293b}
+  [data-theme="dark"] .now-row{background:#1e3a8a !important}
+  [data-theme="dark"] .banner{background:#3f2702;border-color:#92400e;color:#fbbf24}
+  [data-theme="dark"] .banner.ok{background:#022c22;border-color:#065f46;color:#34d399}
+  [data-theme="dark"] .logo{background:linear-gradient(135deg,#1e3a8a,#1e40af);color:#bfdbfe}
+  [data-theme="dark"] .search{background:#0b1220;border-color:#334155}
+  [data-theme="dark"] .search input{color:#e2e8f0;background:transparent}
+  [data-theme="dark"] #geoMap{background:#0b1220 !important}
+  [data-theme="dark"] #geoMap svg{background:linear-gradient(135deg,#0b1220 0%,#0f172a 100%) !important}
+  [data-theme="dark"] .barge-vis{background:#1e3a8a;border-color:#1e40af;color:#dbeafe}
+  [data-theme="dark"] .barge-vis.raked{background:#064e3b;border-color:#065f46;color:#a7f3d0}
+  [data-theme="dark"] .tabs-mini{background:#1e293b}
+  [data-theme="dark"] .tabs-mini button{color:#94a3b8}
+  [data-theme="dark"] .tabs-mini button.active{background:#0f172a;color:#60a5fa}
+  [data-theme="dark"] .tag{background:#1e293b;color:#93c5fd;border-color:#334155}
+  [data-theme="dark"] .tag.ok{background:#064e3b;color:#86efac;border-color:#065f46}
+  [data-theme="dark"] .tag.warn{background:#3f2702;color:#fbbf24;border-color:#92400e}
+  [data-theme="dark"] .tag.bad{background:#450a0a;color:#fca5a5;border-color:#7f1d1d}
+  [data-theme="dark"] .tag.hfo{background:#451a03;color:#fdba74;border-color:#9a3412}
+  [data-theme="dark"] .tag.agua{background:#172554;color:#93c5fd;border-color:#1e40af}
+  [data-theme="dark"] .modal-f{background:#0b1220}
+  [data-theme="dark"] .avatar{filter:brightness(.85) saturate(1.2)}
+  [data-theme="dark"] svg text{fill:#94a3b8}
+  [data-theme="dark"] svg line[stroke="#eef0f4"]{stroke:#1e293b}
+  [data-theme="dark"] svg line[stroke="#cbd5e1"]{stroke:#475569}
+  [data-theme="dark"] svg line[stroke="#e2e8f0"]{stroke:#1e293b}
+  [data-theme="dark"] svg path[stroke="#0f172a"]{stroke:#e2e8f0}
+  [data-theme="dark"] svg circle[fill="#0f172a"]{fill:#e2e8f0}
 </style>
 </head>
 <body>
@@ -208,6 +275,10 @@
         <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
         Importar
       </button>
+      <button class="btn ghost" id="btnTheme" title="Alternar tema claro/escuro" style="padding:8px 10px">
+        <svg id="iconMoon" class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg id="iconSun" class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
       <input type="file" id="fileImporter" accept="application/json,.json" hidden />
     </div>
   </div>
@@ -231,6 +302,16 @@
 
   <!-- ============ PANEL: CADASTRO ============ -->
   <section class="panel active" data-panel="cadastro">
+
+    <div id="alertsCard" class="card" style="display:none;border-left:3px solid var(--warn)">
+      <div class="card-h">
+        <span class="card-title">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--warn)"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12" y2="17"/></svg>
+          Alertas <span class="tag warn" id="alertsCount" style="margin-left:4px">0</span>
+        </span>
+      </div>
+      <div class="card-b" id="alertsList" style="padding:0 20px 12px"></div>
+    </div>
 
     <div class="grid cols-4">
       <div class="kpi"><h4>Empurradores</h4><div class="v" data-kpi="empurradores">—</div><div class="s">ativos na frota</div></div>
@@ -863,6 +944,7 @@ function importDbFromFile(file){
    ============================================================ */
 function renderAll(){
   if(!STATE.db) return;
+  renderAlerts();
   renderCadastro();
   renderPremissas();
   renderConsumo();
@@ -871,6 +953,137 @@ function renderAll(){
   renderMapa();
   updateStoragePill();
 }
+
+/* ============================================================
+   ALERTS / VALIDAÇÕES
+   ============================================================ */
+function computeAlerts(){
+  const db = STATE.db; if(!db) return [];
+  const alerts = [];
+  const today = new Date(); today.setHours(0,0,0,0);
+  const bgs = db.cadastro?.barcacas || [];
+  const emps = db.cadastro?.empurradores || [];
+  const viagens = db.viagens || [];
+  const lancs = db.consumoDiario?.lancamentos || [];
+
+  viagens.forEach(v => {
+    if(v.status === 'Programada' && v.dataHora && new Date(v.dataHora) < today){
+      alerts.push({type:'warn', msg:`Viagem <strong>${escHtml(v.id)}</strong> estava prevista para ${fmtDate(v.dataHora.slice(0,10))} e ainda não foi iniciada.`, actionType:'view-viagem', id:v.id, action:'Abrir'});
+    }
+  });
+
+  const bgCount = {};
+  viagens.filter(v => v.status !== 'Finalizada').forEach(v => {
+    (v.barcacas||[]).forEach(bg => { bgCount[bg] = (bgCount[bg]||0) + 1; });
+  });
+  Object.entries(bgCount).filter(([_,c]) => c > 1).forEach(([bgId, c]) => {
+    const b = byId(bgs, bgId);
+    if(b) alerts.push({type:'bad', msg:`Barcaça <strong>${escHtml(b.nome)}</strong> está em ${c} viagens não-finalizadas simultâneas.`});
+  });
+
+  viagens.filter(v => v.status !== 'Finalizada').forEach(v => {
+    (v.barcacas||[]).forEach(bgId => {
+      const b = byId(bgs, bgId);
+      if(b?.manutencao) alerts.push({type:'bad', msg:`Barcaça <strong>${escHtml(b.nome)}</strong> marcada em manutenção mas alocada na viagem ${escHtml(v.id)}.`, actionType:'view-viagem', id:v.id, action:'Abrir'});
+    });
+  });
+
+  emps.forEach(e => {
+    const last = lancs.filter(l => l.empurradorId === e.id).sort((a,b) => b.data.localeCompare(a.data))[0];
+    if(!last) return;
+    const capMgo = (e.combustiveis||[]).find(f => f.tipo === 'MGO')?.capacidadeBunker || 0;
+    if(capMgo && last.estoqueDiesel/capMgo < 0.15){
+      const pct = Math.round(last.estoqueDiesel*100/capMgo);
+      alerts.push({type:'warn', msg:`<strong>${escHtml(e.nome)}</strong> com estoque MGO em ${pct}% (último lançamento ${fmtDate(last.data)}).`});
+    }
+  });
+
+  return alerts;
+}
+
+function renderAlerts(){
+  const el = $('#alertsCard'); if(!el) return;
+  const alerts = computeAlerts();
+  if(!alerts.length){ el.style.display = 'none'; return; }
+  el.style.display = '';
+  $('#alertsCount').textContent = alerts.length;
+  $('#alertsList').innerHTML = alerts.map(a => `
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)">
+      <span class="tag ${a.type==='bad'?'bad':'warn'}">${a.type==='bad'?'crítico':'aviso'}</span>
+      <span style="flex:1;font-size:13px">${a.msg}</span>
+      ${a.action ? `<button class="btn ghost" data-action="${a.actionType}" data-id="${escHtml(a.id)}">${a.action}</button>` : ''}
+    </div>
+  `).join('');
+}
+
+/* ============================================================
+   EMPURRADOR · DETALHES
+   ============================================================ */
+function openEmpurradorDetalhesModal(emp){
+  const db = STATE.db;
+  const viagens = (db.viagens || []).filter(v => v.empurradorId === emp.id);
+  const lancs = (db.consumoDiario?.lancamentos || []).filter(l => l.empurradorId === emp.id);
+  const lastLanc = lancs.slice().sort((a,b) => b.data.localeCompare(a.data))[0];
+  const capMgo = (emp.combustiveis||[]).find(f=>f.tipo==='MGO')?.capacidadeBunker || 0;
+  const capHfo = (emp.combustiveis||[]).find(f=>f.tipo==='HFO')?.capacidadeBunker || 0;
+  const pctMgo = lastLanc && capMgo ? Math.round(lastLanc.estoqueDiesel*100/capMgo) : null;
+  const pctHfo = lastLanc && capHfo ? Math.round(lastLanc.estoqueHfo*100/capHfo) : null;
+  const today = new Date(); today.setHours(0,0,0,0);
+  const cut30 = new Date(today); cut30.setDate(today.getDate()-30);
+  const recent = lancs.filter(l => new Date(l.data+'T00:00:00') >= cut30);
+  const tot30Mgo = recent.reduce((s,l)=>s+(l.mgoL||0),0);
+  const tot30Hfo = recent.reduce((s,l)=>s+(l.hfoL||0),0);
+  const tot30Agua = recent.reduce((s,l)=>s+(l.aguaL||0),0);
+  const ativas = viagens.filter(v => v.status !== 'Finalizada');
+  const fin = viagens.filter(v => v.status === 'Finalizada');
+  const rotas = db.cadastro?.rotas || [];
+  const tipos = db.premissas?.tiposViagem || [];
+
+  openModal({
+    title: emp.nome + ' · Detalhes',
+    large: true,
+    body: `
+      <div style="display:flex;gap:14px;align-items:center;margin-bottom:18px">
+        <div style="width:56px;height:56px;border-radius:14px;background:${emp.cor};display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:20px">${initials(emp.nome)}</div>
+        <div style="flex:1">
+          <div style="font-size:18px;font-weight:700">${escHtml(emp.nome)}</div>
+          <div style="color:var(--muted);font-size:13px">${fmtBR.format(emp.potenciaHp||0)} hp · Comboio máx. ${emp.comboioMax||'—'} barcaças · Cor ${escHtml(emp.cor)}</div>
+        </div>
+      </div>
+      <div class="grid cols-4">
+        <div class="kpi"><h4>Viagens</h4><div class="v">${viagens.length}</div><div class="s">${ativas.length} em aberto · ${fin.length} finalizadas</div></div>
+        <div class="kpi"><h4>Consumo 30 dias</h4><div class="v" style="font-size:18px">${fmtBR.format(tot30Mgo)} L</div><div class="s">MGO${tot30Hfo?' · '+fmtBR.format(tot30Hfo)+' HFO':''}${tot30Agua?' · '+fmtBR.format(tot30Agua)+' Água':''}</div></div>
+        <div class="kpi"><h4>Estoque MGO</h4><div class="v" style="font-size:18px">${lastLanc ? fmtBR.format(lastLanc.estoqueDiesel||0)+' L' : '—'}</div><div class="s">${pctMgo!=null ? pctMgo+'% do tanque' : '—'}${pctHfo!=null ? ' · HFO '+pctHfo+'%' : ''}</div></div>
+        <div class="kpi"><h4>Última posição</h4><div class="v" style="font-size:14px">${lastLanc?.lat!=null ? lastLanc.lat.toFixed(3)+', '+lastLanc.lng.toFixed(3) : '—'}</div><div class="s">${lastLanc ? fmtDate(lastLanc.data) : 'sem lançamento'}</div></div>
+      </div>
+      <h4 style="margin:18px 0 8px;color:var(--muted);font-size:12px;letter-spacing:.04em;text-transform:uppercase">Histórico de viagens (${viagens.length})</h4>
+      <div style="max-height:280px;overflow:auto;border:1px solid var(--border);border-radius:10px">
+        <table class="tbl">
+          <thead><tr><th>ID</th><th>Rota</th><th>Saída</th><th>Tipo</th><th>Volume</th><th>Status</th></tr></thead>
+          <tbody>
+            ${viagens.slice(0,30).map(v => {
+              const r = byId(rotas, v.rotaId)?.nome || '—';
+              const t = byId(tipos, v.tipoViagem)?.nome || '—';
+              return `<tr><td><strong>${escHtml(v.id)}</strong></td><td>${escHtml(r)}</td><td>${fmtDateTime(v.dataHora)}</td><td><span class="tag">${escHtml(t)}</span></td><td>${v.volumeTotal?fmtBR.format(v.volumeTotal)+' t':'—'}</td><td><span class="tag ${v.status==='Finalizada'?'ok':v.status==='Em Andamento'?'warn':''}">${escHtml(v.status||'Programada')}</span></td></tr>`;
+            }).join('') || '<tr><td colspan="6" style="text-align:center;color:var(--muted-2);padding:18px">Sem viagens.</td></tr>'}
+          </tbody>
+        </table>
+      </div>
+    `,
+    footer: '<div class="right"><button class="btn primary" data-modal-action="cancel">Fechar</button></div>'
+  });
+}
+
+/* ============================================================
+   THEME
+   ============================================================ */
+function applyTheme(){
+  const dark = localStorage.getItem('fleetflow.theme') === 'dark';
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  const sun = $('#iconSun'), moon = $('#iconMoon');
+  if(sun && moon){ sun.style.display = dark ? '' : 'none'; moon.style.display = dark ? 'none' : ''; }
+}
+applyTheme();
 function updateStoragePill(){
   const map = { file:'arquivo db.json', import:'arquivo db.json (importado)', cache:'cache do navegador' };
   $('#storageLabel').textContent = map[STATE.source] || 'desconhecido';
@@ -911,6 +1124,7 @@ function renderCadastro(){
       <td>${cap}</td>
       <td>${e.comboioMax||'—'} barcaças</td>
       <td class="row-actions">
+        <button class="btn ghost" data-action="view-empurrador" data-id="${e.id}">Detalhes</button>
         <button class="btn ghost" data-action="edit-empurrador" data-id="${e.id}">Editar</button>
         <button class="btn ghost danger" data-action="del-empurrador" data-id="${e.id}">×</button>
       </td>
@@ -2387,6 +2601,7 @@ document.addEventListener('click', (e) => {
     case 'importar-db': $('#fileImporter').click(); break;
 
     case 'new-empurrador': openEmpurradorModal(); break;
+    case 'view-empurrador': openEmpurradorDetalhesModal(byId(db.cadastro.empurradores, id)); break;
     case 'edit-empurrador': openEmpurradorModal(byId(db.cadastro.empurradores, id)); break;
     case 'del-empurrador':
       if(confirm('Excluir empurrador?')){
@@ -2492,6 +2707,13 @@ $('#searchEmp').addEventListener('input', () => STATE.db && renderCadastro());
 
 $('#fileImporter').addEventListener('change', e => {
   const f = e.target.files[0]; if(f) importDbFromFile(f); e.target.value = '';
+});
+
+$('#btnTheme').addEventListener('click', () => {
+  const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+  localStorage.setItem('fleetflow.theme', dark ? 'light' : 'dark');
+  applyTheme();
+  if(STATE.db){ renderPrecos(); renderGeoMap(); renderHistChart(); }
 });
 
 window.addEventListener('resize', () => {
