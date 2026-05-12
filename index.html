@@ -2810,37 +2810,60 @@ const CSV_CONFIGS = {
       {key:'mgo',        label:'Consumo MGO (L)',  required:false, num:true},
       {key:'hfo',        label:'Consumo HFO (L)',  required:false, num:true},
     ],
+    dedupKey: r => `${(r.trecho||'').toLowerCase()}|${(r.empurrador||'').toLowerCase()}|${(r.condicao||'').toLowerCase()}|${(r.produto||'').toLowerCase()}`,
+    findExisting: (r, db) => {
+      const rota = db.cadastro.rotas.find(x => x.nome.toLowerCase() === (r.trecho||'').toLowerCase());
+      const emp = db.cadastro.empurradores.find(x => x.nome.toLowerCase() === (r.empurrador||'').toLowerCase());
+      if(!rota || !emp) return null;
+      return db.premissas.mediasConsumoTempo.find(m =>
+        m.rotaId === rota.id && m.empurradorId === emp.id &&
+        (m.condicao||'').toLowerCase() === (r.condicao||'').toLowerCase() &&
+        (m.produto||'').toLowerCase() === (r.produto||'').toLowerCase());
+    },
+    validate: (r, errors, warns) => {
+      const db = STATE.db;
+      if(!db.cadastro.rotas.some(x => x.nome.toLowerCase() === (r.trecho||'').toLowerCase()))
+        warns.push(`rota "${r.trecho}" será criada`);
+      if(!db.cadastro.empurradores.some(x => x.nome.toLowerCase() === (r.empurrador||'').toLowerCase()))
+        warns.push(`empurrador "${r.empurrador}" será criado`);
+    },
     apply: (rows) => {
       const db = STATE.db;
-      let created = 0;
+      let created = 0, updated = 0;
       rows.forEach(r => {
-        // auto-create rota se faltar
         let rota = db.cadastro.rotas.find(x => x.nome.toLowerCase() === (r.trecho||'').toLowerCase());
-        if(!rota){
-          rota = {id:uid('RT'), nome:r.trecho, origem:null, destino:null};
-          db.cadastro.rotas.push(rota);
-        }
-        // auto-create empurrador se faltar
+        if(!rota){ rota = {id:uid('RT'), nome:r.trecho, origem:null, destino:null}; db.cadastro.rotas.push(rota); }
         let emp = db.cadastro.empurradores.find(x => x.nome.toLowerCase() === (r.empurrador||'').toLowerCase());
         if(!emp){
           emp = {id:uid('EMP'), nome:r.empurrador, potenciaHp:0, cor:COR_PALETA[0],
-            combustiveis:[{tipo:'MGO',consumoForaViagem:0,capacidadeBunker:0},{tipo:'HFO',consumoForaViagem:0,capacidadeBunker:0}],
-            comboioMax:16};
+            combustiveis:[{tipo:'MGO',consumoForaViagem:0,capacidadeBunker:0},{tipo:'HFO',consumoForaViagem:0,capacidadeBunker:0}], comboioMax:16};
           db.cadastro.empurradores.push(emp);
         }
-        db.premissas.mediasConsumoTempo.push({
-          id: uid('MED'),
-          rotaId: rota.id, empurradorId: emp.id,
-          condicao: r.condicao || 'Carregada',
-          produto: r.produto || null,
-          tempoHoras: r.tempo || 0,
-          consumoMgoL: r.mgo || 0,
-          consumoHfoL: r.hfo || 0,
-          mediaAtualizada: r.mgo || 0
-        });
-        created++;
+        const existing = db.premissas.mediasConsumoTempo.find(m =>
+          m.rotaId === rota.id && m.empurradorId === emp.id &&
+          (m.condicao||'').toLowerCase() === (r.condicao||'').toLowerCase() &&
+          (m.produto||'').toLowerCase() === (r.produto||'').toLowerCase());
+        if(existing){
+          existing.tempoHoras = r.tempo || 0;
+          existing.consumoMgoL = r.mgo || 0;
+          existing.consumoHfoL = r.hfo || 0;
+          existing.mediaAtualizada = r.mgo || 0;
+          updated++;
+        } else {
+          db.premissas.mediasConsumoTempo.push({
+            id: uid('MED'),
+            rotaId: rota.id, empurradorId: emp.id,
+            condicao: r.condicao || 'Carregada',
+            produto: r.produto || null,
+            tempoHoras: r.tempo || 0,
+            consumoMgoL: r.mgo || 0,
+            consumoHfoL: r.hfo || 0,
+            mediaAtualizada: r.mgo || 0
+          });
+          created++;
+        }
       });
-      return `${created} médias importadas`;
+      return `${created} criadas · ${updated} atualizadas`;
     }
   },
   consumo: {
@@ -2857,6 +2880,17 @@ const CSV_CONFIGS = {
       {key:'lat',      label:'Latitude',        required:false, num:true},
       {key:'lng',      label:'Longitude',       required:false, num:true},
     ],
+    dedupKey: r => `${r.data}|${(r.emp||'').toLowerCase()}`,
+    findExisting: (r, db) => {
+      const emp = db.cadastro.empurradores.find(x => x.nome.toLowerCase() === (r.emp||'').toLowerCase());
+      if(!emp) return null;
+      return db.consumoDiario.lancamentos.find(l => l.empurradorId === emp.id && l.data === r.data);
+    },
+    validate: (r, errors, warns) => {
+      const db = STATE.db;
+      if(!db.cadastro.empurradores.some(x => x.nome.toLowerCase() === (r.emp||'').toLowerCase()))
+        warns.push(`empurrador "${r.emp}" será criado`);
+    },
     apply: (rows) => {
       const db = STATE.db;
       let added = 0, updated = 0;
@@ -2889,13 +2923,22 @@ const CSV_CONFIGS = {
       {key:'tipo',  label:'Tipo de Combustível',  required:true},
       {key:'preco', label:'Preço (R$/L)',         required:true, num:true},
     ],
+    dedupKey: r => `${r.data}|${(r.tipo||'').toUpperCase()}`,
+    findExisting: (r, db) => db.precos.registros.find(p => p.data === r.data && p.tipo === (r.tipo||'').toUpperCase()),
+    validate: (r, errors, warns) => {
+      const t = (r.tipo||'').toUpperCase();
+      if(!['MGO','HFO'].includes(t)) errors.push(`tipo de combustível "${r.tipo}" desconhecido (esperado MGO ou HFO)`);
+      if(r.preco != null && r.preco <= 0) errors.push(`preço deve ser maior que zero`);
+    },
     apply: (rows) => {
-      let added = 0;
+      let created = 0, updated = 0;
       rows.forEach(r => {
-        STATE.db.precos.registros.push({data:r.data, tipo:(r.tipo||'').toUpperCase(), preco:r.preco||0});
-        added++;
+        const tipo = (r.tipo||'').toUpperCase();
+        const existing = STATE.db.precos.registros.find(p => p.data === r.data && p.tipo === tipo);
+        if(existing){ existing.preco = r.preco || 0; updated++; }
+        else { STATE.db.precos.registros.push({data:r.data, tipo, preco:r.preco||0}); created++; }
       });
-      return `${added} preços importados`;
+      return `${created} criados · ${updated} atualizados`;
     }
   }
 };
@@ -2909,10 +2952,27 @@ CSV_CONFIGS.abastecimentos = {
     {key:'tipo',       label:'Combustível', required:true},
     {key:'litros',     label:'Litros',      required:true, num:true},
   ],
+  dedupKey: r => `${(r.empurrador||'').toLowerCase()}|${r.data}|${(r.cidade||'').toLowerCase()}|${(r.tipo||'').toUpperCase()}`,
+  findExisting: (r, db) => {
+    const emp = db.cadastro.empurradores.find(x => x.nome.toLowerCase() === (r.empurrador||'').toLowerCase());
+    const cid = db.cadastro.cidades.find(x => x.nome.toLowerCase() === (r.cidade||'').toLowerCase());
+    if(!emp || !cid) return null;
+    return (db.abastecimentos||[]).find(a => a.empurradorId === emp.id && a.data === r.data && a.cidadeId === cid.id && a.tipo === (r.tipo||'').toUpperCase());
+  },
+  validate: (r, errors, warns) => {
+    const db = STATE.db;
+    const t = (r.tipo||'').toUpperCase();
+    if(!['MGO','HFO'].includes(t)) errors.push(`combustível "${r.tipo}" desconhecido`);
+    if(r.litros != null && r.litros <= 0) errors.push(`litros deve ser maior que zero`);
+    if(!db.cadastro.empurradores.some(x => x.nome.toLowerCase() === (r.empurrador||'').toLowerCase()))
+      warns.push(`empurrador "${r.empurrador}" será criado`);
+    if(!db.cadastro.cidades.some(x => x.nome.toLowerCase() === (r.cidade||'').toLowerCase()))
+      warns.push(`cidade "${r.cidade}" será criada`);
+  },
   apply: (rows) => {
     const db = STATE.db;
     db.abastecimentos = db.abastecimentos || [];
-    let n = 0;
+    let created = 0, updated = 0;
     rows.forEach(r => {
       let emp = db.cadastro.empurradores.find(x => x.nome.toLowerCase() === (r.empurrador||'').toLowerCase());
       if(!emp){
@@ -2924,10 +2984,11 @@ CSV_CONFIGS.abastecimentos = {
       if(!cid){ cid = {id:uid('CID'), nome:r.cidade, lat:null, lng:null}; db.cadastro.cidades.push(cid); }
       const tipo = (r.tipo||'').toUpperCase();
       const preco = ultimoPreco(db, tipo);
-      db.abastecimentos.push({id:uid('AB'), empurradorId:emp.id, data:r.data, cidadeId:cid.id, tipo, litros:r.litros||0, valorEstimado:preco*(r.litros||0)});
-      n++;
+      const existing = db.abastecimentos.find(a => a.empurradorId === emp.id && a.data === r.data && a.cidadeId === cid.id && a.tipo === tipo);
+      if(existing){ existing.litros = r.litros||0; existing.valorEstimado = preco*(r.litros||0); updated++; }
+      else { db.abastecimentos.push({id:uid('AB'), empurradorId:emp.id, data:r.data, cidadeId:cid.id, tipo, litros:r.litros||0, valorEstimado:preco*(r.litros||0)}); created++; }
     });
-    return `${n} abastecimentos importados`;
+    return `${created} criados · ${updated} atualizados`;
   }
 };
 
@@ -3015,6 +3076,40 @@ function normalizeCell(value, def){
   return s;
 }
 
+function classifyCsvRows(built, cfg, db){
+  const seen = new Set();
+  return built.map(r => {
+    const errors = [], warns = [];
+    cfg.fields.forEach(f => {
+      const rv = r.raw[f.key];
+      const pv = r.parsed[f.key];
+      const empty = rv === '' || rv == null;
+      if(f.required && empty) errors.push(`${f.label}: vazio`);
+      else if(f.num && !empty){
+        const cleaned = rv.toString().replace(/[R$\s]/g,'').replace(/\./g,'').replace(',', '.');
+        if(isNaN(parseFloat(cleaned))) errors.push(`${f.label}: número inválido (${rv})`);
+      } else if(f.date && !empty && (!pv || !/^\d{4}-\d{2}-\d{2}/.test(pv))){
+        errors.push(`${f.label}: data inválida (${rv})`);
+      }
+    });
+    if(cfg.validate && !errors.length){
+      try{ cfg.validate(r.parsed, errors, warns); }catch(_){}
+    }
+    let status;
+    if(errors.length) status = 'error';
+    else {
+      const key = cfg.dedupKey ? cfg.dedupKey(r.parsed) : null;
+      if(key && seen.has(key)) status = 'dup';
+      else {
+        if(key) seen.add(key);
+        const ex = cfg.findExisting ? cfg.findExisting(r.parsed, db) : null;
+        status = ex ? 'update' : 'new';
+      }
+    }
+    return {...r, status, errors, warns};
+  });
+}
+
 function openCsvImport(moduleKey){
   const cfg = CSV_CONFIGS[moduleKey];
   if(!cfg) return;
@@ -3029,14 +3124,14 @@ function openCsvImport(moduleKey){
       <div id="csvStep"></div>
     `,
     footer: `
-      <div class="help">Colunas esperadas: ${cfg.fields.map(f=>f.label+(f.required?' *':'')).join(', ')}</div>
+      <div class="help" style="flex:1;min-width:0">Esperado: ${cfg.fields.map(f=>f.label+(f.required?' *':'')).join(', ')}</div>
       <div class="right">
         <button class="btn" data-modal-action="cancel">Cancelar</button>
         <button class="btn primary" id="csvApplyBtn" disabled>Importar</button>
       </div>`,
-    onSubmit: () => false // tratamos via botão custom
+    onSubmit: () => false
   });
-  let parsedRows = null;
+  let classified = null;
   $('#csvFile').addEventListener('change', e => {
     const f = e.target.files[0]; if(!f) return;
     const r = new FileReader();
@@ -3045,14 +3140,13 @@ function openCsvImport(moduleKey){
       if(rows.length < 2){ $('#csvStep').innerHTML = '<div class="banner">CSV vazio ou sem dados.</div>'; return; }
       const header = rows[0].map(h => (h||'').trim());
       const data = rows.slice(1);
-      // mapeamento automático
       const mapping = {};
       cfg.fields.forEach(f => {
         const idx = header.findIndex(h => h.toLowerCase() === f.label.toLowerCase());
         mapping[f.key] = idx >= 0 ? idx : '';
       });
-      const mappingHtml = `
-        <h4 style="margin:6px 0 8px;color:#475569;font-size:12px;letter-spacing:.04em;text-transform:uppercase">Mapeamento de colunas</h4>
+      $('#csvStep').innerHTML = `
+        <h4 style="margin:6px 0 8px;color:var(--muted);font-size:12px;letter-spacing:.04em;text-transform:uppercase">Mapeamento de colunas (${data.length} linhas no CSV)</h4>
         <div class="grid cols-2">
           ${cfg.fields.map(f => `
             <div class="field"><label>${f.label}${f.required?' *':''}</label>
@@ -3062,29 +3156,63 @@ function openCsvImport(moduleKey){
               </select>
             </div>`).join('')}
         </div>
-        <h4 style="margin:16px 0 8px;color:#475569;font-size:12px;letter-spacing:.04em;text-transform:uppercase">Preview (${data.length} linhas)</h4>
-        <div style="max-height:240px;overflow:auto;border:1px solid var(--border);border-radius:10px">
+        <div id="csvSummary"></div>
+        <h4 style="margin:16px 0 8px;color:var(--muted);font-size:12px;letter-spacing:.04em;text-transform:uppercase">Preview & validação</h4>
+        <div style="max-height:340px;overflow:auto;border:1px solid var(--border);border-radius:10px">
           <table class="tbl" id="csvPreview"></table>
         </div>
       `;
-      $('#csvStep').innerHTML = mappingHtml;
       const refresh = () => {
         const map = {};
         $$('#csvStep [data-map]').forEach(s => map[s.dataset.map] = s.value === '' ? -1 : +s.value);
-        // valida obrigatórios
         const missing = cfg.fields.filter(f => f.required && map[f.key] < 0);
-        $('#csvApplyBtn').disabled = missing.length > 0;
-        const head = `<thead><tr>${cfg.fields.map(f => `<th>${f.label}</th>`).join('')}</tr></thead>`;
-        const body = `<tbody>${data.slice(0, 10).map(row => `<tr>${cfg.fields.map(f => {
-          const v = map[f.key] >= 0 ? normalizeCell(row[map[f.key]], f) : '';
-          return `<td>${escHtml(v)}</td>`;
-        }).join('')}</tr>`).join('')}</tbody>`;
+        if(missing.length){
+          $('#csvSummary').innerHTML = `<div class="banner" style="margin-top:10px">Mapeie as colunas obrigatórias: ${missing.map(f=>f.label).join(', ')}</div>`;
+          $('#csvPreview').innerHTML = '';
+          $('#csvApplyBtn').disabled = true;
+          $('#csvApplyBtn').textContent = 'Importar';
+          classified = null;
+          return;
+        }
+        const built = data.map(row => {
+          const raw = {}, parsed = {};
+          cfg.fields.forEach(f => {
+            raw[f.key] = map[f.key] >= 0 ? (row[map[f.key]] || '').toString().trim() : '';
+            parsed[f.key] = map[f.key] >= 0 ? normalizeCell(row[map[f.key]], f) : (f.num ? 0 : (f.date ? null : ''));
+          });
+          return {raw, parsed};
+        });
+        classified = classifyCsvRows(built, cfg, STATE.db);
+        const counts = {new:0, update:0, dup:0, error:0};
+        classified.forEach(c => counts[c.status]++);
+        const importable = counts.new + counts.update;
+        $('#csvSummary').innerHTML = `
+          <div style="display:flex;gap:6px;margin:12px 0 6px;flex-wrap:wrap">
+            <span class="tag ok">Novos: ${counts.new}</span>
+            <span class="tag">Atualizar: ${counts.update}</span>
+            <span class="tag warn">Duplicados: ${counts.dup}</span>
+            <span class="tag bad">Erros: ${counts.error}</span>
+            <span style="color:var(--muted);font-size:12px;margin-left:auto;align-self:center">${importable} de ${classified.length} importáveis</span>
+          </div>`;
+        const statusBadge = {
+          'new':    '<span class="tag ok" style="font-size:11px">novo</span>',
+          'update': '<span class="tag" style="font-size:11px">atualizar</span>',
+          'dup':    '<span class="tag warn" style="font-size:11px">duplicado</span>',
+          'error':  '<span class="tag bad" style="font-size:11px">erro</span>'
+        };
+        const head = `<thead><tr><th style="width:96px">Status</th>${cfg.fields.map(f => `<th>${f.label}</th>`).join('')}<th>Observações</th></tr></thead>`;
+        const limit = 30;
+        const body = `<tbody>${classified.slice(0, limit).map(c => {
+          const bg = c.status === 'error' ? 'background:rgba(239,68,68,.06)' :
+                     c.status === 'dup'   ? 'background:rgba(245,158,11,.06)' :
+                     c.status === 'update'? 'background:rgba(37,99,235,.04)' : '';
+          const obs = c.errors.length ? `<span style="color:var(--bad)">${escHtml(c.errors.join('; '))}</span>` :
+                      c.warns.length  ? `<span style="color:var(--warn)">${escHtml(c.warns.join('; '))}</span>` : '—';
+          return `<tr style="${bg}"><td>${statusBadge[c.status]}</td>${cfg.fields.map(f => `<td>${escHtml(c.parsed[f.key]??'')}</td>`).join('')}<td style="font-size:11px">${obs}</td></tr>`;
+        }).join('')}${classified.length>limit?`<tr><td colspan="${cfg.fields.length+2}" style="text-align:center;color:var(--muted);padding:8px;font-size:11px">… e mais ${classified.length-limit} linhas (mesma classificação aplicada)</td></tr>`:''}</tbody>`;
         $('#csvPreview').innerHTML = head + body;
-        parsedRows = data.map(row => {
-          const obj = {};
-          cfg.fields.forEach(f => { if(map[f.key] >= 0) obj[f.key] = normalizeCell(row[map[f.key]], f); });
-          return obj;
-        }).filter(r => cfg.fields.every(f => !f.required || (r[f.key] !== '' && r[f.key] != null)));
+        $('#csvApplyBtn').disabled = importable === 0;
+        $('#csvApplyBtn').textContent = importable === 0 ? 'Nada para importar' : `Importar ${importable} linha${importable>1?'s':''}`;
       };
       $$('#csvStep [data-map]').forEach(s => s.addEventListener('change', refresh));
       refresh();
@@ -3092,10 +3220,13 @@ function openCsvImport(moduleKey){
     r.readAsText(f, 'utf-8');
   });
   $('#csvApplyBtn').addEventListener('click', () => {
-    if(!parsedRows || !parsedRows.length){ toast('Nenhuma linha válida', false); return; }
-    const msg = cfg.apply(parsedRows);
+    if(!classified || !classified.length){ toast('Nada para importar', false); return; }
+    const importable = classified.filter(c => c.status === 'new' || c.status === 'update');
+    if(!importable.length){ toast('Nenhuma linha válida', false); return; }
+    const skipped = classified.length - importable.length;
+    const msg = cfg.apply(importable.map(c => c.parsed));
     persist(); renderAll(); closeModal();
-    toast(msg);
+    toast(msg + (skipped ? ` · ${skipped} ignorada${skipped>1?'s':''}` : ''));
   });
 }
 
