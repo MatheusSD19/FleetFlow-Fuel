@@ -1,0 +1,97 @@
+{
+  "meta": {
+    "app": "FleetFlow",
+    "version": "0.1.0",
+    "storage": "local",
+    "updatedAt": "2026-05-12T00:00:00Z"
+  },
+  "cadastro": {
+    "empurradores": [
+      {
+        "id": "EMP-001",
+        "nome": "EM Exemplo I",
+        "potenciaHp": 1800,
+        "cor": "#1d4ed8",
+        "combustiveis": [
+          { "tipo": "MGO", "consumoForaViagem": 120, "capacidadeBunker": 80000 },
+          { "tipo": "HFO", "consumoForaViagem": 0, "capacidadeBunker": 0 }
+        ],
+        "comboioMax": 16
+      },
+      {
+        "id": "EMP-002",
+        "nome": "EM Exemplo II",
+        "potenciaHp": 2400,
+        "cor": "#059669",
+        "combustiveis": [
+          { "tipo": "MGO", "consumoForaViagem": 90, "capacidadeBunker": 60000 },
+          { "tipo": "HFO", "consumoForaViagem": 60, "capacidadeBunker": 200000 }
+        ],
+        "comboioMax": 20
+      }
+    ],
+    "barcacas": [
+      { "id": "BG-001", "nome": "BG 1", "tipo": "Raked", "caladoMin": 1.8, "volumeMin": 800, "caladoMax": 3.6, "volumeMax": 2400, "manutencao": false },
+      { "id": "BG-002", "nome": "BG 2", "tipo": "Box",   "caladoMin": 1.8, "volumeMin": 900, "caladoMax": 3.6, "volumeMax": 2600, "manutencao": false },
+      { "id": "BG-003", "nome": "BG 3", "tipo": "Box",   "caladoMin": 1.8, "volumeMin": 900, "caladoMax": 3.6, "volumeMax": 2600, "manutencao": true }
+    ],
+    "tripulacao": [
+      { "id": "TRIP-001", "nome": "João Silva", "nascimento": "1985-03-12", "matricula": "0001", "funcao": "Comandante", "foto": "img/tripulacao/joao.jpg" },
+      { "id": "TRIP-002", "nome": "Maria Souza", "nascimento": "1990-07-21", "matricula": "0002", "funcao": "Piloto Fluvial", "foto": "img/tripulacao/maria.jpg" }
+    ],
+    "cidades": [
+      { "id": "CID-001", "nome": "Santarém", "lat": -2.4431, "lng": -54.7083 },
+      { "id": "CID-002", "nome": "Itaituba", "lat": -4.2722, "lng": -55.9836 },
+      { "id": "CID-003", "nome": "Barcarena", "lat": -1.5061, "lng": -48.6256 }
+    ],
+    "rotas": [
+      { "id": "RT-001", "nome": "Itaituba → Barcarena", "origem": "CID-002", "destino": "CID-003" },
+      { "id": "RT-002", "nome": "Santarém → Barcarena", "origem": "CID-001", "destino": "CID-003" }
+    ]
+  },
+  "premissas": {
+    "mediasConsumoTempo": [
+      { "id": "MED-001", "rotaId": "RT-001", "empurradorId": "EMP-001", "condicao": "Carregada", "produto": "Soja", "tempoHoras": 72, "consumoMgoL": 24000, "consumoHfoL": 0, "mediaAtualizada": 23850 }
+    ],
+    "tiposViagem": [
+      { "id": "TV-001", "nome": "Econômica",   "deltaConsumo": -0.10, "deltaTempo":  0.15 },
+      { "id": "TV-002", "nome": "Convencional","deltaConsumo":  0.00, "deltaTempo":  0.00 },
+      { "id": "TV-003", "nome": "Urgência",    "deltaConsumo":  0.10, "deltaTempo": -0.15 }
+    ]
+  },
+  "consumoDiario": {
+    "lancamentos": [
+      { "id": "CD-0001", "data": "2026-05-11", "empurradorId": "EMP-001", "mgoL": 5800, "hfoL": 0, "aguaL": 1200, "estoqueDiesel": 42000, "estoqueHfo": 0, "estoqueAgua": 11000, "lat": -2.41, "lng": -54.72 }
+    ],
+    "transferencias": [
+      { "id": "TR-0001", "data": "2026-05-10", "origemId": "EMP-002", "destinoId": "EMP-001", "tipo": "MGO", "litros": 5000 }
+    ]
+  },
+  "viagens": [
+    {
+      "id": "EM-EXEMPLO-I_260507",
+      "rotaId": "RT-001",
+      "empurradorId": "EMP-001",
+      "dataHora": "2026-05-07T08:00:00",
+      "condicao": "Carregada",
+      "scortTug": null,
+      "tipoViagem": "Convencional",
+      "produto": "Soja",
+      "barcacas": ["BG-001","BG-002"],
+      "volumeTotal": 4800,
+      "caladoMedio": 3.2,
+      "status": "Programada"
+    }
+  ],
+  "abastecimentos": [
+    { "id": "AB-0001", "empurradorId": "EMP-001", "data": "2026-05-15", "cidadeId": "CID-003", "tipo": "MGO", "litros": 30000, "valorEstimado": 195000 }
+  ],
+  "precos": {
+    "registros": [
+      { "data": "2026-05-01", "tipo": "MGO", "preco": 6.45 },
+      { "data": "2026-05-08", "tipo": "MGO", "preco": 6.52 },
+      { "data": "2026-05-01", "tipo": "HFO", "preco": 4.10 },
+      { "data": "2026-05-08", "tipo": "HFO", "preco": 4.18 }
+    ]
+  }
+}
