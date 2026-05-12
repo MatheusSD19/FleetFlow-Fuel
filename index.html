@@ -403,6 +403,33 @@
       </div>
     </div>
 
+    <div class="card">
+      <div class="card-h">
+        <span class="card-title">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 17 9 11 13 15 21 7"/></svg>
+          Histórico de Consumo
+        </span>
+        <div class="legend">
+          <span class="item"><span class="dot" style="background:#2563eb"></span> MGO</span>
+          <span class="item"><span class="dot" style="background:#f59e0b"></span> HFO</span>
+          <span class="item"><span class="dot" style="background:#0ea5e9"></span> Água</span>
+        </div>
+        <div class="right" style="gap:8px">
+          <div class="field" style="flex-direction:row;align-items:center;gap:6px;margin:0">
+            <select id="histEmp" style="padding:6px 10px;border:1px solid var(--border-strong);border-radius:8px;font-size:13px"></select>
+            <select id="histDias" style="padding:6px 10px;border:1px solid var(--border-strong);border-radius:8px;font-size:13px">
+              <option value="30">30 dias</option>
+              <option value="60">60 dias</option>
+              <option value="90">90 dias</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="card-b">
+        <div class="chart-wrap" id="histChart"></div>
+      </div>
+    </div>
+
     <div class="grid cols-2">
       <div class="card">
         <div class="card-h">
@@ -605,6 +632,25 @@
 
   <!-- ============ PANEL: MAPA DE CONSUMO ============ -->
   <section class="panel" data-panel="mapa">
+    <div class="card">
+      <div class="card-h">
+        <span class="card-title">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Mapa Operacional
+        </span>
+        <div class="legend">
+          <span class="item"><span class="dot" style="background:#64748b"></span> Cidade</span>
+          <span class="item"><span class="dot" style="background:#94a3b8;height:2px;border-radius:2px;width:18px"></span> Rota</span>
+          <span class="item">Última posição dos empurradores (cor do cadastro)</span>
+        </div>
+      </div>
+      <div class="card-b">
+        <div id="geoMap" style="position:relative;width:100%;height:340px;background:#f8fafc;border:1px solid var(--border);border-radius:10px;overflow:hidden"></div>
+        <div id="geoTooltip" style="position:absolute;display:none;background:#0f172a;color:#fff;font-size:11px;padding:6px 8px;border-radius:6px;pointer-events:none;box-shadow:var(--shadow-lg);z-index:5"></div>
+        <div class="hint">Coordenadas extraídas das cidades cadastradas e do último lançamento diário de cada empurrador.</div>
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-h">
         <span class="card-title">
@@ -990,6 +1036,73 @@ function renderConsumo(){
       <td class="row-actions"><button class="btn ghost danger" data-action="del-transferencia" data-id="${t.id}">×</button></td>
     </tr>`;
   }).join('') || `<tr><td colspan="6" style="text-align:center;color:#94a3b8;padding:24px">Sem transferências.</td></tr>`;
+  renderHistChart();
+}
+
+function renderHistChart(){
+  const el = $('#histChart'); if(!el) return;
+  const db = STATE.db;
+  const emps = db.cadastro?.empurradores || [];
+  const sel = $('#histEmp');
+  const prevVal = sel.value;
+  sel.innerHTML = emps.map(e => `<option value="${e.id}">${escHtml(e.nome)}</option>`).join('') || '<option value="">— sem empurradores —</option>';
+  if(prevVal && emps.some(e => e.id === prevVal)) sel.value = prevVal;
+  if(!sel._wired){
+    sel.addEventListener('change', renderHistChart);
+    $('#histDias').addEventListener('change', renderHistChart);
+    sel._wired = true;
+  }
+  const empId = sel.value;
+  if(!empId){ el.innerHTML = '<div class="hint" style="padding:30px;text-align:center">Cadastre empurradores.</div>'; return; }
+  const dias = +$('#histDias').value || 30;
+  const today = new Date(); today.setHours(0,0,0,0);
+  const lancs = (db.consumoDiario?.lancamentos || []).filter(l => l.empurradorId === empId);
+  const lookup = Object.fromEntries(lancs.map(l => [l.data, l]));
+  const days = [];
+  for(let d = -dias+1; d <= 0; d++){
+    const dt = new Date(today); dt.setDate(today.getDate()+d);
+    const iso = dt.toISOString().slice(0,10);
+    const l = lookup[iso];
+    days.push({iso, mgo: l?.mgoL||0, hfo: l?.hfoL||0, agua: l?.aguaL||0});
+  }
+  const W = el.clientWidth || 600;
+  const H = el.clientHeight || 380;
+  const padL = 60, padR = 16, padT = 12, padB = 30;
+  const innerW = W - padL - padR;
+  const innerH = H - padT - padB;
+  const maxV = Math.max(1, ...days.map(d => Math.max(d.mgo, d.hfo, d.agua)));
+  const yMax = maxV * 1.12;
+  const xAt = i => padL + (days.length>1 ? (i/(days.length-1))*innerW : innerW/2);
+  const yAt = v => padT + innerH - (v/yMax)*innerH;
+  let g = `<svg viewBox="0 0 ${W} ${H}" width="100%" height="100%" preserveAspectRatio="none">`;
+  for(let s=0;s<=5;s++){
+    const v = yMax*(s/5), y = yAt(v);
+    g += `<line x1="${padL}" x2="${W-padR}" y1="${y}" y2="${y}" stroke="#eef0f4"/>`;
+    g += `<text x="${padL-8}" y="${y+3}" font-size="10" fill="#94a3b8" text-anchor="end">${fmtBR.format(Math.round(v))}</text>`;
+  }
+  const step = Math.max(1, Math.floor(days.length/8));
+  for(let i=0; i<days.length; i+=step){
+    const d = new Date(days[i].iso+'T00:00:00');
+    g += `<text x="${xAt(i)}" y="${H-10}" font-size="10" fill="#64748b" text-anchor="middle">${d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})}</text>`;
+  }
+  const series = (key, color) => {
+    let pts = days.map((dd,i) => dd[key]>0 ? [i, dd[key]] : null).filter(Boolean);
+    if(!pts.length) return;
+    let d = '';
+    pts.forEach((p,k) => d += (k?'L':'M')+xAt(p[0])+','+yAt(p[1]));
+    g += `<path d="${d}" fill="none" stroke="${color}" stroke-width="2.2"/>`;
+    pts.forEach(p => g += `<circle cx="${xAt(p[0])}" cy="${yAt(p[1])}" r="2.5" fill="${color}"/>`);
+  };
+  series('mgo','#2563eb');
+  series('hfo','#f59e0b');
+  series('agua','#0ea5e9');
+  g += `<line x1="${padL}" x2="${padL}" y1="${padT}" y2="${H-padB}" stroke="#cbd5e1"/>`;
+  g += `<line x1="${padL}" x2="${W-padR}" y1="${H-padB}" y2="${H-padB}" stroke="#cbd5e1"/>`;
+  const totalMgo = days.reduce((s,d)=>s+d.mgo,0);
+  const totalHfo = days.reduce((s,d)=>s+d.hfo,0);
+  g += `<text x="${W-padR}" y="${padT+12}" font-size="11" fill="#475569" text-anchor="end" font-weight="600">Total: ${fmtBR.format(totalMgo)} MGO · ${fmtBR.format(totalHfo)} HFO</text>`;
+  g += '</svg>';
+  el.innerHTML = g;
 }
 
 /* -------- Viagens -------- */
@@ -1417,6 +1530,74 @@ function renderMapa(){
   }
   $('#mapaBody').innerHTML = rows.join('');
   setTimeout(()=>{ const row = $('#mapaBody').querySelector('.now-row'); if(row) row.scrollIntoView({block:'center'}); }, 30);
+  renderGeoMap();
+}
+
+function renderGeoMap(){
+  const el = $('#geoMap'); if(!el) return;
+  const db = STATE.db;
+  const cidades = db.cadastro?.cidades || [];
+  const rotas = db.cadastro?.rotas || [];
+  const emps = db.cadastro?.empurradores || [];
+  const lancs = db.consumoDiario?.lancamentos || [];
+  const lastByEmp = {};
+  lancs.forEach(l => {
+    if(l.lat == null || l.lng == null) return;
+    if(!lastByEmp[l.empurradorId] || l.data > lastByEmp[l.empurradorId].data) lastByEmp[l.empurradorId] = l;
+  });
+  const points = [];
+  cidades.forEach(c => { if(c.lat!=null && c.lng!=null) points.push({lat:c.lat, lng:c.lng}); });
+  Object.values(lastByEmp).forEach(l => points.push({lat:l.lat, lng:l.lng}));
+  if(!points.length){
+    el.innerHTML = '<div class="hint" style="padding:36px;text-align:center">Sem coordenadas para plotar. Cadastre lat/lng nas cidades ou lance consumo com geolocalização.</div>';
+    return;
+  }
+  const minLat = Math.min(...points.map(p=>p.lat)), maxLat = Math.max(...points.map(p=>p.lat));
+  const minLng = Math.min(...points.map(p=>p.lng)), maxLng = Math.max(...points.map(p=>p.lng));
+  const dLat = Math.max(0.05, maxLat-minLat), dLng = Math.max(0.05, maxLng-minLng);
+  const pad = 0.12;
+  const bMinLat = minLat - dLat*pad, bMaxLat = maxLat + dLat*pad;
+  const bMinLng = minLng - dLng*pad, bMaxLng = maxLng + dLng*pad;
+  const W = el.clientWidth || 600;
+  const H = el.clientHeight || 340;
+  const xAt = lng => (lng - bMinLng) / (bMaxLng - bMinLng) * W;
+  const yAt = lat => (bMaxLat - lat) / (bMaxLat - bMinLat) * H;
+  let svg = `<svg viewBox="0 0 ${W} ${H}" width="100%" height="100%" preserveAspectRatio="none" style="display:block;background:linear-gradient(135deg,#f8fafc 0%,#eff6ff 100%)">`;
+  for(let i = 1; i < 4; i++){
+    const x = W*i/4, y = H*i/4;
+    svg += `<line x1="${x}" x2="${x}" y1="0" y2="${H}" stroke="#e2e8f0" stroke-dasharray="2 4"/>`;
+    svg += `<line x1="0" x2="${W}" y1="${y}" y2="${y}" stroke="#e2e8f0" stroke-dasharray="2 4"/>`;
+  }
+  rotas.forEach(r => {
+    const o = byId(cidades, r.origem), d = byId(cidades, r.destino);
+    if(!o || !d || o.lat==null || d.lat==null) return;
+    svg += `<line x1="${xAt(o.lng)}" y1="${yAt(o.lat)}" x2="${xAt(d.lng)}" y2="${yAt(d.lat)}" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="6 4"/>`;
+  });
+  cidades.forEach(c => {
+    if(c.lat==null || c.lng==null) return;
+    const x = xAt(c.lng), y = yAt(c.lat);
+    svg += `<circle cx="${x}" cy="${y}" r="5" fill="#64748b" stroke="#fff" stroke-width="2" data-tip="${escHtml(c.nome)} (${c.lat.toFixed(3)}, ${c.lng.toFixed(3)})" class="geo-pt" style="cursor:pointer"/>`;
+    svg += `<text x="${x+9}" y="${y+4}" font-size="11" fill="#334155" font-weight="500" pointer-events="none">${escHtml(c.nome)}</text>`;
+  });
+  Object.entries(lastByEmp).forEach(([empId, l]) => {
+    const e = byId(emps, empId); if(!e) return;
+    const x = xAt(l.lng), y = yAt(l.lat);
+    const cor = e.cor || '#2563eb';
+    svg += `<circle cx="${x}" cy="${y}" r="9" fill="${cor}" fill-opacity="0.25"/>`;
+    svg += `<circle cx="${x}" cy="${y}" r="6" fill="${cor}" stroke="#fff" stroke-width="2.5" data-tip="${escHtml(e.nome)} · ${fmtDate(l.data)} · estoque MGO ${fmtBR.format(l.estoqueDiesel||0)} L" class="geo-pt" style="cursor:pointer"/>`;
+  });
+  svg += '</svg>';
+  el.innerHTML = svg;
+  const tip = $('#geoTooltip');
+  el.querySelectorAll('.geo-pt').forEach(pt => {
+    pt.addEventListener('mouseenter', () => { tip.textContent = pt.dataset.tip; tip.style.display = 'block'; });
+    pt.addEventListener('mousemove', e => {
+      const rect = el.getBoundingClientRect();
+      tip.style.left = (e.clientX - rect.left + 10) + 'px';
+      tip.style.top  = (e.clientY - rect.top  - 30) + 'px';
+    });
+    pt.addEventListener('mouseleave', () => tip.style.display = 'none');
+  });
 }
 
 /* ============================================================
@@ -2313,7 +2494,58 @@ $('#fileImporter').addEventListener('change', e => {
   const f = e.target.files[0]; if(f) importDbFromFile(f); e.target.value = '';
 });
 
-window.addEventListener('resize', () => { if(STATE.db) renderPrecos(); });
+window.addEventListener('resize', () => {
+  if(STATE.db){ renderPrecos(); renderGeoMap(); renderHistChart(); }
+});
+
+/* ============================================================
+   KEYBOARD SHORTCUTS
+   ============================================================ */
+document.addEventListener('keydown', e => {
+  // ignora digitação em campos
+  const tag = document.activeElement?.tagName;
+  if(/^(INPUT|SELECT|TEXTAREA)$/.test(tag)) return;
+  if($('#modalBackdrop').classList.contains('open')) return;
+  const tabs = ['cadastro','premissas','consumo','viagens','precos','mapa'];
+  if(/^[1-6]$/.test(e.key)){
+    e.preventDefault();
+    document.querySelector(`.tab[data-tab="${tabs[+e.key-1]}"]`)?.click();
+  } else if(e.key === '?'){
+    e.preventDefault();
+    openShortcutsHelp();
+  } else if(e.key === '/'){
+    if(document.querySelector('.tab.active')?.dataset.tab === 'cadastro'){
+      e.preventDefault();
+      $('#searchEmp')?.focus();
+    }
+  } else if(e.key === 'n' && !e.ctrlKey && !e.metaKey){
+    const t = document.querySelector('.tab.active')?.dataset.tab;
+    e.preventDefault();
+    if(t === 'cadastro') openEmpurradorModal();
+    else if(t === 'consumo') openLancamentoModal();
+    else if(t === 'precos') openPrecoModal();
+    else if(t === 'premissas') openMediaModal();
+  }
+});
+
+function openShortcutsHelp(){
+  openModal({
+    title: 'Atalhos de teclado',
+    body: `
+      <table class="tbl">
+        <tbody>
+          <tr><td style="width:120px"><kbd>1</kbd> – <kbd>6</kbd></td><td>Mudar de aba</td></tr>
+          <tr><td><kbd>n</kbd></td><td>Novo registro na aba atual</td></tr>
+          <tr><td><kbd>/</kbd></td><td>Focar busca de empurrador (aba Cadastro)</td></tr>
+          <tr><td><kbd>Esc</kbd></td><td>Fechar modal</td></tr>
+          <tr><td><kbd>?</kbd></td><td>Mostrar esta ajuda</td></tr>
+        </tbody>
+      </table>
+      <style>kbd{display:inline-block;padding:2px 6px;background:#f1f5f9;border:1px solid var(--border-strong);border-radius:4px;font-family:ui-monospace,monospace;font-size:12px;color:#0f172a}</style>
+    `,
+    footer: '<div class="right"><button class="btn primary" data-modal-action="cancel">Fechar</button></div>'
+  });
+}
 
 /* ============================================================
    CSV IMPORT
