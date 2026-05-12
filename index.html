@@ -6,20 +6,10 @@
 <title>FleetFlow · Gestão Operacional de Frota Fluvial</title>
 <style>
   :root{
-    --bg:#f5f7fb;
-    --card:#ffffff;
-    --border:#e5e7eb;
-    --border-strong:#d1d5db;
-    --text:#0f172a;
-    --muted:#64748b;
-    --muted-2:#94a3b8;
-    --brand:#2563eb;
-    --brand-50:#eff6ff;
-    --brand-100:#dbeafe;
-    --ok:#10b981;
-    --warn:#f59e0b;
-    --bad:#ef4444;
-    --grid:#eef0f4;
+    --bg:#f5f7fb;--card:#ffffff;--border:#e5e7eb;--border-strong:#d1d5db;
+    --text:#0f172a;--muted:#64748b;--muted-2:#94a3b8;
+    --brand:#2563eb;--brand-50:#eff6ff;--brand-100:#dbeafe;
+    --ok:#10b981;--warn:#f59e0b;--bad:#ef4444;--grid:#eef0f4;
     --shadow:0 1px 2px rgba(15,23,42,.04), 0 1px 3px rgba(15,23,42,.06);
     --shadow-lg:0 8px 24px rgba(15,23,42,.06), 0 2px 6px rgba(15,23,42,.05);
     --radius:14px;
@@ -28,80 +18,40 @@
   html,body{margin:0;padding:0}
   body{
     font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background:var(--bg);
-    color:var(--text);
-    font-size:14px;
-    line-height:1.45;
+    background:var(--bg);color:var(--text);font-size:14px;line-height:1.45;
   }
   .container{max-width:1440px;margin:0 auto;padding:18px 24px 48px}
 
-  /* ---------- Header ---------- */
   .topbar{display:flex;align-items:center;gap:18px;padding:8px 4px 14px}
   .brand{display:flex;align-items:center;gap:14px;min-width:0}
-  .logo{
-    width:46px;height:46px;border-radius:12px;
-    background:linear-gradient(135deg,#dbeafe,#bfdbfe);
-    display:flex;align-items:center;justify-content:center;
-    color:var(--brand);flex:none;
-  }
+  .logo{width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,#dbeafe,#bfdbfe);display:flex;align-items:center;justify-content:center;color:var(--brand);flex:none}
   .brand-text h1{margin:0;font-size:22px;font-weight:700;letter-spacing:-.01em;color:#0b1220}
   .brand-text p{margin:2px 0 0;color:var(--muted);font-size:13px}
   .top-actions{margin-left:auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-  .pill{
-    display:inline-flex;align-items:center;gap:8px;
-    background:#eef2f7;color:#334155;
-    padding:8px 14px;border-radius:999px;font-size:13px;
-    border:1px solid #e2e8f0;
-  }
+  .pill{display:inline-flex;align-items:center;gap:8px;background:#eef2f7;color:#334155;padding:8px 14px;border-radius:999px;font-size:13px;border:1px solid #e2e8f0}
   .pill .dot{width:8px;height:8px;border-radius:50%;background:#10b981}
   .pill.warn{background:#fffbeb;border-color:#fde68a;color:#92400e}
   .pill.warn .dot{background:#f59e0b}
-  .btn{
-    display:inline-flex;align-items:center;gap:8px;
-    background:#fff;color:#0f172a;
-    border:1px solid var(--border-strong);
-    padding:8px 14px;border-radius:10px;
-    font-size:13px;font-weight:500;cursor:pointer;
-    box-shadow:var(--shadow);
-  }
+  .btn{display:inline-flex;align-items:center;gap:8px;background:#fff;color:#0f172a;border:1px solid var(--border-strong);padding:8px 14px;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;box-shadow:var(--shadow)}
   .btn:hover{background:#f8fafc}
   .btn.primary{background:var(--brand);color:#fff;border-color:var(--brand)}
   .btn.primary:hover{background:#1d4ed8}
   .btn.ghost{background:transparent;box-shadow:none;border-color:transparent;color:#334155}
   .btn.ghost:hover{background:#eef2f7}
+  .btn.danger{background:#fff;color:#991b1b;border-color:#fecaca}
+  .btn.danger:hover{background:#fef2f2}
   .btn .ic{width:16px;height:16px}
+  .btn[disabled]{opacity:.5;cursor:not-allowed}
 
-  /* ---------- Tabs ---------- */
-  .tabs{
-    display:flex;align-items:flex-end;gap:6px;
-    border-bottom:1px solid var(--border);
-    margin:6px 0 18px;overflow-x:auto;
-  }
-  .tab{
-    display:inline-flex;align-items:center;gap:8px;
-    padding:12px 14px;color:#475569;font-weight:500;font-size:14px;
-    border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;
-    background:none;border-left:0;border-right:0;border-top:0;
-  }
+  .tabs{display:flex;align-items:flex-end;gap:6px;border-bottom:1px solid var(--border);margin:6px 0 18px;overflow-x:auto}
+  .tab{display:inline-flex;align-items:center;gap:8px;padding:12px 14px;color:#475569;font-weight:500;font-size:14px;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;background:none;border-left:0;border-right:0;border-top:0}
   .tab:hover{color:#0f172a}
   .tab.active{color:var(--brand);border-bottom-color:var(--brand)}
   .tab .ic{width:16px;height:16px}
 
-  /* ---------- Cards ---------- */
-  .card{
-    background:var(--card);border:1px solid var(--border);
-    border-radius:var(--radius);box-shadow:var(--shadow);
-    margin-bottom:18px;
-  }
-  .card-h{
-    display:flex;align-items:center;gap:14px;
-    padding:16px 20px;border-bottom:1px solid var(--border);
-    flex-wrap:wrap;
-  }
-  .card-title{
-    display:inline-flex;align-items:center;gap:10px;
-    font-size:16px;font-weight:600;color:#0b1220;
-  }
+  .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:18px}
+  .card-h{display:flex;align-items:center;gap:14px;padding:16px 20px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+  .card-title{display:inline-flex;align-items:center;gap:10px;font-size:16px;font-weight:600;color:#0b1220}
   .card-title .ic{color:var(--brand);width:18px;height:18px}
   .legend{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
   .legend .item{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:#334155}
@@ -109,128 +59,112 @@
   .right{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
   .card-b{padding:20px}
 
-  /* ---------- Grid helpers ---------- */
   .grid{display:grid;gap:14px}
   .grid.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
   .grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
   .grid.cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}
-  @media (max-width:980px){
-    .grid.cols-2,.grid.cols-3,.grid.cols-4{grid-template-columns:1fr}
-  }
+  @media (max-width:980px){.grid.cols-2,.grid.cols-3,.grid.cols-4{grid-template-columns:1fr}}
 
   .kpi{background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px 16px}
   .kpi h4{margin:0;font-size:12px;color:var(--muted);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
   .kpi .v{font-size:22px;font-weight:700;margin-top:6px;color:#0b1220}
   .kpi .s{font-size:12px;color:var(--muted);margin-top:2px}
 
-  /* ---------- Tables ---------- */
   table.tbl{width:100%;border-collapse:separate;border-spacing:0;font-size:13px}
-  table.tbl th, table.tbl td{
-    text-align:left;padding:10px 12px;border-bottom:1px solid var(--border);
-  }
-  table.tbl thead th{
-    background:#f8fafc;color:#475569;font-weight:600;font-size:12px;
-    text-transform:uppercase;letter-spacing:.04em;
-    border-bottom:1px solid var(--border);position:sticky;top:0;
-  }
+  table.tbl th,table.tbl td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--border)}
+  table.tbl thead th{background:#f8fafc;color:#475569;font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--border);position:sticky;top:0}
   table.tbl tbody tr:hover{background:#f9fbff}
-  .tag{
-    display:inline-flex;align-items:center;gap:6px;
-    padding:2px 8px;border-radius:999px;font-size:12px;font-weight:500;
-    background:#eef2ff;color:#3730a3;border:1px solid #e0e7ff;
-  }
+  .tag{display:inline-flex;align-items:center;gap:6px;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:500;background:#eef2ff;color:#3730a3;border:1px solid #e0e7ff}
   .tag.ok{background:#ecfdf5;color:#065f46;border-color:#d1fae5}
   .tag.warn{background:#fffbeb;color:#92400e;border-color:#fde68a}
   .tag.bad{background:#fef2f2;color:#991b1b;border-color:#fecaca}
   .tag.hfo{background:#fef3c7;color:#92400e;border-color:#fde68a}
   .tag.agua{background:#dbeafe;color:#1e3a8a;border-color:#bfdbfe}
 
-  /* ---------- Inputs ---------- */
   .field{display:flex;flex-direction:column;gap:6px}
   .field label{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
-  .field input, .field select, .field textarea{
-    background:#fff;border:1px solid var(--border-strong);border-radius:10px;
-    padding:9px 12px;font-size:14px;color:#0f172a;outline:none;
-    transition:border-color .15s, box-shadow .15s;
-  }
-  .field input:focus,.field select:focus,.field textarea:focus{
-    border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-100);
-  }
+  .field input,.field select,.field textarea{background:#fff;border:1px solid var(--border-strong);border-radius:10px;padding:9px 12px;font-size:14px;color:#0f172a;outline:none;transition:border-color .15s,box-shadow .15s}
+  .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-100)}
+  .field .check{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:#334155;font-weight:500;text-transform:none;letter-spacing:0}
+  .field-inline{display:flex;gap:10px;align-items:center}
 
-  .search{
-    display:inline-flex;align-items:center;gap:6px;
-    background:#fff;border:1px solid var(--border-strong);
-    border-radius:10px;padding:6px 10px;color:#334155;
-  }
+  .search{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--border-strong);border-radius:10px;padding:6px 10px;color:#334155}
   .search input{border:0;outline:none;font-size:13px;width:200px}
 
-  /* ---------- Barge Grid ---------- */
   .barge-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:10px}
-  .barge{
-    background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a;
-    border-radius:8px;padding:14px 10px;text-align:center;
-    font-weight:600;font-size:13px;cursor:pointer;
-    aspect-ratio:2.2/1;display:flex;align-items:center;justify-content:center;
-    user-select:none;
-  }
+  .barge{background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a;border-radius:8px;padding:14px 10px;text-align:center;font-weight:600;font-size:13px;cursor:pointer;aspect-ratio:2.2/1;display:flex;align-items:center;justify-content:center;user-select:none;transition:transform .08s}
+  .barge:hover{transform:translateY(-1px)}
   .barge.occupied{background:#fffbeb;border-color:#fde68a;color:#92400e}
   .barge.maintenance{background:#f1f5f9;border-color:#e2e8f0;color:#94a3b8}
   .barge.selected{background:var(--brand);border-color:var(--brand);color:#fff}
 
-  /* ---------- Chart ---------- */
   .chart-wrap{position:relative;width:100%;height:380px;padding:8px 4px}
   .chart-title{text-align:center;color:#334155;font-size:13px;margin-top:-6px;margin-bottom:6px;font-weight:500}
 
-  /* ---------- Misc ---------- */
   .hint{font-size:12px;color:var(--muted);margin-top:10px}
   .panel{display:none}
   .panel.active{display:block;animation:fade .18s ease-out}
-  @keyframes fade{from{opacity:.0;transform:translateY(2px)}to{opacity:1;transform:none}}
+  @keyframes fade{from{opacity:0;transform:translateY(2px)}to{opacity:1;transform:none}}
 
-  .combo-canvas{
-    background:#f8fafc;border:1px dashed #cbd5e1;border-radius:12px;
-    padding:18px;display:flex;align-items:center;gap:10px;overflow-x:auto;
-  }
+  .combo-canvas{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:12px;padding:18px;display:flex;align-items:center;gap:10px;overflow-x:auto;min-height:140px}
   .combo-canvas .row{display:flex;flex-direction:column;gap:8px}
-  .combo-canvas .barge-vis{
-    background:#dbeafe;border:1px solid #93c5fd;color:#1e3a8a;
-    width:90px;height:42px;border-radius:6px;
-    display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;
-  }
-  .combo-canvas .pusher{
-    background:#1d4ed8;color:#fff;width:108px;height:90px;border-radius:8px;
-    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;text-align:center;padding:8px;
-  }
+  .combo-canvas .barge-vis{background:#dbeafe;border:1px solid #93c5fd;color:#1e3a8a;width:96px;height:42px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;cursor:grab;user-select:none}
+  .combo-canvas .barge-vis.raked{background:#dcfce7;border-color:#86efac;color:#065f46}
+  .combo-canvas .barge-vis.dragging{opacity:.4;cursor:grabbing}
+  .combo-canvas .barge-vis.drop-target{outline:2px dashed var(--brand);outline-offset:2px}
+  .combo-canvas .pusher{background:#1d4ed8;color:#fff;width:108px;height:90px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;text-align:center;padding:8px;flex:none}
 
   .mapa-wrap{max-height:520px;overflow:auto;border:1px solid var(--border);border-radius:10px}
   .mapa-wrap table{font-size:12px}
   .mapa-wrap thead th{background:#f1f5f9}
   .now-row{background:#eff6ff !important}
 
-  /* ---------- DB status banner ---------- */
-  .banner{
-    border:1px solid #fde68a;background:#fffbeb;color:#92400e;
-    border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:12px;
-    margin-bottom:14px;
-  }
+  .banner{border:1px solid #fde68a;background:#fffbeb;color:#92400e;border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:12px;margin-bottom:14px}
   .banner.ok{border-color:#bbf7d0;background:#ecfdf5;color:#065f46}
   .banner .right{margin-left:auto;display:flex;gap:8px}
 
-  /* ---------- Toast ---------- */
-  .toast{
-    position:fixed;right:18px;bottom:18px;z-index:50;
-    background:#0f172a;color:#fff;padding:10px 14px;border-radius:10px;
-    box-shadow:var(--shadow-lg);font-size:13px;opacity:0;transform:translateY(8px);
-    transition:opacity .2s, transform .2s;pointer-events:none;
-  }
+  .toast{position:fixed;right:18px;bottom:18px;z-index:80;background:#0f172a;color:#fff;padding:10px 14px;border-radius:10px;box-shadow:var(--shadow-lg);font-size:13px;opacity:0;transform:translateY(8px);transition:opacity .2s,transform .2s;pointer-events:none}
   .toast.show{opacity:1;transform:none}
 
-  /* ---------- Avatar ---------- */
-  .avatar{
-    width:34px;height:34px;border-radius:50%;
-    display:flex;align-items:center;justify-content:center;
-    font-weight:700;font-size:12px;
+  .avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px}
+
+  /* ---------- Modal ---------- */
+  .modal-backdrop{
+    position:fixed;inset:0;background:rgba(15,23,42,.42);
+    display:flex;align-items:center;justify-content:center;z-index:60;
+    opacity:0;pointer-events:none;transition:opacity .15s;
+    padding:20px;
   }
+  .modal-backdrop.open{opacity:1;pointer-events:auto}
+  .modal{
+    background:#fff;border-radius:16px;box-shadow:var(--shadow-lg);
+    width:100%;max-width:640px;max-height:92vh;overflow:hidden;
+    display:flex;flex-direction:column;
+    transform:translateY(8px);transition:transform .15s;
+  }
+  .modal.lg{max-width:880px}
+  .modal-backdrop.open .modal{transform:none}
+  .modal-h{display:flex;align-items:center;gap:10px;padding:16px 20px;border-bottom:1px solid var(--border)}
+  .modal-h h3{margin:0;font-size:16px;font-weight:600;color:#0b1220}
+  .modal-h .close{margin-left:auto;background:transparent;border:0;color:#64748b;cursor:pointer;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center}
+  .modal-h .close:hover{background:#f1f5f9;color:#0f172a}
+  .modal-b{padding:20px;overflow:auto;max-height:calc(92vh - 130px)}
+  .modal-f{display:flex;align-items:center;gap:8px;padding:14px 20px;border-top:1px solid var(--border);background:#fafbfc;border-radius:0 0 16px 16px}
+  .modal-f .right{margin-left:auto;display:flex;gap:8px}
+
+  .tabs-mini{display:flex;gap:4px;background:#f1f5f9;padding:4px;border-radius:10px;margin-bottom:14px;width:fit-content}
+  .tabs-mini button{
+    background:transparent;border:0;padding:7px 12px;border-radius:8px;
+    font-size:13px;color:#475569;font-weight:500;cursor:pointer;
+  }
+  .tabs-mini button.active{background:#fff;color:var(--brand);box-shadow:var(--shadow)}
+
+  .color-swatches{display:flex;gap:8px;flex-wrap:wrap}
+  .swatch{width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent;box-shadow:inset 0 0 0 1px rgba(0,0,0,.06)}
+  .swatch.sel{border-color:#0f172a}
+
+  .help{font-size:12px;color:var(--muted);margin-top:6px}
+  .row-actions{display:flex;gap:6px}
 </style>
 </head>
 <body>
@@ -258,19 +192,19 @@
         Armazenamento: <strong style="font-weight:600;margin-left:4px" id="storageLabel">db.json</strong>
       </span>
 
-      <button class="btn" id="btnPasta" title="Mostrar caminho do db.json">
+      <button class="btn" data-action="pasta-db" title="Mostrar origem do db.json">
         <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
         Pasta DB
       </button>
-      <button class="btn" id="btnSalvar">
+      <button class="btn" data-action="salvar-db">
         <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg>
         Salvar
       </button>
-      <button class="btn" id="btnExportar">
+      <button class="btn" data-action="exportar-db">
         <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
         Exportar
       </button>
-      <button class="btn" id="btnImportar">
+      <button class="btn" data-action="importar-db">
         <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
         Importar
       </button>
@@ -278,47 +212,27 @@
     </div>
   </div>
 
-  <!-- Banner de status do DB -->
   <div id="dbBanner" class="banner" style="display:none">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12" y2="16"/></svg>
     <span id="dbBannerMsg">Carregando base de dados…</span>
     <div class="right">
-      <button class="btn" id="bannerImport">Selecionar db.json</button>
+      <button class="btn" data-action="importar-db">Selecionar db.json</button>
     </div>
   </div>
 
-  <!-- ============ TABS ============ -->
   <div class="tabs" id="tabs">
-    <button class="tab active" data-tab="cadastro">
-      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      Cadastro
-    </button>
-    <button class="tab" data-tab="premissas">
-      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 6-6"/></svg>
-      Premissas
-    </button>
-    <button class="tab" data-tab="consumo">
-      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg>
-      Consumo Diário
-    </button>
-    <button class="tab" data-tab="viagens">
-      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-      Programação de Viagens
-    </button>
-    <button class="tab" data-tab="precos">
-      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 1 1 0 7H6"/></svg>
-      Gestão de Preços
-    </button>
-    <button class="tab" data-tab="mapa">
-      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 3v18"/></svg>
-      Mapa de Consumo
-    </button>
+    <button class="tab active" data-tab="cadastro"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Cadastro</button>
+    <button class="tab" data-tab="premissas"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 6-6"/></svg>Premissas</button>
+    <button class="tab" data-tab="consumo"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg>Consumo Diário</button>
+    <button class="tab" data-tab="viagens"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>Programação de Viagens</button>
+    <button class="tab" data-tab="precos"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 1 1 0 7H6"/></svg>Gestão de Preços</button>
+    <button class="tab" data-tab="mapa"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 3v18"/></svg>Mapa de Consumo</button>
   </div>
 
   <!-- ============ PANEL: CADASTRO ============ -->
   <section class="panel active" data-panel="cadastro">
 
-    <div class="grid cols-4" id="kpisCadastro">
+    <div class="grid cols-4">
       <div class="kpi"><h4>Empurradores</h4><div class="v" data-kpi="empurradores">—</div><div class="s">ativos na frota</div></div>
       <div class="kpi"><h4>Barcaças</h4><div class="v" data-kpi="barcacas">—</div><div class="s" data-kpi="barcacas-sub">—</div></div>
       <div class="kpi"><h4>Tripulação</h4><div class="v" data-kpi="tripulacao">—</div><div class="s" data-kpi="tripulacao-sub">—</div></div>
@@ -336,8 +250,7 @@
           <input id="searchEmp" placeholder="Buscar empurrador..." />
         </label>
         <div class="right">
-          <button class="btn"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>Novo Empurrador</button>
-          <button class="btn">Importar CSV</button>
+          <button class="btn primary" data-action="new-empurrador">+ Novo Empurrador</button>
         </div>
       </div>
       <div class="card-b" style="padding:0">
@@ -359,8 +272,8 @@
             Barcaças
           </span>
           <div class="right">
-            <button class="btn">Criar em lote</button>
-            <button class="btn primary">+ Nova Barcaça</button>
+            <button class="btn" data-action="new-barcaca-lote">Criar em lote</button>
+            <button class="btn primary" data-action="new-barcaca">+ Nova Barcaça</button>
           </div>
         </div>
         <div class="card-b">
@@ -370,7 +283,7 @@
             <span class="item"><span class="dot" style="background:#e2e8f0;border:1px solid #cbd5e1"></span> Manutenção</span>
           </div>
           <div class="barge-grid" id="bargeGrid"></div>
-          <div class="hint">Selecionadas: <strong id="bgSel">0</strong> · Total disponíveis: <span id="bgTotal">—</span></div>
+          <div class="hint">Clique numa barcaça para abrir as opções de edição. Selecionadas: <strong id="bgSel">0</strong> · Disponíveis: <span id="bgTotal">—</span></div>
         </div>
       </div>
 
@@ -380,11 +293,11 @@
             <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
             Tripulação
           </span>
-          <div class="right"><button class="btn primary">+ Nova Tripulação</button></div>
+          <div class="right"><button class="btn primary" data-action="new-tripulacao">+ Nova Tripulação</button></div>
         </div>
         <div class="card-b" style="padding:0">
           <table class="tbl">
-            <thead><tr><th>Foto</th><th>Nome</th><th>Idade</th><th>Matrícula</th><th>Função</th></tr></thead>
+            <thead><tr><th>Foto</th><th>Nome</th><th>Idade</th><th>Matrícula</th><th>Função</th><th></th></tr></thead>
             <tbody id="tbTripulacao"></tbody>
           </table>
         </div>
@@ -398,11 +311,11 @@
             <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
             Cidades
           </span>
-          <div class="right"><button class="btn primary">+ Nova Cidade</button></div>
+          <div class="right"><button class="btn primary" data-action="new-cidade">+ Nova Cidade</button></div>
         </div>
         <div class="card-b" style="padding:0">
           <table class="tbl">
-            <thead><tr><th>Nome</th><th>Latitude</th><th>Longitude</th></tr></thead>
+            <thead><tr><th>Nome</th><th>Latitude</th><th>Longitude</th><th></th></tr></thead>
             <tbody id="tbCidades"></tbody>
           </table>
         </div>
@@ -414,11 +327,11 @@
             <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21 3 6"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg>
             Rotas / Trechos
           </span>
-          <div class="right"><button class="btn primary">+ Nova Rota</button></div>
+          <div class="right"><button class="btn primary" data-action="new-rota">+ Nova Rota</button></div>
         </div>
         <div class="card-b" style="padding:0">
           <table class="tbl">
-            <thead><tr><th>Nome</th><th>Origem</th><th>Destino</th></tr></thead>
+            <thead><tr><th>Nome</th><th>Origem</th><th>Destino</th><th></th></tr></thead>
             <tbody id="tbRotas"></tbody>
           </table>
         </div>
@@ -441,15 +354,14 @@
           <span class="item"><span class="dot" style="background:#0f172a"></span> Média Atualizada</span>
         </div>
         <div class="right">
-          <button class="btn">Importar Excel/CSV</button>
-          <button class="btn primary">+ Lançar Média</button>
+          <button class="btn primary" data-action="new-media">+ Lançar Média</button>
         </div>
       </div>
       <div class="card-b" style="padding:0">
         <table class="tbl">
           <thead><tr>
             <th>Trecho</th><th>Empurrador</th><th>Condição</th><th>Produto</th>
-            <th>Tempo (h)</th><th>Cons. MGO (L)</th><th>Cons. HFO (L)</th><th>Média Atualizada</th>
+            <th>Tempo (h)</th><th>Cons. MGO (L)</th><th>Cons. HFO (L)</th><th>Média Atualizada</th><th></th>
           </tr></thead>
           <tbody id="tbMedias"></tbody>
         </table>
@@ -462,7 +374,7 @@
           <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
           Tipos de Viagem
         </span>
-        <div class="right"><button class="btn primary">+ Novo Tipo</button></div>
+        <div class="right"><button class="btn primary" data-action="new-tipo-viagem">+ Novo Tipo</button></div>
       </div>
       <div class="card-b">
         <div class="grid cols-3" id="kpisTiposViagem"></div>
@@ -479,22 +391,11 @@
           Lançar Consumo Diário
         </span>
         <div class="right">
-          <button class="btn">Importar Excel/CSV</button>
-          <button class="btn primary">Salvar Lançamentos</button>
+          <button class="btn primary" data-action="new-lancamento">+ Lançar Consumo</button>
         </div>
       </div>
       <div class="card-b">
-        <div class="grid cols-4">
-          <div class="field"><label>Data de Referência</label><input type="date" id="cdData"/></div>
-          <div class="field"><label>Empurrador</label>
-            <select id="cdEmp"></select>
-          </div>
-          <div class="field"><label>Tipo de Combustível</label>
-            <select><option>MGO</option><option>HFO</option><option>Água</option></select>
-          </div>
-          <div class="field"><label>Consumo (L)</label><input type="number" placeholder="0" /></div>
-        </div>
-        <div class="hint">Importação espera colunas: Dia Referência, ADM_Empurrador, Consumo MGO, Consumo HFO, Consumo Água, Estoque Diesel, Estoque HFO, Estoque Água, Latitude, Longitude.</div>
+        <div class="hint">Lance o consumo dos empurradores com data de referência, tipos de combustível, estoques e geolocalização.</div>
       </div>
     </div>
 
@@ -502,11 +403,10 @@
       <div class="card">
         <div class="card-h">
           <span class="card-title">Últimos Lançamentos</span>
-          <div class="right"><button class="btn ghost">Ver todos</button></div>
         </div>
         <div class="card-b" style="padding:0">
           <table class="tbl">
-            <thead><tr><th>Data</th><th>Empurrador</th><th>MGO</th><th>HFO</th><th>Água</th><th>Estoques (D/H/A)</th></tr></thead>
+            <thead><tr><th>Data</th><th>Empurrador</th><th>MGO</th><th>HFO</th><th>Água</th><th>Estoques (D/H/A)</th><th></th></tr></thead>
             <tbody id="tbLancamentos"></tbody>
           </table>
         </div>
@@ -515,11 +415,11 @@
       <div class="card">
         <div class="card-h">
           <span class="card-title">Transferências entre embarcações</span>
-          <div class="right"><button class="btn primary">+ Nova Transferência</button></div>
+          <div class="right"><button class="btn primary" data-action="new-transferencia">+ Nova Transferência</button></div>
         </div>
         <div class="card-b" style="padding:0">
           <table class="tbl">
-            <thead><tr><th>Data</th><th>De</th><th>Para</th><th>Tipo</th><th>Litros</th></tr></thead>
+            <thead><tr><th>Data</th><th>De</th><th>Para</th><th>Tipo</th><th>Litros</th><th></th></tr></thead>
             <tbody id="tbTransferencias"></tbody>
           </table>
         </div>
@@ -536,8 +436,7 @@
           Programação de Viagem
         </span>
         <div class="right">
-          <button class="btn">Programar Abastecimento</button>
-          <button class="btn primary">+ Nova Viagem</button>
+          <button class="btn" data-action="new-abastecimento">Programar Abastecimento</button>
         </div>
       </div>
       <div class="card-b">
@@ -547,16 +446,18 @@
           <div class="field"><label>Data e Hora</label><input type="datetime-local" id="vgDtHora"/></div>
           <div class="field"><label>Tipo de Viagem</label><select id="vgTipo"></select></div>
           <div class="field"><label>Condição</label>
-            <select><option>Carregada</option><option>Vazia</option><option>Scort Tug</option><option>Escoteiro</option></select>
+            <select id="vgCond">
+              <option>Carregada</option><option>Vazia</option><option>Scort Tug</option><option>Escoteiro</option>
+            </select>
           </div>
-          <div class="field"><label>Produto</label>
-            <select><option>Soja</option><option>Milho</option><option>Fertilizante</option><option>Outro</option></select>
+          <div class="field" id="vgProdutoWrap"><label>Produto</label>
+            <select id="vgProduto"><option>Soja</option><option>Milho</option><option>Fertilizante</option><option>Outro</option></select>
           </div>
           <div class="field" style="grid-column:span 2;justify-content:flex-end">
             <label>&nbsp;</label>
             <div style="display:flex;gap:8px">
-              <button class="btn">Inserir Volume</button>
-              <button class="btn primary" style="flex:1">Salvar Viagem</button>
+              <button class="btn" id="btnInserirVolume" data-action="inserir-volume">Inserir Volume</button>
+              <button class="btn primary" id="btnSalvarViagem" data-action="salvar-viagem" style="flex:1">Salvar Viagem</button>
             </div>
           </div>
         </div>
@@ -565,6 +466,7 @@
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap">
             <strong>Seleção de Barcaças</strong>
             <span class="tag">Comboio: <strong id="bgSel2">0</strong>/<span id="bgMax2">—</span></span>
+            <span class="tag" id="vgVolumeTag" style="display:none">Volume: <strong id="vgVolumeTagVal">0</strong> t · Calado <strong id="vgCaladoTagVal">0,00</strong> m</span>
             <div class="legend" style="margin-left:auto">
               <span class="item"><span class="dot" style="background:#bfdbfe"></span> Disponível</span>
               <span class="item"><span class="dot" style="background:#fde68a"></span> Ocupada</span>
@@ -581,20 +483,31 @@
       <div class="card-h">
         <span class="card-title">Arranjo do Comboio · Pré-visualização</span>
         <div class="right">
-          <button class="btn">Reorganizar</button>
-          <button class="btn primary">Confirmar Arranjo</button>
+          <button class="btn" data-action="reorganizar-arranjo">Reorganizar automaticamente</button>
         </div>
       </div>
       <div class="card-b">
         <div class="combo-canvas" id="comboCanvas"></div>
-        <div class="hint">Raked preferencialmente na frente, Box no meio. Arraste para reorganizar (visual ilustrativo).</div>
+        <div class="hint">Raked preferencialmente na frente (verde), Box no meio (azul). Arraste as barcaças para reordenar.</div>
       </div>
     </div>
 
     <div class="card">
       <div class="card-h">
-        <span class="card-title" id="viagemTitulo">Viagem Programada</span>
-        <div class="right"><span class="tag ok">Programada</span></div>
+        <span class="card-title">Viagens Programadas</span>
+      </div>
+      <div class="card-b" style="padding:0">
+        <table class="tbl">
+          <thead><tr><th>ID</th><th>Rota</th><th>Empurrador</th><th>Saída</th><th>Tipo</th><th>Status</th><th>Volume</th><th>Cons. Estimado</th><th></th></tr></thead>
+          <tbody id="tbViagens"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-h">
+        <span class="card-title" id="viagemTitulo">Detalhes da Viagem</span>
+        <div class="right" id="viagemStatus"></div>
       </div>
       <div class="card-b">
         <div class="grid cols-4" id="viagemKpis"></div>
@@ -611,17 +524,14 @@
           Registro de Preços
         </span>
         <div class="right">
-          <button class="btn">Importar Excel/CSV</button>
-          <button class="btn primary">+ Lançar Preço</button>
+          <button class="btn primary" data-action="new-preco">+ Lançar Preço</button>
         </div>
       </div>
-      <div class="card-b">
-        <div class="grid cols-4">
-          <div class="field"><label>Data</label><input type="date" id="prcData"/></div>
-          <div class="field"><label>Combustível</label><select id="prcTipo"><option>MGO</option><option>HFO</option></select></div>
-          <div class="field"><label>Preço (R$/L)</label><input type="text" placeholder="R$ 0,00" /></div>
-          <div class="field" style="justify-content:flex-end"><label>&nbsp;</label><button class="btn primary">Salvar Preço</button></div>
-        </div>
+      <div class="card-b" style="padding:0">
+        <table class="tbl">
+          <thead><tr><th>Data</th><th>Combustível</th><th>Preço</th><th></th></tr></thead>
+          <tbody id="tbPrecos"></tbody>
+        </table>
       </div>
     </div>
 
@@ -636,7 +546,6 @@
             <span class="item"><span class="dot" style="background:#0f172a"></span> Histórico</span>
             <span class="item"><span class="dot" style="background:#2563eb"></span> Forecast</span>
           </div>
-          <div class="right"><button class="btn ghost">Trocar combustível</button></div>
         </div>
         <div class="card-b">
           <div class="chart-title">Projeção: MGO (R$/L)</div>
@@ -654,7 +563,6 @@
             <span class="item"><span class="dot" style="background:#0f172a"></span> Histórico</span>
             <span class="item"><span class="dot" style="background:#f59e0b"></span> Forecast</span>
           </div>
-          <div class="right"><button class="btn ghost">Trocar combustível</button></div>
         </div>
         <div class="card-b">
           <div class="chart-title">Projeção: HFO (R$/L)</div>
@@ -677,7 +585,6 @@
           <span class="item"><span class="dot" style="background:#f59e0b"></span> Chegada estimada</span>
           <span class="item"><span class="dot" style="background:#10b981"></span> Abastecimento</span>
         </div>
-        <div class="right"><button class="btn">Exportar CSV</button></div>
       </div>
       <div class="card-b">
         <div class="mapa-wrap">
@@ -695,20 +602,36 @@
   </div>
 </div>
 
+<!-- ============ MODAL ============ -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal" id="modalBox">
+    <div class="modal-h">
+      <h3 id="modalTitle"></h3>
+      <button class="close" id="modalClose" title="Fechar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-b" id="modalBody"></div>
+    <div class="modal-f" id="modalFooter"></div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
 /* ============================================================
    STATE
    ============================================================ */
-const STATE = { db: null, source: null };
+const STATE = { db: null, source: null, selVgBarges: new Set(), vgVolume: null };
 const STORAGE_TAB = 'fleetflow.tab';
 const STORAGE_DB  = 'fleetflow.db';
+const COR_PALETA  = ['#2563eb','#0ea5e9','#10b981','#f59e0b','#ef4444','#a855f7','#ec4899','#0f172a','#64748b','#84cc16'];
 
 /* ============================================================
    UTILS
    ============================================================ */
 const fmtBR = new Intl.NumberFormat('pt-BR');
+const fmtBR2 = new Intl.NumberFormat('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
 const fmtBRL = new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'});
 const fmtL = n => n == null ? '—' : fmtBR.format(Math.round(n)) + ' L';
 const fmtDate = iso => {
@@ -725,8 +648,7 @@ const fmtDateTime = iso => {
 };
 const age = (birth) => {
   if(!birth) return '—';
-  const b = new Date(birth);
-  const t = new Date();
+  const b = new Date(birth), t = new Date();
   let a = t.getFullYear() - b.getFullYear();
   const m = t.getMonth() - b.getMonth();
   if(m < 0 || (m === 0 && t.getDate() < b.getDate())) a--;
@@ -738,8 +660,10 @@ const hashColor = (s) => {
   let h = 0; for(const c of s) h = (h*31 + c.charCodeAt(0)) >>> 0;
   return palette[h % palette.length];
 };
+const escHtml = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const $ = sel => document.querySelector(sel);
 const $$ = sel => document.querySelectorAll(sel);
+const uid = (prefix) => prefix + '-' + Date.now().toString(36) + Math.random().toString(36).slice(2,5);
 
 function toast(msg, ok=true){
   const t = $('#toast');
@@ -750,59 +674,72 @@ function toast(msg, ok=true){
   t._t = setTimeout(()=>t.classList.remove('show'), 2200);
 }
 
+function byId(list, id){ return (list || []).find(x => x.id === id); }
+
+function persist(){
+  if(!STATE.db) return;
+  STATE.db.meta = STATE.db.meta || {};
+  STATE.db.meta.updatedAt = new Date().toISOString();
+  localStorage.setItem(STORAGE_DB, JSON.stringify(STATE.db));
+}
+
 /* ============================================================
-   DB LOADING / SAVING
+   DB LOAD / SAVE
    ============================================================ */
 async function loadDb(){
-  // 1) Try cached
   const cached = localStorage.getItem(STORAGE_DB);
   if(cached){
     try{
       STATE.db = JSON.parse(cached);
       STATE.source = 'cache';
-      setBanner(false, 'Base carregada do cache do navegador. Use "Importar" para carregar um db.json do disco.', true);
+      setBanner(false);
       renderAll();
     }catch(_){}
   }
-
-  // 2) Try fetching db.json (works only via http://)
   try{
     const res = await fetch('./db.json', {cache:'no-store'});
     if(!res.ok) throw new Error('HTTP '+res.status);
     const data = await res.json();
-    STATE.db = data;
-    STATE.source = 'file';
-    localStorage.setItem(STORAGE_DB, JSON.stringify(data));
-    setBanner(false);
-    renderAll();
-    return;
+    if(!STATE.db){
+      STATE.db = data;
+      STATE.source = 'file';
+      localStorage.setItem(STORAGE_DB, JSON.stringify(data));
+      setBanner(false);
+      renderAll();
+    }
   }catch(err){
     if(!STATE.db){
-      setBanner(true, 'Não foi possível abrir <code>db.json</code> automaticamente (provavelmente o arquivo HTML foi aberto direto do disco). Clique em <strong>Importar</strong> para selecioná-lo.');
+      setBanner(true, 'Não foi possível abrir <code>db.json</code> automaticamente (HTML aberto direto do disco). Clique em <strong>Importar</strong> para selecioná-lo, ou comece do zero usando os botões <strong>+ Novo X</strong>.');
+      STATE.db = emptyDb();
+      STATE.source = 'cache';
+      renderAll();
     }
   }
 }
-
-function setBanner(show, msg, ok=false){
+function emptyDb(){
+  return {
+    meta:{app:'FleetFlow',version:'0.1.0',storage:'local',updatedAt:new Date().toISOString()},
+    cadastro:{empurradores:[],barcacas:[],tripulacao:[],cidades:[],rotas:[]},
+    premissas:{mediasConsumoTempo:[],tiposViagem:[
+      {id:'TV-001',nome:'Econômica',deltaConsumo:-0.10,deltaTempo:0.15},
+      {id:'TV-002',nome:'Convencional',deltaConsumo:0,deltaTempo:0},
+      {id:'TV-003',nome:'Urgência',deltaConsumo:0.10,deltaTempo:-0.15}
+    ]},
+    consumoDiario:{lancamentos:[],transferencias:[]},
+    viagens:[],abastecimentos:[],
+    precos:{registros:[]}
+  };
+}
+function setBanner(show, msg){
   const b = $('#dbBanner');
   if(!show){ b.style.display = 'none'; return; }
   b.style.display = 'flex';
-  b.classList.toggle('ok', ok);
   $('#dbBannerMsg').innerHTML = msg || '';
 }
-
-function saveDbToCache(){
-  if(!STATE.db) return;
-  STATE.db.meta = STATE.db.meta || {};
-  STATE.db.meta.updatedAt = new Date().toISOString();
-  localStorage.setItem(STORAGE_DB, JSON.stringify(STATE.db));
-  toast('Base salva no navegador');
-}
-
+function saveDbToCache(){ persist(); toast('Base salva no navegador'); }
 function exportDb(){
   if(!STATE.db){ toast('Nenhuma base carregada', false); return; }
-  STATE.db.meta = STATE.db.meta || {};
-  STATE.db.meta.updatedAt = new Date().toISOString();
+  persist();
   const blob = new Blob([JSON.stringify(STATE.db, null, 2)], {type:'application/json'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -811,7 +748,6 @@ function exportDb(){
   URL.revokeObjectURL(url);
   toast('db.json exportado');
 }
-
 function importDbFromFile(file){
   const r = new FileReader();
   r.onload = () => {
@@ -819,7 +755,7 @@ function importDbFromFile(file){
       const data = JSON.parse(r.result);
       STATE.db = data;
       STATE.source = 'import';
-      localStorage.setItem(STORAGE_DB, JSON.stringify(data));
+      persist();
       setBanner(false);
       renderAll();
       toast('Base importada com sucesso');
@@ -829,10 +765,8 @@ function importDbFromFile(file){
 }
 
 /* ============================================================
-   RENDERERS
+   RENDER
    ============================================================ */
-function byId(list, id){ return (list || []).find(x => x.id === id); }
-
 function renderAll(){
   if(!STATE.db) return;
   renderCadastro();
@@ -843,7 +777,6 @@ function renderAll(){
   renderMapa();
   updateStoragePill();
 }
-
 function updateStoragePill(){
   const map = { file:'arquivo db.json', import:'arquivo db.json (importado)', cache:'cache do navegador' };
   $('#storageLabel').textContent = map[STATE.source] || 'desconhecido';
@@ -858,7 +791,6 @@ function renderCadastro(){
   const cds  = db.cadastro?.cidades || [];
   const rts  = db.cadastro?.rotas || [];
 
-  // KPIs
   const manut = bgs.filter(b=>b.manutencao).length;
   $('[data-kpi="empurradores"]').textContent = emps.length;
   $('[data-kpi="barcacas"]').textContent = bgs.length;
@@ -869,31 +801,29 @@ function renderCadastro(){
   $('[data-kpi="rotas"]').textContent = rts.length;
   $('[data-kpi="rotas-sub"]').textContent = 'cobrindo ' + cds.length + ' cidades';
 
-  // Empurradores
   const search = ($('#searchEmp').value || '').toLowerCase();
   const filtered = emps.filter(e => e.nome.toLowerCase().includes(search));
   $('#tbEmpurradores').innerHTML = filtered.map(e => {
     const fuels = (e.combustiveis||[]).filter(f=>f.capacidadeBunker>0 || f.consumoForaViagem>0);
-    const fuelTags = fuels.map(f =>
-      `<span class="tag ${f.tipo==='HFO'?'hfo':''}">${f.tipo}</span>`
-    ).join(' ');
+    const fuelTags = fuels.map(f => `<span class="tag ${f.tipo==='HFO'?'hfo':''}">${escHtml(f.tipo)}</span>`).join(' ');
     const cons = fuels.map(f => `${f.consumoForaViagem} L`).join(' / ') || '—';
     const cap  = fuels.map(f => fmtBR.format(f.capacidadeBunker) + ' L').join(' / ') || '—';
     return `<tr>
-      <td><strong>${e.nome}</strong></td>
-      <td>${fmtBR.format(e.potenciaHp)} hp</td>
+      <td><strong>${escHtml(e.nome)}</strong></td>
+      <td>${fmtBR.format(e.potenciaHp||0)} hp</td>
       <td><span class="dot" style="background:${e.cor};border:1px solid rgba(0,0,0,.1)"></span> <span style="margin-left:6px;color:#475569;font-size:12px">${e.cor}</span></td>
       <td>${fuelTags || '—'}</td>
       <td>${cons}</td>
       <td>${cap}</td>
-      <td>${e.comboioMax} barcaças</td>
-      <td><button class="btn ghost">Editar</button></td>
+      <td>${e.comboioMax||'—'} barcaças</td>
+      <td class="row-actions">
+        <button class="btn ghost" data-action="edit-empurrador" data-id="${e.id}">Editar</button>
+        <button class="btn ghost danger" data-action="del-empurrador" data-id="${e.id}">×</button>
+      </td>
     </tr>`;
   }).join('') || `<tr><td colspan="8" style="text-align:center;color:#94a3b8;padding:24px">Nenhum empurrador.</td></tr>`;
 
-  // Barcaças grid
-  const ocupadasIds = new Set();
-  (db.viagens || []).filter(v => v.status !== 'Finalizada').forEach(v => (v.barcacas||[]).forEach(id => ocupadasIds.add(id)));
+  const ocupadasIds = collectOcupadas(db);
   const grid = $('#bargeGrid'); grid.innerHTML = '';
   bgs.forEach(b => {
     const el = document.createElement('div');
@@ -901,38 +831,50 @@ function renderCadastro(){
     el.textContent = b.nome;
     if(b.manutencao) el.classList.add('maintenance');
     else if(ocupadasIds.has(b.id)) el.classList.add('occupied');
-    el.addEventListener('click', ()=>{
-      el.classList.toggle('selected');
-      $('#bgSel').textContent = grid.querySelectorAll('.barge.selected').length;
-    });
+    el.addEventListener('click', () => openBarcacaModal(b));
     grid.appendChild(el);
   });
   $('#bgSel').textContent = 0;
   $('#bgTotal').textContent = bgs.filter(b=>!b.manutencao).length + ' / ' + bgs.length;
 
-  // Tripulação
   $('#tbTripulacao').innerHTML = tps.map(t => {
-    const [bg,fg] = hashColor(t.nome);
+    const [bg,fg] = hashColor(t.nome||'?');
     return `<tr>
-      <td><div class="avatar" style="background:${bg};color:${fg}">${initials(t.nome)}</div></td>
-      <td>${t.nome}</td>
+      <td><div class="avatar" style="background:${bg};color:${fg}">${initials(t.nome||'?')}</div></td>
+      <td>${escHtml(t.nome)}</td>
       <td>${age(t.nascimento)}</td>
-      <td>${t.matricula||'—'}</td>
-      <td><span class="tag">${t.funcao}</span></td>
+      <td>${escHtml(t.matricula||'—')}</td>
+      <td><span class="tag">${escHtml(t.funcao||'—')}</span></td>
+      <td class="row-actions">
+        <button class="btn ghost" data-action="edit-tripulacao" data-id="${t.id}">Editar</button>
+        <button class="btn ghost danger" data-action="del-tripulacao" data-id="${t.id}">×</button>
+      </td>
     </tr>`;
-  }).join('') || `<tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:24px">Sem tripulação cadastrada.</td></tr>`;
+  }).join('') || `<tr><td colspan="6" style="text-align:center;color:#94a3b8;padding:24px">Sem tripulação cadastrada.</td></tr>`;
 
-  // Cidades
-  $('#tbCidades').innerHTML = cds.map(c =>
-    `<tr><td>${c.nome}</td><td>${c.lat ?? '—'}</td><td>${c.lng ?? '—'}</td></tr>`
-  ).join('') || `<tr><td colspan="3" style="text-align:center;color:#94a3b8;padding:24px">Sem cidades.</td></tr>`;
+  $('#tbCidades').innerHTML = cds.map(c => `
+    <tr><td>${escHtml(c.nome)}</td><td>${c.lat ?? '—'}</td><td>${c.lng ?? '—'}</td>
+      <td class="row-actions">
+        <button class="btn ghost" data-action="edit-cidade" data-id="${c.id}">Editar</button>
+        <button class="btn ghost danger" data-action="del-cidade" data-id="${c.id}">×</button>
+      </td>
+    </tr>`).join('') || `<tr><td colspan="4" style="text-align:center;color:#94a3b8;padding:24px">Sem cidades.</td></tr>`;
 
-  // Rotas
   $('#tbRotas').innerHTML = rts.map(r => {
     const o = byId(cds, r.origem)?.nome || '—';
     const d = byId(cds, r.destino)?.nome || '—';
-    return `<tr><td>${r.nome}</td><td>${o}</td><td>${d}</td></tr>`;
-  }).join('') || `<tr><td colspan="3" style="text-align:center;color:#94a3b8;padding:24px">Sem rotas.</td></tr>`;
+    return `<tr><td>${escHtml(r.nome)}</td><td>${o}</td><td>${d}</td>
+      <td class="row-actions">
+        <button class="btn ghost" data-action="edit-rota" data-id="${r.id}">Editar</button>
+        <button class="btn ghost danger" data-action="del-rota" data-id="${r.id}">×</button>
+      </td>
+    </tr>`;
+  }).join('') || `<tr><td colspan="4" style="text-align:center;color:#94a3b8;padding:24px">Sem rotas.</td></tr>`;
+}
+function collectOcupadas(db){
+  const out = new Set();
+  (db.viagens || []).filter(v => v.status !== 'Finalizada').forEach(v => (v.barcacas||[]).forEach(id => out.add(id)));
+  return out;
 }
 
 /* -------- Premissas -------- */
@@ -941,61 +883,65 @@ function renderPremissas(){
   const meds = db.premissas?.mediasConsumoTempo || [];
   const rotas = db.cadastro?.rotas || [];
   const emps  = db.cadastro?.empurradores || [];
-  const condTag = c => `<span class="tag ${c==='Carregada'?'ok':c==='Vazia'?'warn':''}">${c}</span>`;
-
+  const condTag = c => `<span class="tag ${c==='Carregada'?'ok':c==='Vazia'?'warn':''}">${escHtml(c||'—')}</span>`;
   $('#tbMedias').innerHTML = meds.map(m => {
     const r = byId(rotas, m.rotaId)?.nome || m.rotaId;
     const e = byId(emps, m.empurradorId)?.nome || m.empurradorId;
     return `<tr>
-      <td>${r}</td><td>${e}</td><td>${condTag(m.condicao)}</td>
-      <td>${m.produto||'—'}</td><td>${m.tempoHoras}</td>
-      <td>${fmtBR.format(m.consumoMgoL)}</td>
+      <td>${escHtml(r)}</td><td>${escHtml(e)}</td><td>${condTag(m.condicao)}</td>
+      <td>${escHtml(m.produto||'—')}</td><td>${m.tempoHoras}</td>
+      <td>${fmtBR.format(m.consumoMgoL||0)}</td>
       <td>${m.consumoHfoL ? fmtBR.format(m.consumoHfoL) : '—'}</td>
-      <td><strong>${fmtBR.format(m.mediaAtualizada)} L</strong></td>
+      <td><strong>${fmtBR.format(m.mediaAtualizada || m.consumoMgoL || 0)} L</strong></td>
+      <td class="row-actions">
+        <button class="btn ghost danger" data-action="del-media" data-id="${m.id}">×</button>
+      </td>
     </tr>`;
-  }).join('') || `<tr><td colspan="8" style="text-align:center;color:#94a3b8;padding:24px">Sem médias lançadas.</td></tr>`;
+  }).join('') || `<tr><td colspan="9" style="text-align:center;color:#94a3b8;padding:24px">Sem médias lançadas.</td></tr>`;
 
   const tipos = db.premissas?.tiposViagem || [];
   $('#kpisTiposViagem').innerHTML = tipos.map(t => {
     const c = (t.deltaConsumo*100).toFixed(0);
     const tm = (t.deltaTempo*100).toFixed(0);
     const sign = n => (n>0?'+':'') + n + '%';
-    return `<div class="kpi"><h4>${t.nome}</h4>
+    return `<div class="kpi" style="position:relative">
+      <h4>${escHtml(t.nome)}</h4>
       <div class="v">${sign(c)} / ${sign(tm)}</div>
-      <div class="s">Consumo / Tempo</div></div>`;
-  }).join('');
+      <div class="s">Consumo / Tempo</div>
+      <div style="position:absolute;top:8px;right:8px;display:flex;gap:4px">
+        <button class="btn ghost" data-action="edit-tipo-viagem" data-id="${t.id}" style="padding:4px 8px;font-size:11px">Editar</button>
+      </div>
+    </div>`;
+  }).join('') || '<div class="hint">Sem tipos de viagem cadastrados.</div>';
 }
 
 /* -------- Consumo -------- */
 function renderConsumo(){
   const db = STATE.db;
   const emps = db.cadastro?.empurradores || [];
-  // Form date default = ontem
-  const y = new Date(); y.setDate(y.getDate()-1);
-  $('#cdData').value = y.toISOString().slice(0,10);
-  $('#cdEmp').innerHTML = emps.map(e => `<option value="${e.id}">${e.nome}</option>`).join('');
-
-  const lancs = (db.consumoDiario?.lancamentos || []).slice().reverse();
+  const lancs = (db.consumoDiario?.lancamentos || []).slice().sort((a,b)=>b.data.localeCompare(a.data));
   $('#tbLancamentos').innerHTML = lancs.map(l => {
     const e = byId(emps, l.empurradorId)?.nome || l.empurradorId;
     return `<tr>
-      <td>${fmtDate(l.data)}</td><td>${e}</td>
+      <td>${fmtDate(l.data)}</td><td>${escHtml(e)}</td>
       <td>${fmtL(l.mgoL)}</td><td>${l.hfoL ? fmtL(l.hfoL) : '—'}</td>
       <td>${fmtL(l.aguaL)}</td>
-      <td>${fmtBR.format(l.estoqueDiesel)} / ${l.estoqueHfo ? fmtBR.format(l.estoqueHfo) : '0'} / ${fmtBR.format(l.estoqueAgua)}</td>
+      <td>${fmtBR.format(l.estoqueDiesel||0)} / ${l.estoqueHfo ? fmtBR.format(l.estoqueHfo) : '0'} / ${fmtBR.format(l.estoqueAgua||0)}</td>
+      <td class="row-actions"><button class="btn ghost danger" data-action="del-lancamento" data-id="${l.id}">×</button></td>
     </tr>`;
-  }).join('') || `<tr><td colspan="6" style="text-align:center;color:#94a3b8;padding:24px">Sem lançamentos.</td></tr>`;
+  }).join('') || `<tr><td colspan="7" style="text-align:center;color:#94a3b8;padding:24px">Sem lançamentos.</td></tr>`;
 
-  const trs = (db.consumoDiario?.transferencias || []).slice().reverse();
+  const trs = (db.consumoDiario?.transferencias || []).slice().sort((a,b)=>b.data.localeCompare(a.data));
   $('#tbTransferencias').innerHTML = trs.map(t => {
     const de  = byId(emps, t.origemId)?.nome || t.origemId;
     const par = byId(emps, t.destinoId)?.nome || t.destinoId;
     const cls = t.tipo === 'HFO' ? 'hfo' : t.tipo === 'Água' ? 'agua' : '';
     return `<tr>
-      <td>${fmtDate(t.data)}</td><td>${de}</td><td>${par}</td>
-      <td><span class="tag ${cls}">${t.tipo}</span></td><td>${fmtL(t.litros)}</td>
+      <td>${fmtDate(t.data)}</td><td>${escHtml(de)}</td><td>${escHtml(par)}</td>
+      <td><span class="tag ${cls}">${escHtml(t.tipo)}</span></td><td>${fmtL(t.litros)}</td>
+      <td class="row-actions"><button class="btn ghost danger" data-action="del-transferencia" data-id="${t.id}">×</button></td>
     </tr>`;
-  }).join('') || `<tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:24px">Sem transferências.</td></tr>`;
+  }).join('') || `<tr><td colspan="6" style="text-align:center;color:#94a3b8;padding:24px">Sem transferências.</td></tr>`;
 }
 
 /* -------- Viagens -------- */
@@ -1004,99 +950,132 @@ function renderViagens(){
   const emps = db.cadastro?.empurradores || [];
   const rotas = db.cadastro?.rotas || [];
   const tipos = db.premissas?.tiposViagem || [];
-  const cidades = db.cadastro?.cidades || [];
   const bgs = db.cadastro?.barcacas || [];
 
-  $('#vgRota').innerHTML = rotas.map(r => `<option value="${r.id}">${r.nome}</option>`).join('');
-  $('#vgEmp').innerHTML = emps.map(e => `<option value="${e.id}">${e.nome}</option>`).join('');
-  $('#vgTipo').innerHTML = tipos.map(t => `<option value="${t.id}">${t.nome}</option>`).join('');
-  $('#vgDtHora').value = new Date(Date.now()+24*3600*1000).toISOString().slice(0,16);
+  $('#vgRota').innerHTML = rotas.map(r => `<option value="${r.id}">${escHtml(r.nome)}</option>`).join('') || '<option value="">— sem rotas —</option>';
+  $('#vgEmp').innerHTML = emps.map(e => `<option value="${e.id}">${escHtml(e.nome)}</option>`).join('') || '<option value="">— sem empurradores —</option>';
+  $('#vgTipo').innerHTML = tipos.map(t => `<option value="${t.id}">${escHtml(t.nome)}</option>`).join('');
+  if(!$('#vgDtHora').value) $('#vgDtHora').value = new Date(Date.now()+24*3600*1000).toISOString().slice(0,16);
 
-  // Grade na aba Viagens
-  const ocupadasIds = new Set();
-  (db.viagens || []).filter(v => v.status !== 'Finalizada').forEach(v => (v.barcacas||[]).forEach(id => ocupadasIds.add(id)));
+  const ocupadasIds = collectOcupadas(db);
   const grid = $('#bargeGrid2'); grid.innerHTML = '';
   bgs.forEach(b => {
     const el = document.createElement('div');
     el.className = 'barge';
+    el.dataset.id = b.id;
     el.textContent = b.nome;
     if(b.manutencao) el.classList.add('maintenance');
     else if(ocupadasIds.has(b.id)) el.classList.add('occupied');
-    el.addEventListener('click', ()=>{
+    if(STATE.selVgBarges.has(b.id)) el.classList.add('selected');
+    el.addEventListener('click', () => {
+      if(STATE.selVgBarges.has(b.id)) STATE.selVgBarges.delete(b.id);
+      else STATE.selVgBarges.add(b.id);
       el.classList.toggle('selected');
-      $('#bgSel2').textContent = grid.querySelectorAll('.barge.selected').length;
+      STATE.vgVolume = null;
+      updateVgComboCount();
+      drawComboPreview();
     });
     grid.appendChild(el);
   });
-  $('#bgSel2').textContent = 0;
+  updateVgComboCount();
+
   const empSel = emps.find(e => e.id === $('#vgEmp').value) || emps[0];
   $('#bgMax2').textContent = empSel ? empSel.comboioMax : '—';
   $('#vgEmp').onchange = () => {
     const e = byId(emps, $('#vgEmp').value);
     $('#bgMax2').textContent = e ? e.comboioMax : '—';
+    drawComboPreview();
   };
+  $('#vgCond').onchange = () => {
+    const c = $('#vgCond').value;
+    $('#vgProdutoWrap').style.display = (c === 'Carregada') ? '' : 'none';
+    $('#btnInserirVolume').style.display = (c === 'Carregada') ? '' : 'none';
+  };
+  $('#vgCond').dispatchEvent(new Event('change'));
 
-  // Detalhes da última viagem
-  const v = (db.viagens || [])[0];
+  // Viagens já programadas
+  const viagens = (db.viagens || []).slice().sort((a,b)=>(b.dataHora||'').localeCompare(a.dataHora||''));
+  $('#tbViagens').innerHTML = viagens.map(v => {
+    const r = byId(rotas, v.rotaId)?.nome || '—';
+    const e = byId(emps, v.empurradorId)?.nome || '—';
+    const tipo = byId(tipos, v.tipoViagem)?.nome || v.tipoViagem || '—';
+    const med = (db.premissas?.mediasConsumoTempo || []).find(m => m.rotaId === v.rotaId && m.empurradorId === v.empurradorId);
+    const t = byId(tipos, v.tipoViagem);
+    const cons = med ? med.consumoMgoL * (1+(t?.deltaConsumo||0)) : null;
+    return `<tr>
+      <td><strong>${escHtml(v.id)}</strong></td>
+      <td>${escHtml(r)}</td><td>${escHtml(e)}</td>
+      <td>${fmtDateTime(v.dataHora)}</td>
+      <td><span class="tag">${escHtml(tipo)}</span></td>
+      <td><span class="tag ${v.status==='Finalizada'?'ok':''}">${escHtml(v.status||'Programada')}</span></td>
+      <td>${v.volumeTotal ? fmtBR.format(v.volumeTotal)+' t' : '—'}</td>
+      <td>${cons ? fmtL(cons) : '—'}</td>
+      <td class="row-actions">
+        <button class="btn ghost" data-action="view-viagem" data-id="${v.id}">Detalhes</button>
+        <button class="btn ghost danger" data-action="del-viagem" data-id="${v.id}">×</button>
+      </td>
+    </tr>`;
+  }).join('') || `<tr><td colspan="9" style="text-align:center;color:#94a3b8;padding:24px">Sem viagens programadas.</td></tr>`;
+
+  drawComboPreview();
+  renderViagemDetalhes(viagens[0]);
+}
+
+function updateVgComboCount(){
+  $('#bgSel2').textContent = STATE.selVgBarges.size;
+  if(STATE.vgVolume){
+    $('#vgVolumeTag').style.display = '';
+    $('#vgVolumeTagVal').textContent = fmtBR.format(Math.round(STATE.vgVolume.total));
+    $('#vgCaladoTagVal').textContent = fmtBR2.format(STATE.vgVolume.caladoMedio);
+  } else {
+    $('#vgVolumeTag').style.display = 'none';
+  }
+}
+
+function renderViagemDetalhes(v){
   const titulo = $('#viagemTitulo');
+  const status = $('#viagemStatus');
   const kpis = $('#viagemKpis');
   if(!v){
-    titulo.textContent = 'Viagem Programada';
-    kpis.innerHTML = '<div class="hint">Nenhuma viagem programada ainda.</div>';
-    $('#comboCanvas').innerHTML = '';
+    titulo.textContent = 'Detalhes da Viagem';
+    status.innerHTML = '';
+    kpis.innerHTML = '<div class="hint">Selecione uma viagem na tabela acima ou crie uma nova abaixo.</div>';
     return;
   }
-  titulo.textContent = 'Viagem Programada · ' + v.id;
+  const db = STATE.db;
+  const emps = db.cadastro?.empurradores || [];
+  const rotas = db.cadastro?.rotas || [];
+  const tipos = db.premissas?.tiposViagem || [];
+  const cidades = db.cadastro?.cidades || [];
+  titulo.textContent = 'Detalhes · ' + v.id;
+  status.innerHTML = `<span class="tag ${v.status==='Finalizada'?'ok':''}">${escHtml(v.status||'Programada')}</span>`;
   const rt = byId(rotas, v.rotaId);
   const orig = rt ? byId(cidades, rt.origem)?.nome : '—';
   const dest = rt ? byId(cidades, rt.destino)?.nome : '—';
-  const tipo = byId(tipos, v.tipoViagem) || tipos.find(t=>t.nome === v.tipoViagem);
+  const tipo = byId(tipos, v.tipoViagem);
   const med = (db.premissas?.mediasConsumoTempo || []).find(m => m.rotaId === v.rotaId && m.empurradorId === v.empurradorId);
   const deltaC = tipo?.deltaConsumo ?? 0;
   const deltaT = tipo?.deltaTempo ?? 0;
   const tempoH = med ? med.tempoHoras * (1+deltaT) : null;
   const mgo = med ? med.consumoMgoL * (1+deltaC) : null;
   const hfo = med ? med.consumoHfoL * (1+deltaC) : null;
-  const precoMgo = ultimoPreco(db, 'MGO');
-  const precoHfo = ultimoPreco(db, 'HFO');
-  const custoMgo = mgo && precoMgo ? mgo * precoMgo : 0;
-  const custoHfo = hfo && precoHfo ? hfo * precoHfo : 0;
+  const custoMgo = mgo ? mgo * ultimoPreco(db, 'MGO') : 0;
+  const custoHfo = hfo ? hfo * ultimoPreco(db, 'HFO') : 0;
   const custoTot = custoMgo + custoHfo;
   const ton = v.volumeTotal || 0;
   const lTon = ton ? ((mgo||0)+(hfo||0))/ton : 0;
   const rTon = ton ? custoTot/ton : 0;
-  const saida = new Date(v.dataHora);
-  const chegada = tempoH ? new Date(saida.getTime() + tempoH*3600*1000) : null;
-
+  const chegada = tempoH ? new Date(new Date(v.dataHora).getTime() + tempoH*3600*1000) : null;
   kpis.innerHTML = `
-    <div class="kpi"><h4>Origem → Destino</h4><div class="v" style="font-size:16px">${orig} → ${dest}</div><div class="s">${tipo?.nome||'—'} · ${v.produto||'—'}</div></div>
+    <div class="kpi"><h4>Origem → Destino</h4><div class="v" style="font-size:16px">${escHtml(orig)} → ${escHtml(dest)}</div><div class="s">${escHtml(tipo?.nome||'—')} · ${escHtml(v.produto||'—')}</div></div>
     <div class="kpi"><h4>Saída prevista</h4><div class="v" style="font-size:16px">${fmtDateTime(v.dataHora)}</div><div class="s">Chegada: ${chegada?fmtDateTime(chegada):'—'}</div></div>
-    <div class="kpi"><h4>Consumo estimado</h4><div class="v" style="font-size:16px">${fmtL(mgo)} MGO</div><div class="s">${hfo?fmtL(hfo)+' HFO · ':''}${fmtBRL.format(custoTot)}</div></div>
-    <div class="kpi"><h4>Volume Comboio</h4><div class="v" style="font-size:16px">${fmtBR.format(ton)} t</div><div class="s">Calado médio ${v.caladoMedio?.toFixed(2) || '—'} m</div></div>
-    <div class="kpi"><h4>L/Tonelada</h4><div class="v" style="font-size:16px">${lTon ? lTon.toFixed(2) : '—'} L/t</div><div class="s">Combustíveis ÷ volume</div></div>
+    <div class="kpi"><h4>Consumo estimado</h4><div class="v" style="font-size:16px">${mgo?fmtL(mgo):'—'} MGO</div><div class="s">${hfo?fmtL(hfo)+' HFO · ':''}${fmtBRL.format(custoTot)}</div></div>
+    <div class="kpi"><h4>Volume Comboio</h4><div class="v" style="font-size:16px">${fmtBR.format(ton)} t</div><div class="s">Calado médio ${v.caladoMedio?fmtBR2.format(v.caladoMedio):'—'} m</div></div>
+    <div class="kpi"><h4>L/Tonelada</h4><div class="v" style="font-size:16px">${lTon ? fmtBR2.format(lTon) : '—'} L/t</div><div class="s">Combustíveis ÷ volume</div></div>
     <div class="kpi"><h4>R$/Tonelada</h4><div class="v" style="font-size:16px">${rTon ? fmtBRL.format(rTon) : '—'}</div><div class="s">Custo unitário</div></div>
     <div class="kpi"><h4>HFO</h4><div class="v" style="font-size:16px">${hfo?fmtL(hfo):'—'}</div><div class="s">${hfo?fmtBRL.format(custoHfo):'Não utilizado'}</div></div>
     <div class="kpi"><h4>Custo Total</h4><div class="v" style="font-size:16px">${fmtBRL.format(custoTot)}</div><div class="s">Combustíveis</div></div>
   `;
-
-  // Combo canvas
-  const empN = byId(emps, v.empurradorId)?.nome || v.empurradorId;
-  const empHp = byId(emps, v.empurradorId)?.potenciaHp || '';
-  const sel = (v.barcacas||[]).map(id => byId(bgs, id)).filter(Boolean);
-  const raked = sel.filter(b=>b.tipo==='Raked');
-  const box = sel.filter(b=>b.tipo==='Box');
-  // Distribuir em ~2 linhas
-  const lanes = [[],[]];
-  const all = [...raked, ...box, ...sel.filter(b=>!['Raked','Box'].includes(b.tipo))];
-  all.forEach((b,i)=> lanes[i%2].push(b));
-  const canvas = $('#comboCanvas');
-  if(!sel.length){
-    canvas.innerHTML = '<div class="hint">Selecione barcaças para visualizar o arranjo.</div>';
-  } else {
-    canvas.innerHTML = lanes.map(lane =>
-      `<div class="row">${lane.map(b=>`<div class="barge-vis">${b.nome} (${b.tipo})</div>`).join('')}</div>`
-    ).join('') + `<div class="pusher">${empN}<br/><span style="font-weight:500;opacity:.85;font-size:11px">${empHp ? fmtBR.format(empHp)+' hp' : ''}</span></div>`;
-  }
 }
 
 function ultimoPreco(db, tipo){
@@ -1104,12 +1083,80 @@ function ultimoPreco(db, tipo){
   return regs.length ? regs[regs.length-1].preco : 0;
 }
 
+/* -------- Combo Canvas + DnD -------- */
+let comboOrder = []; // array de ids na ordem visual
+
+function drawComboPreview(){
+  const db = STATE.db;
+  const bgs = db.cadastro?.barcacas || [];
+  const emps = db.cadastro?.empurradores || [];
+  const sel = [...STATE.selVgBarges].map(id => byId(bgs, id)).filter(Boolean);
+  const canvas = $('#comboCanvas');
+  // se a seleção mudou, recalcula ordem padrão (Raked frente, Box meio)
+  const selIds = sel.map(b=>b.id);
+  const sameSel = comboOrder.length === selIds.length && comboOrder.every(id => selIds.includes(id));
+  if(!sameSel){
+    const raked = sel.filter(b=>b.tipo==='Raked');
+    const box = sel.filter(b=>b.tipo==='Box');
+    const outros = sel.filter(b=>!['Raked','Box'].includes(b.tipo));
+    comboOrder = [...raked, ...box, ...outros].map(b=>b.id);
+  }
+  if(!sel.length){
+    canvas.innerHTML = '<div class="hint">Selecione barcaças acima para visualizar o arranjo.</div>';
+    return;
+  }
+  const empN = byId(emps, $('#vgEmp').value)?.nome || '—';
+  const empHp = byId(emps, $('#vgEmp').value)?.potenciaHp || '';
+  // 2 lanes
+  const ordered = comboOrder.map(id => byId(bgs, id)).filter(Boolean);
+  const lanes = [[],[]];
+  ordered.forEach((b,i)=> lanes[i%2].push(b));
+  canvas.innerHTML =
+    lanes.map(lane => `<div class="row">${lane.map(b=>`<div class="barge-vis ${b.tipo==='Raked'?'raked':''}" draggable="true" data-id="${b.id}">${escHtml(b.nome)}<br/><span style="font-size:10px;opacity:.7;font-weight:500">${escHtml(b.tipo)}</span></div>`).join('')}</div>`).join('')
+    + `<div class="pusher">${escHtml(empN)}<br/><span style="font-weight:500;opacity:.85;font-size:11px">${empHp ? fmtBR.format(empHp)+' hp' : ''}</span></div>`;
+  attachDnD();
+}
+
+function attachDnD(){
+  const canvas = $('#comboCanvas');
+  let dragId = null;
+  canvas.querySelectorAll('.barge-vis').forEach(el => {
+    el.addEventListener('dragstart', e => {
+      dragId = el.dataset.id; el.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', dragId);
+    });
+    el.addEventListener('dragend', () => { el.classList.remove('dragging'); dragId = null; canvas.querySelectorAll('.drop-target').forEach(x=>x.classList.remove('drop-target')); });
+    el.addEventListener('dragover', e => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; el.classList.add('drop-target'); });
+    el.addEventListener('dragleave', () => el.classList.remove('drop-target'));
+    el.addEventListener('drop', e => {
+      e.preventDefault();
+      const fromId = e.dataTransfer.getData('text/plain') || dragId;
+      const toId = el.dataset.id;
+      if(!fromId || fromId === toId) return;
+      const fi = comboOrder.indexOf(fromId);
+      const ti = comboOrder.indexOf(toId);
+      if(fi<0 || ti<0) return;
+      const [m] = comboOrder.splice(fi,1);
+      comboOrder.splice(ti, 0, m);
+      drawComboPreview();
+    });
+  });
+}
+
 /* -------- Preços -------- */
 function renderPrecos(){
+  const db = STATE.db;
   const ano = new Date().getFullYear();
   $('#anoMgo').textContent = ano;
   $('#anoHfo').textContent = ano;
-  $('#prcData').value = new Date().toISOString().slice(0,10);
+  const regs = (db.precos?.registros || []).slice().sort((a,b)=>b.data.localeCompare(a.data));
+  $('#tbPrecos').innerHTML = regs.map((r,idx) => `
+    <tr><td>${fmtDate(r.data)}</td>
+    <td><span class="tag ${r.tipo==='HFO'?'hfo':''}">${escHtml(r.tipo)}</span></td>
+    <td><strong>${fmtBRL.format(r.preco)}</strong></td>
+    <td class="row-actions"><button class="btn ghost danger" data-action="del-preco" data-idx="${idx}">×</button></td>
+    </tr>`).join('') || `<tr><td colspan="4" style="text-align:center;color:#94a3b8;padding:24px">Sem registros de preço.</td></tr>`;
   priceChart('chartMgo', 'MGO', '#0f172a', '#2563eb');
   priceChart('chartHfo', 'HFO', '#0f172a', '#f59e0b');
 }
@@ -1124,12 +1171,9 @@ function priceChart(elId, tipo, histColor, fcColor){
   const innerH = H - padT - padB;
   const months = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
   const ano = new Date().getFullYear();
-
   const regs = ((STATE.db?.precos?.registros)||[])
     .filter(r => r.tipo === tipo && r.data.startsWith(String(ano)))
     .sort((a,b)=>a.data.localeCompare(b.data));
-
-  // Agrupar por mês (média)
   const hist = Array(12).fill(null);
   const buckets = Array.from({length:12}, ()=>[]);
   regs.forEach(r => {
@@ -1137,38 +1181,32 @@ function priceChart(elId, tipo, histColor, fcColor){
     if(m>=0 && m<12) buckets[m].push(r.preco);
   });
   buckets.forEach((b,i)=>{ if(b.length) hist[i] = b.reduce((s,v)=>s+v,0)/b.length; });
-
-  // Forecast linear simples a partir do último ponto histórico
   const lastIdx = hist.reduce((acc,v,i)=> v!=null ? i : acc, -1);
   let fc = Array(12).fill(null);
   if(lastIdx >= 0){
-    const knownXs = [], knownYs = [];
+    const knownXs=[],knownYs=[];
     hist.forEach((v,i)=>{ if(v!=null){knownXs.push(i); knownYs.push(v);} });
-    const n = knownXs.length;
-    let slope = 0.02, base = hist[lastIdx];
-    if(n >= 2){
-      const mx = knownXs.reduce((s,v)=>s+v,0)/n;
-      const my = knownYs.reduce((s,v)=>s+v,0)/n;
+    let slope=0.02, base=hist[lastIdx];
+    if(knownXs.length >= 2){
+      const n=knownXs.length;
+      const mx=knownXs.reduce((s,v)=>s+v,0)/n, my=knownYs.reduce((s,v)=>s+v,0)/n;
       let num=0, den=0;
       for(let i=0;i<n;i++){ num += (knownXs[i]-mx)*(knownYs[i]-my); den += (knownXs[i]-mx)**2; }
       slope = den ? num/den : 0;
-      base = hist[lastIdx];
     }
     fc[lastIdx] = base;
     for(let i = lastIdx+1; i<12; i++){
       fc[i] = base + slope * (i - lastIdx) + Math.sin(i*0.7)*0.02;
     }
   }
-
-  // Escala
   const all = [...hist, ...fc].filter(v=>v!=null);
-  const min = Math.min(...all, 0) - 0.4;
-  const max = Math.max(...all, 1) + 0.6;
+  if(!all.length){ el.innerHTML = '<div class="hint" style="padding:20px;text-align:center">Sem dados de preço para '+tipo+'.</div>'; return; }
+  const min = Math.min(...all) - 0.4;
+  const max = Math.max(...all) + 0.6;
   const yMin = Math.max(0, min);
   const yMax = max;
   const xAt = i => padL + (i/(months.length-1)) * innerW;
   const yAt = v => padT + innerH - ((v - yMin)/(yMax-yMin))*innerH;
-
   let g = `<svg viewBox="0 0 ${W} ${H}" width="100%" height="100%" preserveAspectRatio="none">`;
   for(let s=0;s<=5;s++){
     const v = yMin + (yMax-yMin)*(s/5);
@@ -1176,21 +1214,14 @@ function priceChart(elId, tipo, histColor, fcColor){
     g += `<line x1="${padL}" x2="${W-padR}" y1="${y}" y2="${y}" stroke="#eef0f4"/>`;
     g += `<text x="${padL-8}" y="${y+3}" font-size="10" fill="#94a3b8" text-anchor="end">R$ ${v.toFixed(2)}</text>`;
   }
-  months.forEach((m,i)=>{
-    g += `<text x="${xAt(i)}" y="${H-10}" font-size="10" fill="#64748b" text-anchor="middle">${m}</text>`;
-  });
-
-  // Histórico
+  months.forEach((m,i)=>{ g += `<text x="${xAt(i)}" y="${H-10}" font-size="10" fill="#64748b" text-anchor="middle">${m}</text>`; });
   let dH = '';
   hist.forEach((v,i)=>{ if(v!=null) dH += (dH?'L':'M')+xAt(i)+','+yAt(v); });
   g += `<path d="${dH}" fill="none" stroke="${histColor}" stroke-width="2.2"/>`;
   hist.forEach((v,i)=>{ if(v!=null) g += `<circle cx="${xAt(i)}" cy="${yAt(v)}" r="3" fill="${histColor}"/>`; });
-
-  // Forecast
   let dF = '';
   fc.forEach((v,i)=>{ if(v!=null) dF += (dF?'L':'M')+xAt(i)+','+yAt(v); });
   g += `<path d="${dF}" fill="none" stroke="${fcColor}" stroke-width="2.4" stroke-dasharray="6 5"/>`;
-
   g += `<line x1="${padL}" x2="${padL}" y1="${padT}" y2="${H-padB}" stroke="#cbd5e1"/>`;
   g += `<line x1="${padL}" x2="${W-padR}" y1="${H-padB}" y2="${H-padB}" stroke="#cbd5e1"/>`;
   g += `</svg>`;
@@ -1207,52 +1238,41 @@ function renderMapa(){
     return;
   }
   const usesHfo = e => (e.combustiveis||[]).some(f=>f.tipo==='HFO' && (f.capacidadeBunker>0 || f.consumoForaViagem>0));
-
-  // Header (2 níveis)
   let h1 = '<tr><th rowspan="2">Data</th>';
   let h2 = '<tr>';
   emps.forEach(e => {
     const cols = usesHfo(e) ? 7 : 6;
-    h1 += `<th colspan="${cols}" style="text-align:center">${e.nome}</th>`;
+    h1 += `<th colspan="${cols}" style="text-align:center">${escHtml(e.nome)}</th>`;
     h2 += `<th>Horário</th><th>MGO L/dia</th>${usesHfo(e)?'<th>HFO L/dia</th>':''}<th>Abastec.</th><th>Estoque MGO</th><th>% Tanque</th><th>Lat/Lng</th>`;
   });
   h1 += '</tr>'; h2 += '</tr>';
   $('#mapaHead').innerHTML = h1 + h2;
-
-  // Body: 30 dias centrados em hoje
   const today = new Date(); today.setHours(0,0,0,0);
   const viagens = db.viagens || [];
   const abast = db.abastecimentos || [];
   const lancs = db.consumoDiario?.lancamentos || [];
-  const rotas = db.cadastro?.rotas || [];
   const tipos = db.premissas?.tiposViagem || [];
   const medias = db.premissas?.mediasConsumoTempo || [];
-
   const sameDay = (a,b) => a.toDateString() === b.toDateString();
   const rows = [];
   for(let d = -14; d <= 30; d++){
     const dt = new Date(today); dt.setDate(today.getDate()+d);
     let row = `<tr class="${d===0?'now-row':''}"><td><strong>${dt.toLocaleDateString('pt-BR')}</strong></td>`;
     emps.forEach(e => {
-      // Viagem do dia
       const v = viagens.find(v => v.empurradorId === e.id && sameDay(new Date(v.dataHora), dt));
       let hora = '—';
-      if(v){
-        hora = new Date(v.dataHora).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}) + ' (Saída)';
-      } else {
-        // verificar chegada
+      if(v) hora = new Date(v.dataHora).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}) + ' (Saída)';
+      else {
         const arr = viagens.find(v => {
           if(v.empurradorId !== e.id) return false;
           const tipo = tipos.find(t=>t.id===v.tipoViagem||t.nome===v.tipoViagem);
           const med = medias.find(m=>m.rotaId===v.rotaId && m.empurradorId===v.empurradorId);
           if(!med) return false;
           const tempoH = med.tempoHoras * (1 + (tipo?.deltaTempo||0));
-          const arrDt = new Date(new Date(v.dataHora).getTime() + tempoH*3600*1000);
-          return sameDay(arrDt, dt);
+          return sameDay(new Date(new Date(v.dataHora).getTime() + tempoH*3600*1000), dt);
         });
         if(arr) hora = 'chegada (est.)';
       }
-
       const lanc = lancs.find(l => l.empurradorId === e.id && l.data === dt.toISOString().slice(0,10));
       const mgoDia = lanc ? lanc.mgoL : '—';
       const hfoDia = lanc ? (lanc.hfoL || 0) : '—';
@@ -1262,7 +1282,6 @@ function renderMapa(){
       const capMgo = (e.combustiveis||[]).find(f=>f.tipo==='MGO')?.capacidadeBunker || 0;
       const pct = (lanc && capMgo) ? Math.round(lanc.estoqueDiesel*100/capMgo) + '%' : '—';
       const latlng = lanc ? `${lanc.lat?.toFixed(2)}/${lanc.lng?.toFixed(2)}` : '—';
-
       row += `<td>${hora}</td><td>${mgoDia==='—'?'—':fmtBR.format(mgoDia)}</td>`;
       if(usesHfo(e)) row += `<td>${hfoDia==='—'?'—':fmtBR.format(hfoDia)}</td>`;
       row += `<td>${abText}</td><td>${estMgo}</td><td>${pct}</td><td>${latlng}</td>`;
@@ -1271,14 +1290,669 @@ function renderMapa(){
     rows.push(row);
   }
   $('#mapaBody').innerHTML = rows.join('');
-  setTimeout(()=>{
-    const row = $('#mapaBody').querySelector('.now-row');
-    if(row) row.scrollIntoView({block:'center'});
-  }, 30);
+  setTimeout(()=>{ const row = $('#mapaBody').querySelector('.now-row'); if(row) row.scrollIntoView({block:'center'}); }, 30);
 }
 
 /* ============================================================
-   EVENTS
+   MODAL INFRA
+   ============================================================ */
+let modalSubmitFn = null;
+function openModal({title, body, footer, large=false, onSubmit=null}){
+  $('#modalTitle').textContent = title;
+  $('#modalBody').innerHTML = body || '';
+  $('#modalFooter').innerHTML = footer || `
+    <div class="right">
+      <button class="btn" data-modal-action="cancel">Cancelar</button>
+      <button class="btn primary" data-modal-action="submit">Salvar</button>
+    </div>`;
+  $('#modalBox').classList.toggle('lg', large);
+  $('#modalBackdrop').classList.add('open');
+  modalSubmitFn = onSubmit;
+  // foco no primeiro input
+  setTimeout(()=>{ const f = $('#modalBody').querySelector('input,select,textarea'); if(f) f.focus(); }, 50);
+}
+function closeModal(){ $('#modalBackdrop').classList.remove('open'); modalSubmitFn = null; }
+
+$('#modalClose').addEventListener('click', closeModal);
+$('#modalBackdrop').addEventListener('click', e => { if(e.target === $('#modalBackdrop')) closeModal(); });
+document.addEventListener('keydown', e => { if(e.key === 'Escape' && $('#modalBackdrop').classList.contains('open')) closeModal(); });
+$('#modalFooter').addEventListener('click', e => {
+  const a = e.target.closest('[data-modal-action]');
+  if(!a) return;
+  if(a.dataset.modalAction === 'cancel') closeModal();
+  if(a.dataset.modalAction === 'submit'){
+    if(modalSubmitFn){
+      const ok = modalSubmitFn();
+      if(ok !== false) closeModal();
+    } else closeModal();
+  }
+});
+function getField(name){
+  const el = $('#modalBody').querySelector(`[name="${name}"]`);
+  if(!el) return null;
+  if(el.type === 'checkbox') return el.checked;
+  return el.value;
+}
+
+/* ============================================================
+   CRUD MODALS
+   ============================================================ */
+
+/* ----- Empurrador ----- */
+function openEmpurradorModal(existing){
+  const e = existing || {id:uid('EMP'), nome:'', potenciaHp:1800, cor:COR_PALETA[0], combustiveis:[
+    {tipo:'MGO', consumoForaViagem:0, capacidadeBunker:0},
+    {tipo:'HFO', consumoForaViagem:0, capacidadeBunker:0}
+  ], comboioMax:16};
+  const mgo = (e.combustiveis||[]).find(f=>f.tipo==='MGO') || {tipo:'MGO',consumoForaViagem:0,capacidadeBunker:0};
+  const hfo = (e.combustiveis||[]).find(f=>f.tipo==='HFO') || {tipo:'HFO',consumoForaViagem:0,capacidadeBunker:0};
+  const swatches = COR_PALETA.map(c => `<div class="swatch ${c===e.cor?'sel':''}" style="background:${c}" data-color="${c}"></div>`).join('');
+  openModal({
+    title: existing ? 'Editar Empurrador' : 'Novo Empurrador',
+    large: true,
+    body: `
+      <div class="grid cols-2">
+        <div class="field"><label>Nome</label><input name="nome" value="${escHtml(e.nome)}" placeholder="Ex.: EM Atlas"/></div>
+        <div class="field"><label>Potência (hp)</label><input type="number" name="potenciaHp" value="${e.potenciaHp||0}"/></div>
+        <div class="field" style="grid-column:span 2">
+          <label>Cor</label>
+          <div class="color-swatches" id="colorSwatches">${swatches}</div>
+          <input type="hidden" name="cor" value="${e.cor}"/>
+        </div>
+        <div class="field"><label>Comboio máximo (barcaças)</label><input type="number" name="comboioMax" value="${e.comboioMax||16}"/></div>
+        <div></div>
+      </div>
+      <h4 style="margin:18px 0 8px;color:#475569;font-size:12px;letter-spacing:.04em;text-transform:uppercase">Combustíveis</h4>
+      <div class="grid cols-2">
+        <div>
+          <strong style="font-size:13px">MGO</strong>
+          <div class="field"><label>Consumo fora viagem (L/dia)</label><input type="number" name="mgoCons" value="${mgo.consumoForaViagem||0}"/></div>
+          <div class="field"><label>Capacidade bunker (L)</label><input type="number" name="mgoCap" value="${mgo.capacidadeBunker||0}"/></div>
+        </div>
+        <div>
+          <strong style="font-size:13px">HFO</strong>
+          <div class="field"><label>Consumo fora viagem (L/dia)</label><input type="number" name="hfoCons" value="${hfo.consumoForaViagem||0}"/></div>
+          <div class="field"><label>Capacidade bunker (L)</label><input type="number" name="hfoCap" value="${hfo.capacidadeBunker||0}"/></div>
+        </div>
+      </div>
+      <div class="help">Deixe os valores HFO em 0 se o empurrador não utilizar esse combustível.</div>
+    `,
+    onSubmit: () => {
+      const nome = getField('nome')?.trim();
+      if(!nome){ toast('Informe o nome', false); return false; }
+      const obj = {
+        id: e.id,
+        nome,
+        potenciaHp: +getField('potenciaHp') || 0,
+        cor: getField('cor') || COR_PALETA[0],
+        comboioMax: +getField('comboioMax') || 16,
+        combustiveis: [
+          {tipo:'MGO', consumoForaViagem:+getField('mgoCons')||0, capacidadeBunker:+getField('mgoCap')||0},
+          {tipo:'HFO', consumoForaViagem:+getField('hfoCons')||0, capacidadeBunker:+getField('hfoCap')||0}
+        ]
+      };
+      const list = STATE.db.cadastro.empurradores;
+      const i = list.findIndex(x => x.id === e.id);
+      if(i>=0) list[i] = obj; else list.push(obj);
+      persist(); renderAll(); toast(existing ? 'Empurrador atualizado' : 'Empurrador criado');
+    }
+  });
+  // wire swatches
+  $('#colorSwatches').addEventListener('click', ev => {
+    const s = ev.target.closest('.swatch'); if(!s) return;
+    $('#colorSwatches').querySelectorAll('.swatch').forEach(x=>x.classList.remove('sel'));
+    s.classList.add('sel');
+    $('#modalBody').querySelector('[name="cor"]').value = s.dataset.color;
+  });
+}
+
+/* ----- Barcaça (lote) ----- */
+function openBarcacaLoteModal(){
+  openModal({
+    title: 'Criar barcaças em lote',
+    body: `
+      <div class="grid cols-2">
+        <div class="field"><label>Prefixo do nome</label><input name="prefixo" value="BG "/></div>
+        <div class="field"><label>Tipo</label><select name="tipo"><option>Raked</option><option>Box</option></select></div>
+        <div class="field"><label>Numeração inicial</label><input type="number" name="ini" value="1"/></div>
+        <div class="field"><label>Quantidade</label><input type="number" name="qtd" value="10"/></div>
+        <div class="field"><label>Calado Mínimo (m)</label><input type="number" step="0.01" name="cMin" value="1.8"/></div>
+        <div class="field"><label>Volume Mínimo (t)</label><input type="number" name="vMin" value="800"/></div>
+        <div class="field"><label>Calado Máximo (m)</label><input type="number" step="0.01" name="cMax" value="3.6"/></div>
+        <div class="field"><label>Volume Máximo (t)</label><input type="number" name="vMax" value="2400"/></div>
+      </div>
+      <div class="help">Serão criadas <strong id="qtdPreview">10</strong> barcaças nomeadas "<span id="prePreview">BG </span><span id="iniPreview">1</span>" até "<span id="prePreview2">BG </span><span id="endPreview">10</span>".</div>
+    `,
+    onSubmit: () => {
+      const prefixo = getField('prefixo')||'BG ';
+      const tipo = getField('tipo');
+      const ini = +getField('ini')||1;
+      const qtd = +getField('qtd')||0;
+      if(qtd <= 0){ toast('Quantidade inválida', false); return false; }
+      const cMin=+getField('cMin')||1.8, vMin=+getField('vMin')||800, cMax=+getField('cMax')||3.6, vMax=+getField('vMax')||2400;
+      const list = STATE.db.cadastro.barcacas;
+      for(let i=0;i<qtd;i++){
+        list.push({id:uid('BG'), nome:prefixo + (ini+i), tipo, caladoMin:cMin, volumeMin:vMin, caladoMax:cMax, volumeMax:vMax, manutencao:false});
+      }
+      persist(); renderAll(); toast(qtd + ' barcaças criadas');
+    }
+  });
+  const upd = () => {
+    const p = getField('prefixo')||''; const i = +getField('ini')||1; const q = +getField('qtd')||0;
+    $('#qtdPreview').textContent = q;
+    $('#prePreview').textContent = p; $('#prePreview2').textContent = p;
+    $('#iniPreview').textContent = i; $('#endPreview').textContent = i + q - 1;
+  };
+  ['prefixo','ini','qtd'].forEach(n => $('#modalBody').querySelector(`[name="${n}"]`).addEventListener('input', upd));
+}
+
+/* ----- Barcaça (individual) ----- */
+function openBarcacaModal(existing){
+  const b = existing || {id:uid('BG'), nome:'', tipo:'Raked', caladoMin:1.8, volumeMin:800, caladoMax:3.6, volumeMax:2400, manutencao:false};
+  openModal({
+    title: existing ? 'Editar Barcaça · ' + b.nome : 'Nova Barcaça',
+    body: `
+      <div class="grid cols-2">
+        <div class="field"><label>Nome</label><input name="nome" value="${escHtml(b.nome)}"/></div>
+        <div class="field"><label>Tipo</label><select name="tipo"><option ${b.tipo==='Raked'?'selected':''}>Raked</option><option ${b.tipo==='Box'?'selected':''}>Box</option></select></div>
+        <div class="field"><label>Calado Mín. (m)</label><input type="number" step="0.01" name="cMin" value="${b.caladoMin||0}"/></div>
+        <div class="field"><label>Volume Mín. (t)</label><input type="number" name="vMin" value="${b.volumeMin||0}"/></div>
+        <div class="field"><label>Calado Máx. (m)</label><input type="number" step="0.01" name="cMax" value="${b.caladoMax||0}"/></div>
+        <div class="field"><label>Volume Máx. (t)</label><input type="number" name="vMax" value="${b.volumeMax||0}"/></div>
+        <div class="field" style="grid-column:span 2">
+          <label class="check"><input type="checkbox" name="manutencao" ${b.manutencao?'checked':''}/> Em Manutenção ou Indisponível</label>
+        </div>
+      </div>
+    `,
+    footer: `
+      ${existing ? '<button class="btn danger" data-modal-action="delete">Excluir</button>' : ''}
+      <div class="right">
+        <button class="btn" data-modal-action="cancel">Cancelar</button>
+        <button class="btn primary" data-modal-action="submit">Salvar</button>
+      </div>`,
+    onSubmit: () => {
+      const nome = getField('nome')?.trim();
+      if(!nome){ toast('Informe o nome', false); return false; }
+      const obj = {
+        id:b.id, nome, tipo:getField('tipo'),
+        caladoMin:+getField('cMin')||0, volumeMin:+getField('vMin')||0,
+        caladoMax:+getField('cMax')||0, volumeMax:+getField('vMax')||0,
+        manutencao: getField('manutencao')===true
+      };
+      const list = STATE.db.cadastro.barcacas;
+      const i = list.findIndex(x => x.id === b.id);
+      if(i>=0) list[i] = obj; else list.push(obj);
+      persist(); renderAll(); toast('Barcaça salva');
+    }
+  });
+  // delete handler
+  $('#modalFooter').querySelector('[data-modal-action="delete"]')?.addEventListener('click', () => {
+    STATE.db.cadastro.barcacas = STATE.db.cadastro.barcacas.filter(x => x.id !== b.id);
+    persist(); renderAll(); closeModal(); toast('Barcaça removida');
+  });
+}
+
+/* ----- Tripulação ----- */
+const FUNCOES = ['Comandante','Piloto Fluvial','Marinheiro de Convés','Chefe de Máquinas','Marinheiro de Máquinas','Cozinheira','Moço de Convés'];
+function openTripulacaoModal(existing){
+  const t = existing || {id:uid('TRIP'), nome:'', nascimento:'', matricula:'', funcao:'Comandante', foto:''};
+  openModal({
+    title: existing ? 'Editar Tripulação' : 'Nova Tripulação',
+    body: `
+      <div class="grid cols-2">
+        <div class="field" style="grid-column:span 2"><label>Nome</label><input name="nome" value="${escHtml(t.nome)}"/></div>
+        <div class="field"><label>Data de Nascimento</label><input type="date" name="nascimento" value="${t.nascimento||''}"/></div>
+        <div class="field"><label>Matrícula</label><input name="matricula" value="${escHtml(t.matricula||'')}"/></div>
+        <div class="field"><label>Função</label>
+          <select name="funcao">${FUNCOES.map(f=>`<option ${f===t.funcao?'selected':''}>${f}</option>`).join('')}</select>
+        </div>
+        <div class="field"><label>Caminho da foto (opcional)</label><input name="foto" placeholder="img/tripulacao/nome.jpg" value="${escHtml(t.foto||'')}"/></div>
+      </div>
+      <div class="help">Idade calculada automaticamente: <strong id="idadePreview">${age(t.nascimento)}</strong></div>
+    `,
+    onSubmit: () => {
+      const nome = getField('nome')?.trim();
+      if(!nome){ toast('Informe o nome', false); return false; }
+      const obj = {id:t.id, nome, nascimento:getField('nascimento'), matricula:getField('matricula'), funcao:getField('funcao'), foto:getField('foto')};
+      const list = STATE.db.cadastro.tripulacao;
+      const i = list.findIndex(x=>x.id===t.id);
+      if(i>=0) list[i] = obj; else list.push(obj);
+      persist(); renderAll(); toast('Tripulação salva');
+    }
+  });
+  $('#modalBody').querySelector('[name="nascimento"]').addEventListener('input', e => {
+    $('#idadePreview').textContent = age(e.target.value);
+  });
+}
+
+/* ----- Cidade ----- */
+function openCidadeModal(existing){
+  const c = existing || {id:uid('CID'), nome:'', lat:'', lng:''};
+  openModal({
+    title: existing ? 'Editar Cidade' : 'Nova Cidade',
+    body: `
+      <div class="grid cols-2">
+        <div class="field" style="grid-column:span 2"><label>Nome</label><input name="nome" value="${escHtml(c.nome)}"/></div>
+        <div class="field"><label>Latitude (decimal)</label><input type="number" step="any" name="lat" value="${c.lat??''}"/></div>
+        <div class="field"><label>Longitude (decimal)</label><input type="number" step="any" name="lng" value="${c.lng??''}"/></div>
+      </div>
+    `,
+    onSubmit: () => {
+      const nome = getField('nome')?.trim();
+      if(!nome){ toast('Informe o nome', false); return false; }
+      const obj = {id:c.id, nome, lat:parseFloat(getField('lat'))||null, lng:parseFloat(getField('lng'))||null};
+      const list = STATE.db.cadastro.cidades;
+      const i = list.findIndex(x=>x.id===c.id);
+      if(i>=0) list[i] = obj; else list.push(obj);
+      persist(); renderAll(); toast('Cidade salva');
+    }
+  });
+}
+
+/* ----- Rota ----- */
+function openRotaModal(existing){
+  const r = existing || {id:uid('RT'), nome:'', origem:'', destino:''};
+  const cds = STATE.db.cadastro.cidades || [];
+  const opts = cds.map(c => `<option value="${c.id}">${escHtml(c.nome)}</option>`).join('');
+  if(!cds.length){ toast('Cadastre cidades antes de criar rotas', false); return; }
+  openModal({
+    title: existing ? 'Editar Rota' : 'Nova Rota',
+    body: `
+      <div class="grid cols-2">
+        <div class="field" style="grid-column:span 2"><label>Nome do trecho</label><input name="nome" value="${escHtml(r.nome)}" placeholder="Ex.: Itaituba → Barcarena"/></div>
+        <div class="field"><label>Cidade de Origem</label><select name="origem">${opts}</select></div>
+        <div class="field"><label>Cidade de Destino</label><select name="destino">${opts}</select></div>
+      </div>
+    `,
+    onSubmit: () => {
+      let nome = getField('nome')?.trim();
+      const origem = getField('origem'), destino = getField('destino');
+      if(!origem || !destino){ toast('Selecione origem e destino', false); return false; }
+      if(!nome){
+        const o = byId(cds, origem)?.nome, d = byId(cds, destino)?.nome;
+        nome = `${o} → ${d}`;
+      }
+      const obj = {id:r.id, nome, origem, destino};
+      const list = STATE.db.cadastro.rotas;
+      const i = list.findIndex(x=>x.id===r.id);
+      if(i>=0) list[i] = obj; else list.push(obj);
+      persist(); renderAll(); toast('Rota salva');
+    }
+  });
+  if(existing){
+    $('#modalBody').querySelector('[name="origem"]').value = existing.origem;
+    $('#modalBody').querySelector('[name="destino"]').value = existing.destino;
+  }
+}
+
+/* ----- Tipo de Viagem ----- */
+function openTipoViagemModal(existing){
+  const t = existing || {id:uid('TV'), nome:'', deltaConsumo:0, deltaTempo:0};
+  openModal({
+    title: existing ? 'Editar Tipo de Viagem' : 'Novo Tipo de Viagem',
+    body: `
+      <div class="grid cols-2">
+        <div class="field" style="grid-column:span 2"><label>Nome</label><input name="nome" value="${escHtml(t.nome)}"/></div>
+        <div class="field"><label>Δ Consumo (%)</label><input type="number" name="deltaC" value="${(t.deltaConsumo*100).toFixed(0)}"/></div>
+        <div class="field"><label>Δ Tempo (%)</label><input type="number" name="deltaT" value="${(t.deltaTempo*100).toFixed(0)}"/></div>
+      </div>
+      <div class="help">Valores positivos aumentam consumo/tempo, negativos reduzem.</div>
+    `,
+    footer: `
+      ${existing ? '<button class="btn danger" data-modal-action="delete">Excluir</button>' : ''}
+      <div class="right">
+        <button class="btn" data-modal-action="cancel">Cancelar</button>
+        <button class="btn primary" data-modal-action="submit">Salvar</button>
+      </div>`,
+    onSubmit: () => {
+      const nome = getField('nome')?.trim(); if(!nome){ toast('Informe o nome', false); return false; }
+      const obj = {id:t.id, nome, deltaConsumo:(+getField('deltaC')||0)/100, deltaTempo:(+getField('deltaT')||0)/100};
+      const list = STATE.db.premissas.tiposViagem;
+      const i = list.findIndex(x=>x.id===t.id);
+      if(i>=0) list[i] = obj; else list.push(obj);
+      persist(); renderAll(); toast('Tipo salvo');
+    }
+  });
+  $('#modalFooter').querySelector('[data-modal-action="delete"]')?.addEventListener('click', () => {
+    STATE.db.premissas.tiposViagem = STATE.db.premissas.tiposViagem.filter(x=>x.id !== t.id);
+    persist(); renderAll(); closeModal(); toast('Tipo removido');
+  });
+}
+
+/* ----- Média de Consumo / Tempo ----- */
+function openMediaModal(){
+  const db = STATE.db;
+  const rotas = db.cadastro?.rotas || [];
+  const emps = db.cadastro?.empurradores || [];
+  if(!rotas.length || !emps.length){ toast('Cadastre rotas e empurradores antes', false); return; }
+  openModal({
+    title: 'Lançar Média de Consumo / Tempo',
+    body: `
+      <div class="grid cols-2">
+        <div class="field"><label>Trecho</label><select name="rotaId">${rotas.map(r=>`<option value="${r.id}">${escHtml(r.nome)}</option>`).join('')}</select></div>
+        <div class="field"><label>Empurrador</label><select name="empurradorId">${emps.map(e=>`<option value="${e.id}">${escHtml(e.nome)}</option>`).join('')}</select></div>
+        <div class="field"><label>Condição</label><select name="condicao"><option>Carregada</option><option>Vazia</option><option>Scort Tug</option><option>Escoteiro</option></select></div>
+        <div class="field"><label>Produto</label><input name="produto" placeholder="Soja, Milho..."/></div>
+        <div class="field"><label>Tempo (horas)</label><input type="number" name="tempo" value="0"/></div>
+        <div class="field"><label>Consumo MGO (L)</label><input type="number" name="mgo" value="0"/></div>
+        <div class="field"><label>Consumo HFO (L)</label><input type="number" name="hfo" value="0"/></div>
+      </div>
+    `,
+    onSubmit: () => {
+      const obj = {
+        id: uid('MED'),
+        rotaId: getField('rotaId'),
+        empurradorId: getField('empurradorId'),
+        condicao: getField('condicao'),
+        produto: getField('produto'),
+        tempoHoras: +getField('tempo')||0,
+        consumoMgoL: +getField('mgo')||0,
+        consumoHfoL: +getField('hfo')||0,
+        mediaAtualizada: +getField('mgo')||0
+      };
+      STATE.db.premissas.mediasConsumoTempo.push(obj);
+      persist(); renderAll(); toast('Média lançada');
+    }
+  });
+}
+
+/* ----- Lançamento Consumo Diário ----- */
+function openLancamentoModal(){
+  const emps = STATE.db.cadastro?.empurradores || [];
+  if(!emps.length){ toast('Cadastre empurradores antes', false); return; }
+  const yest = new Date(); yest.setDate(yest.getDate()-1);
+  openModal({
+    title: 'Lançar Consumo Diário',
+    body: `
+      <div class="grid cols-2">
+        <div class="field"><label>Data de Referência</label><input type="date" name="data" value="${yest.toISOString().slice(0,10)}"/></div>
+        <div class="field"><label>Empurrador</label><select name="empurradorId">${emps.map(e=>`<option value="${e.id}">${escHtml(e.nome)}</option>`).join('')}</select></div>
+        <div class="field"><label>Consumo MGO (L)</label><input type="number" name="mgoL" value="0"/></div>
+        <div class="field"><label>Consumo HFO (L)</label><input type="number" name="hfoL" value="0"/></div>
+        <div class="field"><label>Consumo Água (L)</label><input type="number" name="aguaL" value="0"/></div>
+        <div class="field"><label>Estoque Diesel (L)</label><input type="number" name="estDiesel" value="0"/></div>
+        <div class="field"><label>Estoque HFO (L)</label><input type="number" name="estHfo" value="0"/></div>
+        <div class="field"><label>Estoque Água (L)</label><input type="number" name="estAgua" value="0"/></div>
+        <div class="field"><label>Latitude</label><input type="number" step="any" name="lat"/></div>
+        <div class="field"><label>Longitude</label><input type="number" step="any" name="lng"/></div>
+      </div>
+    `,
+    onSubmit: () => {
+      const obj = {
+        id: uid('CD'),
+        data: getField('data'),
+        empurradorId: getField('empurradorId'),
+        mgoL:+getField('mgoL')||0, hfoL:+getField('hfoL')||0, aguaL:+getField('aguaL')||0,
+        estoqueDiesel:+getField('estDiesel')||0, estoqueHfo:+getField('estHfo')||0, estoqueAgua:+getField('estAgua')||0,
+        lat: parseFloat(getField('lat'))||null, lng: parseFloat(getField('lng'))||null
+      };
+      STATE.db.consumoDiario.lancamentos.push(obj);
+      persist(); renderAll(); toast('Lançamento salvo');
+    }
+  });
+}
+
+/* ----- Transferência ----- */
+function openTransferenciaModal(){
+  const emps = STATE.db.cadastro?.empurradores || [];
+  if(emps.length < 2){ toast('Cadastre ao menos 2 empurradores', false); return; }
+  openModal({
+    title: 'Nova Transferência',
+    body: `
+      <div class="grid cols-2">
+        <div class="field"><label>Data</label><input type="date" name="data" value="${new Date().toISOString().slice(0,10)}"/></div>
+        <div class="field"><label>Tipo</label><select name="tipo"><option>MGO</option><option>HFO</option><option>Água</option></select></div>
+        <div class="field"><label>De (origem)</label><select name="origemId">${emps.map(e=>`<option value="${e.id}">${escHtml(e.nome)}</option>`).join('')}</select></div>
+        <div class="field"><label>Para (destino)</label><select name="destinoId">${emps.map(e=>`<option value="${e.id}">${escHtml(e.nome)}</option>`).join('')}</select></div>
+        <div class="field" style="grid-column:span 2"><label>Litros</label><input type="number" name="litros" value="0"/></div>
+      </div>
+    `,
+    onSubmit: () => {
+      if(getField('origemId') === getField('destinoId')){ toast('Origem e destino devem ser diferentes', false); return false; }
+      STATE.db.consumoDiario.transferencias.push({
+        id:uid('TR'), data:getField('data'), origemId:getField('origemId'),
+        destinoId:getField('destinoId'), tipo:getField('tipo'), litros:+getField('litros')||0
+      });
+      persist(); renderAll(); toast('Transferência salva');
+    }
+  });
+}
+
+/* ----- Preço ----- */
+function openPrecoModal(){
+  openModal({
+    title: 'Lançar Preço',
+    body: `
+      <div class="grid cols-2">
+        <div class="field"><label>Data</label><input type="date" name="data" value="${new Date().toISOString().slice(0,10)}"/></div>
+        <div class="field"><label>Combustível</label><select name="tipo"><option>MGO</option><option>HFO</option></select></div>
+        <div class="field" style="grid-column:span 2"><label>Preço (R$ por litro)</label><input type="number" step="0.01" name="preco" value="0.00"/></div>
+      </div>
+    `,
+    onSubmit: () => {
+      const preco = parseFloat(getField('preco')); if(!preco || preco<=0){ toast('Preço inválido', false); return false; }
+      STATE.db.precos.registros.push({data:getField('data'), tipo:getField('tipo'), preco});
+      persist(); renderAll(); toast('Preço lançado');
+    }
+  });
+}
+
+/* ----- Abastecimento ----- */
+function openAbastecimentoModal(){
+  const emps = STATE.db.cadastro?.empurradores || [];
+  const cds = STATE.db.cadastro?.cidades || [];
+  if(!emps.length || !cds.length){ toast('Cadastre empurradores e cidades antes', false); return; }
+  openModal({
+    title: 'Programar Abastecimento',
+    body: `
+      <div class="grid cols-2">
+        <div class="field"><label>Empurrador</label><select name="empurradorId">${emps.map(e=>`<option value="${e.id}">${escHtml(e.nome)}</option>`).join('')}</select></div>
+        <div class="field"><label>Data prevista</label><input type="date" name="data" value="${new Date().toISOString().slice(0,10)}"/></div>
+        <div class="field"><label>Cidade</label><select name="cidadeId">${cds.map(c=>`<option value="${c.id}">${escHtml(c.nome)}</option>`).join('')}</select></div>
+        <div class="field"><label>Tipo de combustível</label><select name="tipo"><option>MGO</option><option>HFO</option></select></div>
+        <div class="field" style="grid-column:span 2"><label>Volume (litros)</label><input type="number" name="litros" value="0"/></div>
+      </div>
+    `,
+    onSubmit: () => {
+      const litros = +getField('litros')||0;
+      const tipo = getField('tipo');
+      const preco = ultimoPreco(STATE.db, tipo);
+      STATE.db.abastecimentos = STATE.db.abastecimentos || [];
+      STATE.db.abastecimentos.push({
+        id:uid('AB'), empurradorId:getField('empurradorId'), data:getField('data'),
+        cidadeId:getField('cidadeId'), tipo, litros, valorEstimado: preco*litros
+      });
+      persist(); renderAll(); toast(`Abastecimento programado (~${fmtBRL.format(preco*litros)})`);
+    }
+  });
+}
+
+/* ----- Inserir Volume ----- */
+function openVolumeModal(){
+  const db = STATE.db;
+  const bgs = db.cadastro?.barcacas || [];
+  const sel = [...STATE.selVgBarges].map(id => byId(bgs, id)).filter(Boolean);
+  if(!sel.length){ toast('Selecione barcaças primeiro', false); return; }
+  let mode = 'total';
+  const calc = () => {
+    const minV = sel.reduce((s,b)=>s+(b.volumeMin||0),0);
+    const maxV = sel.reduce((s,b)=>s+(b.volumeMax||0),0);
+    return {minV, maxV};
+  };
+  const {minV, maxV} = calc();
+  const render = () => {
+    const body = $('#modalBody');
+    let html = `<div class="tabs-mini">
+      <button data-mode="total" class="${mode==='total'?'active':''}">Volume Total</button>
+      <button data-mode="calado" class="${mode==='calado'?'active':''}">Calado Médio</button>
+      <button data-mode="ind" class="${mode==='ind'?'active':''}">Volume Individual</button>
+    </div>`;
+    html += `<div class="help" style="margin-bottom:10px">Comboio selecionado: <strong>${sel.length} barcaças</strong>. Volume agregado entre <strong>${fmtBR.format(minV)} t</strong> e <strong>${fmtBR.format(maxV)} t</strong>.</div>`;
+    if(mode === 'total'){
+      html += `<div class="field" style="max-width:300px"><label>Volume total do comboio (t)</label>
+        <input type="number" id="volTotalInput" value="${Math.round((minV+maxV)/2)}"/></div>
+        <div class="help">O sistema divide o volume igualmente entre as ${sel.length} barcaças e calcula o calado médio com base no cadastro de cada barcaça (interpolação entre volume mín./máx. e calado mín./máx.).</div>
+        <div class="kpi" style="margin-top:14px;display:inline-block;min-width:220px"><h4>Calado médio estimado</h4><div class="v" id="prevCalado">—</div><div class="s">Volume por barcaça: <span id="prevPorBarca">—</span></div></div>`;
+    } else if(mode === 'calado'){
+      const cMin = sel.reduce((s,b)=>s+(b.caladoMin||0),0)/sel.length;
+      const cMax = sel.reduce((s,b)=>s+(b.caladoMax||0),0)/sel.length;
+      html += `<div class="field" style="max-width:300px"><label>Calado médio (m)</label>
+        <input type="number" step="0.01" id="caladoInput" value="${((cMin+cMax)/2).toFixed(2)}"/></div>
+        <div class="help">Limites médios do comboio: ${cMin.toFixed(2)} m a ${cMax.toFixed(2)} m. O sistema deriva o volume por barcaça interpolando entre os limites de cada uma.</div>
+        <div class="kpi" style="margin-top:14px;display:inline-block;min-width:220px"><h4>Volume total estimado</h4><div class="v" id="prevTotal">—</div><div class="s">Volume médio: <span id="prevMedio">—</span> t/barcaça</div></div>`;
+    } else if(mode === 'ind'){
+      html += `<div style="max-height:340px;overflow:auto;border:1px solid var(--border);border-radius:10px">
+        <table class="tbl"><thead><tr><th>Barcaça</th><th>Min (t)</th><th>Max (t)</th><th>Volume (t)</th></tr></thead><tbody>
+        ${sel.map(b=>`<tr>
+          <td><strong>${escHtml(b.nome)}</strong> <span style="color:#94a3b8;font-size:11px">${b.tipo}</span></td>
+          <td>${fmtBR.format(b.volumeMin||0)}</td><td>${fmtBR.format(b.volumeMax||0)}</td>
+          <td><input type="number" data-bid="${b.id}" class="indVol" value="${Math.round(((b.volumeMin||0)+(b.volumeMax||0))/2)}" style="width:120px;padding:6px 10px;border:1px solid var(--border-strong);border-radius:8px"/></td>
+        </tr>`).join('')}
+        </tbody></table></div>
+        <div class="kpi" style="margin-top:14px;display:inline-block;min-width:220px"><h4>Volume total</h4><div class="v" id="prevTotalInd">—</div><div class="s">Calado médio estimado: <span id="prevCaladoInd">—</span> m</div></div>`;
+    }
+    body.innerHTML = html;
+    body.querySelectorAll('.tabs-mini button').forEach(b => b.addEventListener('click', () => { mode = b.dataset.mode; render(); }));
+    if(mode === 'total'){
+      const upd = () => {
+        const v = +$('#volTotalInput').value || 0;
+        const por = v/sel.length;
+        const cal = avgCaladoFromVol(sel, por);
+        $('#prevCalado').textContent = isFinite(cal) ? fmtBR2.format(cal)+' m' : '—';
+        $('#prevPorBarca').textContent = fmtBR.format(por) + ' t';
+      };
+      $('#volTotalInput').addEventListener('input', upd); upd();
+    } else if(mode === 'calado'){
+      const upd = () => {
+        const c = +$('#caladoInput').value || 0;
+        const total = sel.reduce((s,b)=> s + volFromCalado(b, c), 0);
+        $('#prevTotal').textContent = fmtBR.format(Math.round(total)) + ' t';
+        $('#prevMedio').textContent = fmtBR.format(Math.round(total/sel.length));
+      };
+      $('#caladoInput').addEventListener('input', upd); upd();
+    } else if(mode === 'ind'){
+      const upd = () => {
+        let total = 0; const perBarge = {};
+        body.querySelectorAll('.indVol').forEach(inp => {
+          const v = +inp.value || 0;
+          total += v; perBarge[inp.dataset.bid] = v;
+        });
+        // calado médio via interp por barcaça
+        let cSum = 0, n = 0;
+        sel.forEach(b => {
+          const v = perBarge[b.id] || 0;
+          const r = (b.volumeMax-b.volumeMin) ? (v - b.volumeMin)/(b.volumeMax - b.volumeMin) : 0;
+          const c = (b.caladoMin||0) + r*((b.caladoMax||0)-(b.caladoMin||0));
+          cSum += c; n++;
+        });
+        $('#prevTotalInd').textContent = fmtBR.format(Math.round(total)) + ' t';
+        $('#prevCaladoInd').textContent = n ? fmtBR2.format(cSum/n) : '—';
+      };
+      body.querySelectorAll('.indVol').forEach(i => i.addEventListener('input', upd)); upd();
+    }
+  };
+  openModal({
+    title: 'Inserir Volume do Comboio',
+    large: true,
+    body: '',
+    onSubmit: () => {
+      let total = 0, caladoMedio = 0, perBarge = {};
+      if(mode === 'total'){
+        total = +$('#volTotalInput').value || 0;
+        const por = total/sel.length;
+        sel.forEach(b => perBarge[b.id] = por);
+        caladoMedio = avgCaladoFromVol(sel, por);
+      } else if(mode === 'calado'){
+        caladoMedio = +$('#caladoInput').value || 0;
+        sel.forEach(b => { const v = volFromCalado(b, caladoMedio); perBarge[b.id] = v; total += v; });
+      } else {
+        let cSum=0, n=0;
+        $$('#modalBody .indVol').forEach(inp => {
+          const v = +inp.value || 0; total += v; perBarge[inp.dataset.bid] = v;
+        });
+        sel.forEach(b => {
+          const v = perBarge[b.id] || 0;
+          const r = (b.volumeMax-b.volumeMin) ? (v - b.volumeMin)/(b.volumeMax - b.volumeMin) : 0;
+          const c = (b.caladoMin||0) + r*((b.caladoMax||0)-(b.caladoMin||0));
+          cSum += c; n++;
+        });
+        caladoMedio = n ? cSum/n : 0;
+      }
+      STATE.vgVolume = {mode, total, caladoMedio, perBarge};
+      updateVgComboCount();
+      toast('Volume definido · ' + fmtBR.format(Math.round(total)) + ' t');
+    }
+  });
+  render();
+}
+function avgCaladoFromVol(sel, volPorBarca){
+  let s = 0, n = 0;
+  sel.forEach(b => {
+    const span = (b.volumeMax-b.volumeMin) || 1;
+    const r = Math.max(0, Math.min(1, (volPorBarca - b.volumeMin)/span));
+    const c = (b.caladoMin||0) + r*((b.caladoMax||0)-(b.caladoMin||0));
+    s += c; n++;
+  });
+  return n ? s/n : 0;
+}
+function volFromCalado(b, c){
+  const span = (b.caladoMax-b.caladoMin) || 1;
+  const r = Math.max(0, Math.min(1, (c - b.caladoMin)/span));
+  return (b.volumeMin||0) + r*((b.volumeMax||0)-(b.volumeMin||0));
+}
+
+/* ----- Salvar Viagem ----- */
+function salvarViagem(){
+  const db = STATE.db;
+  const emps = db.cadastro?.empurradores || [];
+  const empId = $('#vgEmp').value; const emp = byId(emps, empId);
+  if(!emp){ toast('Selecione um empurrador', false); return; }
+  const rotaId = $('#vgRota').value;
+  if(!rotaId){ toast('Selecione um trecho', false); return; }
+  const cond = $('#vgCond').value;
+  if(cond === 'Carregada' || cond === 'Vazia'){
+    if(!STATE.selVgBarges.size){ toast('Selecione ao menos uma barcaça', false); return; }
+    if(STATE.selVgBarges.size > (emp.comboioMax||9999)){
+      toast(`Excede o limite (${emp.comboioMax}) do empurrador`, false); return;
+    }
+  }
+  if(cond === 'Carregada' && !STATE.vgVolume){ toast('Clique em "Inserir Volume" antes de salvar', false); return; }
+  const dataHora = $('#vgDtHora').value;
+  if(!dataHora){ toast('Informe data e hora', false); return; }
+
+  const dt = new Date(dataHora);
+  const yymmdd = dt.toISOString().slice(2,10).replace(/-/g,'');
+  const idBase = emp.nome.replace(/\s+/g,'-') + '_' + yymmdd;
+  let id = idBase, n = 1;
+  while((db.viagens||[]).some(v => v.id === id)) id = idBase + '-' + (++n);
+
+  const viagem = {
+    id,
+    rotaId,
+    empurradorId: empId,
+    dataHora: dt.toISOString(),
+    condicao: cond,
+    scortTug: null,
+    tipoViagem: $('#vgTipo').value,
+    produto: cond === 'Carregada' ? $('#vgProduto').value : null,
+    barcacas: (cond === 'Carregada' || cond === 'Vazia') ? [...comboOrder] : [],
+    volumeTotal: STATE.vgVolume?.total || 0,
+    caladoMedio: STATE.vgVolume?.caladoMedio || 0,
+    volumePorBarcaca: STATE.vgVolume?.perBarge || {},
+    status: 'Programada'
+  };
+  db.viagens = db.viagens || [];
+  db.viagens.unshift(viagem);
+  persist();
+  STATE.selVgBarges = new Set();
+  STATE.vgVolume = null;
+  comboOrder = [];
+  renderAll();
+  toast('Viagem ' + id + ' programada');
+}
+
+/* ============================================================
+   EVENTS / DELEGATION
    ============================================================ */
 $$('.tab').forEach(t => t.addEventListener('click', () => {
   $$('.tab').forEach(x => x.classList.remove('active'));
@@ -1295,19 +1969,112 @@ if(lastTab){
   if(t) t.click();
 }
 
-$('#btnSalvar').addEventListener('click', saveDbToCache);
-$('#btnExportar').addEventListener('click', exportDb);
-$('#btnImportar').addEventListener('click', () => $('#fileImporter').click());
-$('#bannerImport').addEventListener('click', () => $('#fileImporter').click());
-$('#fileImporter').addEventListener('change', e => {
-  const f = e.target.files[0]; if(f) importDbFromFile(f); e.target.value = '';
-});
-$('#btnPasta').addEventListener('click', () => {
-  const map = { file:'mesma pasta do index.html', import:'arquivo selecionado manualmente', cache:'navegador (localStorage)' };
-  toast('Origem atual: ' + (map[STATE.source] || 'desconhecida'));
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('[data-action]');
+  if(!a) return;
+  const id = a.dataset.id;
+  const db = STATE.db;
+  switch(a.dataset.action){
+    case 'pasta-db': {
+      const map = { file:'mesma pasta do index.html', import:'arquivo selecionado manualmente', cache:'navegador (localStorage)' };
+      toast('Origem atual: ' + (map[STATE.source] || 'desconhecida'));
+      break;
+    }
+    case 'salvar-db': saveDbToCache(); break;
+    case 'exportar-db': exportDb(); break;
+    case 'importar-db': $('#fileImporter').click(); break;
+
+    case 'new-empurrador': openEmpurradorModal(); break;
+    case 'edit-empurrador': openEmpurradorModal(byId(db.cadastro.empurradores, id)); break;
+    case 'del-empurrador':
+      if(confirm('Excluir empurrador?')){
+        db.cadastro.empurradores = db.cadastro.empurradores.filter(x => x.id !== id);
+        persist(); renderAll(); toast('Empurrador removido');
+      } break;
+
+    case 'new-barcaca': openBarcacaModal(); break;
+    case 'new-barcaca-lote': openBarcacaLoteModal(); break;
+
+    case 'new-tripulacao': openTripulacaoModal(); break;
+    case 'edit-tripulacao': openTripulacaoModal(byId(db.cadastro.tripulacao, id)); break;
+    case 'del-tripulacao':
+      if(confirm('Excluir tripulação?')){
+        db.cadastro.tripulacao = db.cadastro.tripulacao.filter(x => x.id !== id);
+        persist(); renderAll();
+      } break;
+
+    case 'new-cidade': openCidadeModal(); break;
+    case 'edit-cidade': openCidadeModal(byId(db.cadastro.cidades, id)); break;
+    case 'del-cidade':
+      if(confirm('Excluir cidade?')){
+        db.cadastro.cidades = db.cadastro.cidades.filter(x => x.id !== id);
+        persist(); renderAll();
+      } break;
+
+    case 'new-rota': openRotaModal(); break;
+    case 'edit-rota': openRotaModal(byId(db.cadastro.rotas, id)); break;
+    case 'del-rota':
+      if(confirm('Excluir rota?')){
+        db.cadastro.rotas = db.cadastro.rotas.filter(x => x.id !== id);
+        persist(); renderAll();
+      } break;
+
+    case 'new-tipo-viagem': openTipoViagemModal(); break;
+    case 'edit-tipo-viagem': openTipoViagemModal(byId(db.premissas.tiposViagem, id)); break;
+
+    case 'new-media': openMediaModal(); break;
+    case 'del-media':
+      db.premissas.mediasConsumoTempo = db.premissas.mediasConsumoTempo.filter(x => x.id !== id);
+      persist(); renderAll(); break;
+
+    case 'new-lancamento': openLancamentoModal(); break;
+    case 'del-lancamento':
+      db.consumoDiario.lancamentos = db.consumoDiario.lancamentos.filter(x => x.id !== id);
+      persist(); renderAll(); break;
+
+    case 'new-transferencia': openTransferenciaModal(); break;
+    case 'del-transferencia':
+      db.consumoDiario.transferencias = db.consumoDiario.transferencias.filter(x => x.id !== id);
+      persist(); renderAll(); break;
+
+    case 'new-preco': openPrecoModal(); break;
+    case 'del-preco':
+      db.precos.registros.splice(+a.dataset.idx, 1);
+      persist(); renderAll(); break;
+
+    case 'new-abastecimento': openAbastecimentoModal(); break;
+
+    case 'inserir-volume': openVolumeModal(); break;
+    case 'salvar-viagem': salvarViagem(); break;
+    case 'reorganizar-arranjo': {
+      const bgs = db.cadastro?.barcacas || [];
+      const sel = [...STATE.selVgBarges].map(idx => byId(bgs, idx)).filter(Boolean);
+      const raked = sel.filter(b=>b.tipo==='Raked');
+      const box = sel.filter(b=>b.tipo==='Box');
+      const outros = sel.filter(b=>!['Raked','Box'].includes(b.tipo));
+      comboOrder = [...raked, ...box, ...outros].map(b=>b.id);
+      drawComboPreview(); toast('Arranjo reorganizado');
+      break;
+    }
+    case 'view-viagem': {
+      const v = byId(db.viagens, id);
+      renderViagemDetalhes(v);
+      document.querySelector('#viagemTitulo')?.scrollIntoView({behavior:'smooth', block:'center'});
+      break;
+    }
+    case 'del-viagem':
+      if(confirm('Excluir viagem ' + id + '?')){
+        db.viagens = db.viagens.filter(x => x.id !== id);
+        persist(); renderAll(); toast('Viagem removida');
+      } break;
+  }
 });
 
 $('#searchEmp').addEventListener('input', () => STATE.db && renderCadastro());
+
+$('#fileImporter').addEventListener('change', e => {
+  const f = e.target.files[0]; if(f) importDbFromFile(f); e.target.value = '';
+});
 
 window.addEventListener('resize', () => { if(STATE.db) renderPrecos(); });
 
