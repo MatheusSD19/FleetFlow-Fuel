@@ -1928,6 +1928,28 @@ function openEmpurradorModal(existing){
 }
 
 /* ----- Barcaça (lote) ----- */
+function genLoteNumeros(ini, qtd, regra, passo){
+  let start = ini, step = 1;
+  if(regra === 'odd'){
+    step = 2;
+    if(start % 2 === 0) start++;
+  } else if(regra === 'even'){
+    step = 2;
+    if(start % 2 !== 0) start++;
+  } else if(regra === 'mult5'){
+    step = 5;
+    start = Math.ceil(start/5)*5;
+  } else if(regra === 'mult10'){
+    step = 10;
+    start = Math.ceil(start/10)*10;
+  } else if(regra === 'custom'){
+    step = Math.max(1, +passo || 1);
+  }
+  const out = [];
+  for(let i = 0; i < qtd; i++) out.push(start + i*step);
+  return out;
+}
+
 function openBarcacaLoteModal(){
   openModal({
     title: 'Criar barcaças em lote',
@@ -1935,6 +1957,17 @@ function openBarcacaLoteModal(){
       <div class="grid cols-2">
         <div class="field"><label>Prefixo do nome</label><input name="prefixo" value="BG "/></div>
         <div class="field"><label>Tipo</label><select name="tipo"><option>Raked</option><option>Box</option></select></div>
+        <div class="field"><label>Regra de numeração</label>
+          <select name="regra">
+            <option value="seq">Sequencial (1, 2, 3, …)</option>
+            <option value="odd">Somente ímpares (1, 3, 5, …)</option>
+            <option value="even">Somente pares (2, 4, 6, …)</option>
+            <option value="mult5">Múltiplos de 5</option>
+            <option value="mult10">Múltiplos de 10</option>
+            <option value="custom">Personalizado (passo)</option>
+          </select>
+        </div>
+        <div class="field" id="passoField" style="display:none"><label>Passo</label><input type="number" name="passo" value="2" min="1"/></div>
         <div class="field"><label>Numeração inicial</label><input type="number" name="ini" value="1"/></div>
         <div class="field"><label>Quantidade</label><input type="number" name="qtd" value="10"/></div>
         <div class="field"><label>Calado Mínimo (m)</label><input type="number" step="0.01" name="cMin" value="1.8"/></div>
@@ -1942,29 +1975,60 @@ function openBarcacaLoteModal(){
         <div class="field"><label>Calado Máximo (m)</label><input type="number" step="0.01" name="cMax" value="3.6"/></div>
         <div class="field"><label>Volume Máximo (t)</label><input type="number" name="vMax" value="2400"/></div>
       </div>
-      <div class="help">Serão criadas <strong id="qtdPreview">10</strong> barcaças nomeadas "<span id="prePreview">BG </span><span id="iniPreview">1</span>" até "<span id="prePreview2">BG </span><span id="endPreview">10</span>".</div>
+      <div class="help" id="lotePreview" style="margin-top:10px"></div>
+      <div class="help" id="loteConflito" style="color:var(--bad);margin-top:4px"></div>
     `,
     onSubmit: () => {
       const prefixo = getField('prefixo')||'BG ';
       const tipo = getField('tipo');
       const ini = +getField('ini')||1;
       const qtd = +getField('qtd')||0;
+      const regra = getField('regra')||'seq';
+      const passo = +getField('passo')||1;
       if(qtd <= 0){ toast('Quantidade inválida', false); return false; }
       const cMin=+getField('cMin')||1.8, vMin=+getField('vMin')||800, cMax=+getField('cMax')||3.6, vMax=+getField('vMax')||2400;
       const list = STATE.db.cadastro.barcacas;
-      for(let i=0;i<qtd;i++){
-        list.push({id:uid('BG'), nome:prefixo + (ini+i), tipo, caladoMin:cMin, volumeMin:vMin, caladoMax:cMax, volumeMax:vMax, manutencao:false});
-      }
-      persist(); renderAll(); toast(qtd + ' barcaças criadas');
+      const nums = genLoteNumeros(ini, qtd, regra, passo);
+      const existentes = new Set(list.map(b => b.nome.toLowerCase()));
+      const ignorados = [];
+      let criadas = 0;
+      nums.forEach(n => {
+        const nome = prefixo + n;
+        if(existentes.has(nome.toLowerCase())){ ignorados.push(nome); return; }
+        list.push({id:uid('BG'), nome, tipo, caladoMin:cMin, volumeMin:vMin, caladoMax:cMax, volumeMax:vMax, manutencao:false});
+        existentes.add(nome.toLowerCase());
+        criadas++;
+      });
+      persist(); renderAll();
+      toast(`${criadas} barcaças criadas${ignorados.length?` · ${ignorados.length} ignorada${ignorados.length>1?'s':''} (nome já existia)`:''}`);
     }
   });
   const upd = () => {
-    const p = getField('prefixo')||''; const i = +getField('ini')||1; const q = +getField('qtd')||0;
-    $('#qtdPreview').textContent = q;
-    $('#prePreview').textContent = p; $('#prePreview2').textContent = p;
-    $('#iniPreview').textContent = i; $('#endPreview').textContent = i + q - 1;
+    const prefixo = getField('prefixo')||'';
+    const ini = +getField('ini')||1;
+    const qtd = +getField('qtd')||0;
+    const regra = getField('regra')||'seq';
+    const passo = +getField('passo')||1;
+    $('#passoField').style.display = regra === 'custom' ? '' : 'none';
+    if(qtd <= 0){ $('#lotePreview').textContent = ''; $('#loteConflito').textContent = ''; return; }
+    const nums = genLoteNumeros(ini, qtd, regra, passo);
+    const nomes = nums.map(n => prefixo + n);
+    const head = nomes.slice(0, 3).map(n => `"${n}"`).join(', ');
+    const tail = nomes.length > 4 ? `, …, "${nomes[nomes.length-1]}"` : nomes.length > 3 ? `, "${nomes[3]}"` : '';
+    $('#lotePreview').innerHTML = `Serão criadas <strong>${qtd}</strong> barcaças: ${head}${tail}.`;
+    // detecta conflitos
+    const existentes = new Set((STATE.db.cadastro.barcacas||[]).map(b => b.nome.toLowerCase()));
+    const conflitos = nomes.filter(n => existentes.has(n.toLowerCase()));
+    $('#loteConflito').textContent = conflitos.length
+      ? `${conflitos.length} nome${conflitos.length>1?'s':''} já existe${conflitos.length>1?'m':''} e ser${conflitos.length>1?'ão':'á'} ignorado${conflitos.length>1?'s':''}: ${conflitos.slice(0,5).join(', ')}${conflitos.length>5?'…':''}`
+      : '';
   };
-  ['prefixo','ini','qtd'].forEach(n => $('#modalBody').querySelector(`[name="${n}"]`).addEventListener('input', upd));
+  ['prefixo','ini','qtd','regra','passo'].forEach(n => {
+    const el = $('#modalBody').querySelector(`[name="${n}"]`);
+    if(el) el.addEventListener('input', upd);
+    if(el && el.tagName === 'SELECT') el.addEventListener('change', upd);
+  });
+  upd();
 }
 
 /* ----- Barcaça (individual) ----- */
